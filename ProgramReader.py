@@ -109,18 +109,21 @@ class AnalyzerGui:
             print(str(end - start) + "s")
 
             for lexeme, token in self.tokens:
-                self.insert_centered(self.lexicTxt, f"{lexeme}\n")
-                self.insert_centered(self.tokenTxt, f"{token}\n")
-
-                if lexeme == "unknown":
+                if token == "unknown":
                     errors.append(
                         "line "
                         + str(line_num)
+                        + ":"
+                        + lexeme
                         + ": '"
                         + line.replace("\n", "")
-                        + "'"
-                        + "\n\tLexical Error: Unknown"
+                        + "' "
+                        + "Unknown"
                     )
+                    continue
+
+                self.insert_centered(self.lexicTxt, f"{lexeme}\n")
+                self.insert_centered(self.tokenTxt, f"{token}\n")
 
             line_num += 1
 

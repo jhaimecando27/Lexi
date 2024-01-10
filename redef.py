@@ -89,9 +89,9 @@ GARDEN = "garden"
 
 
 # Reserved Symbols
-Arithmetic Operators = ["+", "-", "*", "/", "%", "**", "//"]
-Assignment Operators = ["=", "+=", "-=", "*=", "/=", "%=", "//=", "**=", "&=", "|=", "^=", ">>=", "<<="]
-Comparison Operators = ["==", "!=", ">", "<", ">=", "<="]
-Logical Operators = ["=&", "=/", "=!"]
-Bitwise Operators = ["&", "|", "^", "~", "<<", ">>"]
+Arithmetic_Operators = ["+", "-", "*", "/", "%", "**", "//"]
+Assignment_Operators = ["=", "+=", "-=", "*=", "/=", "%=", "//=", "**=", "&=", "|=", "^=", ">>=", "<<="]
+Comparison_Operators = ["==", "!=", ">", "<", ">=", "<="]
+Logical_Operators = ["=&", "=/", "=!"]
+Bitwise_Operators = ["&", "|", "^", "~", "<<", ">>"]
 Others = ["()", "[]", "{}", "“", ",", ":", ".", ";", "#", "<--", "-->"]
