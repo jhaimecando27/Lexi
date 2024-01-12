@@ -108,17 +108,16 @@ class AnalyzerGui:
             end = time.time()
             print(str(end - start) + "s")
 
+            errors_list = ["UNKNOWN IDENTIFIER", "UNKNOWN DELIMITER"]
+
             for lexeme, token in self.tokens:
-                if token == "unknown":
+                if token in errors_list:
+                    print(lexeme, token)
                     errors.append(
                         "line "
                         + str(line_num)
                         + ":"
                         + lexeme
-                        + ": '"
-                        + line.replace("\n", "")
-                        + "' "
-                        + "Unknown"
                     )
                     continue
 
@@ -127,8 +126,8 @@ class AnalyzerGui:
 
             line_num += 1
 
-        for error in errors:
-            self.errorTxt.insert(tk.END, f"{error}\n")
+        for errors in errors:
+            self.errorTxt.insert(tk.END, f"{errors}\n")
 
         self.lexicTxt.configure(state="disabled")
         self.tokenTxt.configure(state="disabled")

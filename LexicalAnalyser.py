@@ -1,168 +1,294 @@
 # Lexical Analyser Logic
 import redef as rd
+from helper import Error
 
 
 def lexical_analysis(program):
     rw = "RESERVED WORD"
     rs = "RESERVED SYMBOL"
-    un = "unknown"
+    un_kw = "unknown keyword"
     i = 0
     results = []
 
     while i < len(program) and program[i] != '\n':
+        tmp_wrd = ""
+
         if i < len(program) and program[i] == 'b':
+            tmp_wrd = "b"
             i += 1
             # BARE
             if i < len(program) and program[i] == 'a':
                 i += 1
+                tmp_wrd = "ba"
                 if i < len(program) and program[i] == 'r':
                     i += 1
+                    tmp_wrd = "bar"
                     if i < len(program) and program[i] == 'e':
                         i += 1
+                        tmp_wrd = "bare"
                         if i < len(program) and program[i] in rd.delim1:
                             results.append(("bare", rw))
                             results.append((program[i], rs))
                             i += 1
                             continue
+                        else:
+                            # Finish whole word if error
+                            results.append(Error.delim(
+                                i, tmp_wrd, program[i], rd.delim1))
+                            while program[i] != ' ' and program[i] != '\n':
+                                i += 1
+                            continue
             # BLOOM
             elif i < len(program) and program[i] == 'l':
                 i += 1
+                tmp_wrd = "bl"
                 if i < len(program) and program[i] == 'o':
                     i += 1
+                    tmp_wrd = "blo"
                     if i < len(program) and program[i] == 'o':
                         i += 1
+                        tmp_wrd = "bloo"
                         if i < len(program) and program[i] == 'm':
                             i += 1
+                            tmp_wrd = "bloom"
                             if i < len(program) and program[i] in rd.delim4:
                                 results.append(("bloom", rw))
                                 results.append((program[i], rs))
+                                i += 1
+                                continue
+                            else:
+                                # Finish whole word if error
+                                results.append(Error.delim(
+                                    i, tmp_wrd, program[i], rd.delim4))
+                                while program[i] != ' ' and program[i] != '\n':
+                                    i += 1
                                 continue
             # BREAK
             elif i < len(program) and program[i] == 'r':
                 i += 1
+                tmp_wrd = "br"
                 if i < len(program) and program[i] == 'e':
                     i += 1
+                    tmp_wrd = "bre"
                     if i < len(program) and program[i] == 'a':
                         i += 1
+                        tmp_wrd = "brea"
                         if i < len(program) and program[i] == 'k':
                             i += 1
+                            tmp_wrd = "break"
                             if i < len(program) and program[i] in rd.delim1:
                                 results.append(("break", rw))
                                 results.append((program[i], rs))
                                 i += 1
                                 continue
+                            else:
+                                # Finish whole word if error
+                                results.append(Error.delim(
+                                    i, tmp_wrd, program[i], rd.delim1))
+
+                                continue
 
             # Finish whole word if error
-            results.append((str(i) + ": " + program[i], un))
             while program[i] != ' ' and program[i] != '\n':
+                tmp_wrd += program[i]
                 i += 1
+            results.append(Error.id(i, tmp_wrd))
             continue
 
-        # CLEAR
+        # CHARD
         elif i < len(program) and program[i] == 'c':
             i += 1
-            if i < len(program) and program[i] == 'l':
+            tmp_wrd = "c"
+            if i < len(program) and program[i] == 'h':
                 i += 1
+                tmp_wrd = "ch"
+                if i < len(program) and program[i] == 'a':
+                    i += 1
+                    tmp_wrd = "cha"
+                    if i < len(program) and program[i] == 'r':
+                        i += 1
+                        tmp_wrd = "char"
+                        if i < len(program) and program[i] == 'd':
+                            i += 1
+                            tmp_wrd = "chard"
+                            if i < len(program) and program[i] in rd.delimc:
+                                results.append(("chard", rw))
+                                results.append((program[i], rs))
+                                i += 1
+                                continue
+                            else:
+                                # Finish whole word if error
+                                results.append(Error.delim(
+                                    i, tmp_wrd, program[i], rd.delimc))
+                                while program[i] != ' ' and program[i] != '\n':
+                                    i += 1
+                                continue
+            # CLEAR
+            elif i < len(program) and program[i] == 'l':
+                i += 1
+                tmp_wrd = "cl"
                 if i < len(program) and program[i] == 'e':
                     i += 1
+                    tmp_wrd = "cle"
                     if i < len(program) and program[i] == 'a':
                         i += 1
+                        tmp_wrd = "clea"
                         if i < len(program) and program[i] == 'r':
                             i += 1
+                            tmp_wrd = "clear"
                             if i < len(program) and program[i] in rd.delim1:
                                 results.append(("clear", rw))
                                 results.append((program[i], rs))
                                 i += 1
                                 continue
+                            else:
+                                # Finish whole word if error
+                                results.append(Error.delim(
+                                    i, tmp_wrd, program[i], rd.delim1))
+                                while program[i] != ' ' and program[i] != '\n':
+                                    i += 1
+                                continue
 
             # Finish whole word if error
-            results.append((str(i) + ": " + program[i], un))
             while program[i] != ' ' and program[i] != '\n':
+                tmp_wrd += program[i]
                 i += 1
+            results.append(Error.id(i, tmp_wrd))
             continue
 
         # DIRT
         elif i < len(program) and program[i] == 'd':
             i += 1
+            tmp_wrd = "d"
             if i < len(program) and program[i] == 'i':
                 i += 1
+                tmp_wrd = "di"
                 if i < len(program) and program[i] == 'r':
                     i += 1
+                    tmp_wrd = "dir"
                     if i < len(program) and program[i] == 't':
                         i += 1
+                        tmp_wrd = "dirt"
                         if i < len(program) and program[i] in rd.delim4:
                             results.append(("dirt", rw))
                             results.append((program[i], rs))
                             i += 1
                             continue
+                        else:
+                            # Finish whole word if error
+                            results.append(Error.delim(
+                                i, tmp_wrd, program[i], rd.delim4))
+                            while program[i] != ' ' and program[i] != '\n':
+                                i += 1
+                            continue
 
             # Finish whole word if error
-            results.append((str(i) + ": " + program[i], un))
             while program[i] != ' ' and program[i] != '\n':
+                tmp_wrd += program[i]
                 i += 1
+            results.append(Error.id(i, tmp_wrd))
             continue
 
         # ELEAF
         elif i < len(program) and program[i] == 'e':
             i += 1
+            tmp_wrd = "e"
             if i < len(program) and program[i] == 'l':
                 i += 1
+                tmp_wrd = "el"
                 if i < len(program) and program[i] == 'e':
                     i += 1
+                    tmp_wrd = "ele"
                     if i < len(program) and program[i] == 'a':
                         i += 1
+                        tmp_wrd = "elea"
                         if i < len(program) and program[i] == 'f':
                             i += 1
+                            tmp_wrd = "eleaf"
                             if i < len(program) and program[i] in rd.delim3:
                                 results.append(("eleaf", rw))
                                 results.append((program[i], rs))
                                 i += 1
                                 continue
+                            else:
+                                # Finish whole word if error
+                                results.append(Error.delim(
+                                    i, tmp_wrd, program[i], rd.delim3))
+                                while program[i] != ' ' and program[i] != '\n':
+                                    i += 1
+                                continue
 
             # Finish whole word if error
-            results.append((str(i) + ": " + program[i], un))
             while program[i] != ' ' and program[i] != '\n':
+                tmp_wrd += program[i]
                 i += 1
+            results.append(Error.id(i, tmp_wrd))
             continue
 
         # FALSE
         elif i < len(program) and program[i] == 'f':
             i += 1
+            tmp_wrd = "f"
             if i < len(program) and program[i] == 'a':
                 i += 1
+                tmp_wrd = "fa"
                 if i < len(program) and program[i] == 'l':
                     i += 1
+                    tmp_wrd = "fal"
                     if i < len(program) and program[i] == 's':
                         i += 1
+                        tmp_wrd = "fals"
                         if i < len(program) and program[i] == 'e':
                             i += 1
+                            tmp_wrd = "false"
                             if i < len(program) and program[i] in rd.delim1:
                                 results.append(("false", rw))
                                 results.append((program[i], rs))
                                 i += 1
                                 continue
+                            else:
+                                # Finish whole word if error
+                                results.append(Error.delim(
+                                    i, tmp_wrd, program[i], rd.delim1))
+                                while program[i] != ' ' and program[i] != '\n':
+                                    i += 1
+                                continue
             # FERN
             if i < len(program) and program[i] == 'e':
                 i += 1
+                tmp_wrd = "fe"
                 if i < len(program) and program[i] == 'r':
                     i += 1
+                    tmp_wrd = "fer"
                     if i < len(program) and program[i] == 'n':
                         i += 1
+                        tmp_wrd = "fern"
                         if i < len(program) and program[i] in rd.delim3:
                             results.append(("fern", rw))
                             results.append((program[i], rs))
                             i += 1
                             continue
+                        else:
+                            # Finish whole word if error
+                            results.append(Error.delim(
+                                i, tmp_wrd, program[i], rd.delim3))
+                            while program[i] != ' ' and program[i] != '\n':
+                                i += 1
+                            continue
 
             # FLORA
             if i < len(program) and program[i] == 'l':
                 i += 1
+                tmp_wrd = "fl"
                 if i < len(program) and program[i] == 'o':
                     i += 1
+                    tmp_wrd = "flo"
                     if i < len(program) and program[i] == 'r':
                         i += 1
+                        tmp_wrd = "flor"
                         if i < len(program) and program[i] == 'a':
                             i += 1
+                            tmp_wrd = "flora"
                             if i < len(program) and program[i] in rd.delim4:
                                 results.append(("flora", rw))
                                 results.append((program[i], rs))
@@ -172,241 +298,420 @@ def lexical_analysis(program):
                             # FLORAL
                             elif i < len(program) and program[i] == 'l':
                                 i += 1
+                                tmp_wrd = "floral"
                                 if i < len(program) and program[i] in rd.delim4:
                                     results.append(("floral", rw))
                                     results.append((program[i], rs))
                                     i += 1
                                     continue
+                                else:
+                                    # Finish whole word if error
+                                    results.append(Error.delim(
+                                        i, tmp_wrd, program[i], rd.delim4))
+                                    while program[i] != ' ' and program[i] != '\n':
+                                        i += 1
+                                    continue
+                            else:
+                                # Finish whole word if error
+                                results.append(Error.delim(
+                                    i, tmp_wrd, program[i], rd.delim4))
+                                while program[i] != ' ' and program[i] != '\n':
+                                    i += 1
+                                continue
 
                         # FLORIST
                         elif i < len(program) and program[i] == 'i':
                             i += 1
+                            tmp_wrd = "flori"
                             if i < len(program) and program[i] == 's':
                                 i += 1
+                                tmp_wrd = "floris"
                                 if i < len(program) and program[i] == 't':
                                     i += 1
+                                    tmp_wrd = "florist"
                                     if i < len(program) and program[i] in rd.delim4:
                                         results.append(("florist", rw))
                                         results.append((program[i], rs))
                                         i += 1
                                         continue
+                                    else:
+                                        # Finish whole word if error
+                                        results.append(Error.delim(
+                                            i, tmp_wrd, program[i], rd.delim4))
+                                        while program[i] != ' ' and program[i] != '\n':
+                                            i += 1
+                                        continue
             # Finish whole word if error
-            results.append((str(i) + ": " + program[i], un))
             while program[i] != ' ' and program[i] != '\n':
+                tmp_wrd += program[i]
                 i += 1
+            results.append(Error.id(i, tmp_wrd))
             continue
 
         # GARDEN
         elif i < len(program) and program[i] == 'g':
             i += 1
+            tmp_wrd = "g"
             if i < len(program) and program[i] == 'a':
                 i += 1
+                tmp_wrd = "ga"
                 if i < len(program) and program[i] == 'r':
                     i += 1
+                    tmp_wrd = "gar"
                     if i < len(program) and program[i] == 'd':
                         i += 1
+                        tmp_wrd = "gard"
                         if i < len(program) and program[i] == 'e':
                             i += 1
+                            tmp_wrd = "garde"
                             if i < len(program) and program[i] == 'n':
                                 i += 1
+                                tmp_wrd = "garden"
                                 if i < len(program) and program[i] in rd.delim4:
                                     results.append(("garden", rw))
                                     results.append((program[i], rs))
                                     i += 1
                                     continue
+                                else:
+                                    # Finish whole word if error
+                                    results.append(Error.delim(
+                                        i, tmp_wrd, program[i], rd.delim4))
+                                    while program[i] != ' ' and program[i] != '\n':
+                                        i += 1
+                                    continue
             # Finish whole word if error
-            results.append((str(i) + ": " + program[i], un))
             while program[i] != ' ' and program[i] != '\n':
+                tmp_wrd += program[i]
                 i += 1
+            results.append(Error.id(i, tmp_wrd))
             continue
 
         # INPETAL
         elif i < len(program) and program[i] == 'i':
             i += 1
+            tmp_wrd = "i"
             if i < len(program) and program[i] == 'n':
                 i += 1
+                tmp_wrd = "in"
                 if i < len(program) and program[i] == 'p':
                     i += 1
+                    tmp_wrd = "inp"
                     if i < len(program) and program[i] == 'e':
                         i += 1
+                        tmp_wrd = "inpe"
                         if i < len(program) and program[i] == 't':
                             i += 1
+                            tmp_wrd = "inpet"
                             if i < len(program) and program[i] == 'a':
                                 i += 1
+                                tmp_wrd = "inpeta"
                                 if i < len(program) and program[i] == 'l':
                                     i += 1
+                                    tmp_wrd = "inpetal"
                                     if i < len(program) and program[i] in rd.delim3:
                                         results.append(("inpetal", rw))
                                         results.append((program[i], rs))
                                         i += 1
                                         continue
+                                    else:
+                                        # Finish whole word if error
+                                        results.append(Error.delim(
+                                            i, tmp_wrd, program[i], rd.delim3))
+                                        while program[i] != ' ' and program[i] != '\n':
+                                            i += 1
+                                        continue
             # Finish whole word if error
-            results.append((str(i) + ": " + program[i], un))
             while program[i] != ' ' and program[i] != '\n':
+                tmp_wrd += program[i]
                 i += 1
+            results.append(Error.id(i, tmp_wrd))
             continue
 
-        # LANTENA
+        # LEAF
         elif i < len(program) and program[i] == 'l':
             i += 1
-            if i < len(program) and program[i] == 'a':
+            tmp_wrd = "l"
+            if i < len(program) and program[i] == 'e':
                 i += 1
-                if i < len(program) and program[i] == 'n':
-                    i += 1
-                    if i < len(program) and program[i] == 't':
-                        i += 1
-                        if i < len(program) and program[i] == 'e':
-                            i += 1
-                            if i < len(program) and program[i] == 'n':
-                                i += 1
-                                if i < len(program) and program[i] == 'a':
-                                    i += 1
-                                    if i < len(program) and program[i] in rd.delim3:
-                                        results.append(("lantena", rw))
-                                        results.append((program[i], rs))
-                                        i += 1
-                                        continue
-            # LEAF
-            elif i < len(program) and program[i] == 'e':
-                i += 1
+                tmp_wrd = "le"
                 if i < len(program) and program[i] == 'a':
                     i += 1
+                    tmp_wrd = "lea"
                     if i < len(program) and program[i] == 'f':
                         i += 1
+                        tmp_wrd = "leaf"
                         if i < len(program) and program[i] in rd.delim3:
                             results.append(("leaf", rw))
                             results.append((program[i], rs))
                             i += 1
                             continue
+                        else:
+                            # Finish whole word if error
+                            results.append(Error.delim(
+                                i, tmp_wrd, program[i], rd.delim3))
+                            while program[i] != ' ' and program[i] != '\n':
+                                i += 1
+                            continue
             # Finish whole word if error
-            results.append((str(i) + ": " + program[i], un))
             while program[i] != ' ' and program[i] != '\n':
+                tmp_wrd += program[i]
                 i += 1
+            results.append(Error.id(i, tmp_wrd))
             continue
 
         # MINT
         elif i < len(program) and program[i] == 'm':
             i += 1
+            tmp_wrd = "m"
             if i < len(program) and program[i] == 'i':
                 i += 1
+                tmp_wrd = "mi"
                 if i < len(program) and program[i] == 'n':
                     i += 1
+                    tmp_wrd = "min"
                     if i < len(program) and program[i] == 't':
                         i += 1
+                        tmp_wrd = "mint"
                         if i < len(program) and program[i] in rd.delim3:
                             results.append(("mint", rw))
                             results.append((program[i], rs))
                             i += 1
                             continue
-            # Finish whole word if error
-            results.append((str(i) + ": " + program[i], un))
-            while program[i] != ' ' and program[i] != '\n':
+                        else:
+                            # Finish whole word if error
+                            results.append(Error.delim(
+                                i, tmp_wrd, program[i], rd.delim3))
+                            while program[i] != ' ' and program[i] != '\n':
+                                i += 1
+                            continue
+            # MOSS
+            elif i < len(program) and program[i] == 'o':
                 i += 1
+                tmp_wrd = "mo"
+                if i < len(program) and program[i] == 's':
+                    i += 1
+                    tmp_wrd = "mos"
+                    if i < len(program) and program[i] == 's':
+                        i += 1
+                        tmp_wrd = "moss"
+                        if i < len(program) and program[i] in rd.delim3:
+                            results.append(("moss", rw))
+                            results.append((program[i], rs))
+                            i += 1
+                            continue
+                        else:
+                            # Finish whole word if error
+                            results.append(Error.delim(
+                                i, tmp_wrd, program[i], rd.delim3))
+                            while program[i] != ' ' and program[i] != '\n':
+                                i += 1
+                            continue
+
+            # Finish whole word if error
+            while program[i] != ' ' and program[i] != '\n':
+                tmp_wrd += program[i]
+                i += 1
+            results.append(Error.id(i, tmp_wrd))
             continue
 
+        # PLANT
+        elif i < len(program) and program[i] == 'p':
+            i += 1
+            tmp_wrd = "p"
+            if i < len(program) and program[i] == 'l':
+                i += 1
+                tmp_wrd = "pl"
+                if i < len(program) and program[i] == 'a':
+                    i += 1
+                    tmp_wrd = "pla"
+                    if i < len(program) and program[i] == 'n':
+                        i += 1
+                        tmp_wrd = "plan"
+                        if i < len(program) and program[i] == 't':
+                            i += 1
+                            tmp_wrd = "plant"
+                            if i < len(program) and program[i] in rd.delim2:
+                                results.append(("plant", rw))
+                                results.append((program[i], rs))
+                                i += 1
+                                continue
+                            else:
+                                # Finish whole word if error
+                                results.append(Error.delim(
+                                    i, tmp_wrd, program[i], rd.delim2))
+                                while program[i] != ' ' and program[i] != '\n':
+                                    i += 1
+                                continue
         # REGROW
         elif i < len(program) and program[i] == 'r':
             i += 1
+            tmp_wrd = "r"
             if i < len(program) and program[i] == 'e':
                 i += 1
+                tmp_wrd = "re"
                 if i < len(program) and program[i] == 'g':
                     i += 1
+                    tmp_wrd = "reg"
                     if i < len(program) and program[i] == 'r':
                         i += 1
+                        tmp_wrd = "regr"
                         if i < len(program) and program[i] == 'o':
                             i += 1
+                            tmp_wrd = "regro"
                             if i < len(program) and program[i] == 'w':
                                 i += 1
+                                tmp_wrd = "regrow"
                                 if i < len(program) and program[i] in rd.delim9:
                                     results.append(("regrow", rw))
                                     results.append((program[i], rs))
                                     i += 1
                                     continue
+                                else:
+                                    # Finish whole word if error
+                                    results.append(Error.delim(
+                                        i, tmp_wrd, program[i], rd.delim9))
+                                    while program[i] != ' ' and program[i] != '\n':
+                                        i += 1
+                                    continue
             # Finish whole word if error
-            results.append((str(i) + ": " + program[i], un))
             while program[i] != ' ' and program[i] != '\n':
+                tmp_wrd += program[i]
                 i += 1
+            results.append(Error.id(i, tmp_wrd))
             continue
 
         # SEED
         elif i < len(program) and program[i] == 's':
             i += 1
+            tmp_wrd = "s"
             if i < len(program) and program[i] == 'e':
                 i += 1
+                tmp_wrd = "se"
                 if i < len(program) and program[i] == 'e':
                     i += 1
+                    tmp_wrd = "see"
                     if i < len(program) and program[i] == 'd':
                         i += 1
+                        tmp_wrd = "seed"
                         if i < len(program) and program[i] in rd.delim16:
                             results.append(("seed", rw))
                             results.append((program[i], rs))
                             i += 1
                             continue
+                        else:
+                            # Finish whole word if error
+                            results.append(Error.delim(
+                                i, tmp_wrd, program[i], rd.delim16))
+                            while program[i] != ' ' and program[i] != '\n':
+                                i += 1
+                            continue
             # STEM
             elif i < len(program) and program[i] == 't':
                 i += 1
+                tmp_wrd = "st"
                 if i < len(program) and program[i] == 'e':
                     i += 1
+                    tmp_wrd = "ste"
                     if i < len(program) and program[i] == 'm':
                         i += 1
+                        tmp_wrd = "stem"
                         if i < len(program) and program[i] in rd.delim4:
                             results.append(("stem", rw))
                             results.append((program[i], rs))
                             i += 1
                             continue
+                        else:
+                            # Finish whole word if error
+                            results.append(Error.delim(
+                                i, tmp_wrd, program[i], rd.delim4))
+                            while program[i] != ' ' and program[i] != '\n':
+                                i += 1
+                            continue
                 # STRING
                 elif i < len(program) and program[i] == 'r':
                     i += 1
+                    tmp_wrd = "str"
                     if i < len(program) and program[i] == 'i':
                         i += 1
+                        tmp_wrd = "stri"
                         if i < len(program) and program[i] == 'n':
                             i += 1
+                            tmp_wrd = "strin"
                             if i < len(program) and program[i] == 'g':
                                 i += 1
+                                tmp_wrd = "string"
                                 if i < len(program) and program[i] in rd.delim4:
                                     results.append(("string", rw))
                                     results.append((program[i], rs))
                                     i += 1
                                     continue
+                                else:
+                                    # Finish whole word if error
+                                    results.append(Error.delim(
+                                        i, tmp_wrd, program[i], rd.delim4))
+                                    while program[i] != ' ' and program[i] != '\n':
+                                        i += 1
+                                    continue
             # Finish whole word if error
-            results.append((str(i) + ": " + program[i], un))
             while program[i] != ' ' and program[i] != '\n':
+                tmp_wrd += program[i]
                 i += 1
+            results.append(Error.id(i, tmp_wrd))
             continue
 
         # TINT
         elif i < len(program) and program[i] == 't':
             i += 1
+            tmp_wrd = "t"
             if i < len(program) and program[i] == 'i':
                 i += 1
+                tmp_wrd = "ti"
                 if i < len(program) and program[i] == 'n':
                     i += 1
+                    tmp_wrd = "tin"
                     if i < len(program) and program[i] == 't':
                         i += 1
+                        tmp_wrd = "tint"
                         if i < len(program) and program[i] in rd.delim3:
                             results.append(("tint", rw))
                             results.append((program[i], rs))
                             i += 1
                             continue
+                        else:
+                            # Finish whole word if error
+                            results.append(Error.delim(
+                                i, tmp_wrd, program[i], rd.delim3))
+                            while program[i] != ' ' and program[i] != '\n':
+                                i += 1
+                            continue
             # TRANSPLANT
             elif i < len(program) and program[i] == 'r':
                 i += 1
+                tmp_wrd = "tr"
                 if i < len(program) and program[i] == 'a':
                     i += 1
+                    tmp_wrd = "tra"
                     if i < len(program) and program[i] == 'n':
                         i += 1
+                        tmp_wrd = "tran"
                         if i < len(program) and program[i] == 's':
                             i += 1
+                            tmp_wrd = "trans"
                             if i < len(program) and program[i] == 'p':
                                 i += 1
+                                tmp_wrd = "transp"
                                 if i < len(program) and program[i] == 'l':
                                     i += 1
+                                    tmp_wrd = "transpl"
                                     if i < len(program) and program[i] == 'a':
                                         i += 1
+                                        tmp_wrd = "transpla"
                                         if i < len(program) and program[i] == 'n':
                                             i += 1
+                                            tmp_wrd = "transplan"
                                             if i < len(program) and program[i] == 't':
                                                 i += 1
+                                                tmp_wrd = "transplant"
                                                 if i < len(program) and program[i] in rd.delim4:
                                                     results.append(
                                                         ("transplant", rw))
@@ -414,58 +719,100 @@ def lexical_analysis(program):
                                                         (program[i], rs))
                                                     i += 1
                                                     continue
+                                                else:
+                                                    # Finish whole word if error
+                                                    results.append(Error.delim(
+                                                        i, tmp_wrd, program[i], rd.delim4))
+                                                    while program[i] != ' ' and program[i] != '\n':
+                                                        i += 1
+                                                    continue
                 # TRUE
                 if i < len(program) and program[i] == 'u':
                     i += 1
+                    tmp_wrd = "tru"
                     if i < len(program) and program[i] == 'e':
                         i += 1
+                        tmp_wrd = "true"
                         if i < len(program) and program[i] in rd.delim1:
                             results.append(("true", rw))
                             results.append((program[i], rs))
                             i += 1
                             continue
+                        else:
+                            # Finish whole word if error
+                            results.append(Error.delim(
+                                i, tmp_wrd, program[i], rd.delim1))
+                            while program[i] != ' ' and program[i] != '\n':
+                                i += 1
+                            continue
                 # TULIP
                 elif i < len(program) and program[i] == 'u':
                     i += 1
+                    tmp_wrd = "tu"
                     if i < len(program) and program[i] == 'l':
                         i += 1
+                        tmp_wrd = "tul"
                         if i < len(program) and program[i] == 'i':
                             i += 1
+                            tmp_wrd = "tuli"
                             if i < len(program) and program[i] == 'p':
                                 i += 1
+                                tmp_wrd = "tulip"
                                 if i < len(program) and program[i] in rd.delim3:
                                     results.append(("tulip", rw))
                                     results.append((program[i], rs))
                                     i += 1
                                     continue
+                                else:
+                                    # Finish whole word if error
+                                    results.append(Error.delim(
+                                        i, tmp_wrd, program[i], rd.delim3))
+                                    while program[i] != ' ' and program[i] != '\n':
+                                        i += 1
+                                    continue
             # Finish whole word if error
-            results.append((str(i) + ": " + program[i], un))
             while program[i] != ' ' and program[i] != '\n':
+                tmp_wrd += program[i]
                 i += 1
+            results.append(Error.id(i, tmp_wrd))
             continue
 
         # WILLOW
         elif i < len(program) and program[i] == 'w':
             i += 1
+            tmp_wrd = "w"
             if i < len(program) and program[i] == 'i':
                 i += 1
+                tmp_wrd = "wi"
                 if i < len(program) and program[i] == 'l':
                     i += 1
+                    tmp_wrd = "wil"
                     if i < len(program) and program[i] == 'l':
                         i += 1
+                        tmp_wrd = "will"
                         if i < len(program) and program[i] == 'o':
                             i += 1
+                            tmp_wrd = "willo"
                             if i < len(program) and program[i] == 'w':
                                 i += 1
+                                tmp_wrd = "willow"
                                 if i < len(program) and program[i] in rd.delim4:
                                     results.append(("willow", rw))
                                     results.append((program[i], rs))
                                     i += 1
                                     continue
+                                else:
+                                    # Finish whole word if error
+                                    results.append(Error.delim(
+                                        i, tmp_wrd, program[i], rd.delim4))
+                                    while program[i] != ' ' and program[i] != '\n':
+                                        i += 1
+                                    continue
             # Finish whole word if error
-            results.append((str(i) + ": " + program[i], un))
             while program[i] != ' ' and program[i] != '\n':
+                tmp_wrd += program[i]
                 i += 1
+            results.append(Error.id(i, tmp_wrd))
             continue
 
         if program[i] == ' ':
@@ -474,8 +821,9 @@ def lexical_analysis(program):
             continue
 
         # The letter is none existent
-        results.append((str(i) + ": " + program[i], un))
         while program[i] != ' ' and program[i] != '\n':
+            tmp_wrd += program[i]
             i += 1
+        results.append(Error.id(i, tmp_wrd))
 
     return results
