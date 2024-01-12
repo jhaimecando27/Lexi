@@ -108,7 +108,7 @@ class AnalyzerGui:
             end = time.time()
             print(str(end - start) + "s")
 
-            errors_list = ["UNKNOWN IDENTIFIER", "UNKNOWN DELIMITER"]
+            errors_list = ["UNKNOWN IDENTIFIER", "UNKNOWN DELIMITER", "TINT TOO BIG"]
 
             for lexeme, token in self.tokens:
                 if token in errors_list:
