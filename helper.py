@@ -26,18 +26,16 @@ def skipV1(i, program, tmp_wrd):
     return i, tmp_wrd
 
 
-class Error(object):
+class Error():
     def delim(i, tmp_wrd, delim, delims):
-        return (str(i + 1) + ": " + "\"" + tmp_wrd + esc(delim) + "\": Unknown Delimeter \"" + esc(delim) + "\": Available " + str(delims), "UNKNOWN DELIMITER")
+        return (str(i + 1) + ": " + "\"" + tmp_wrd + esc(delim) + "\": Invalid token \"" + esc(delim) + "\". Expecting Delimeter after \"" + tmp_wrd + "\": Available " + str(delims), "UNKNOWN DELIMITER")
+
 
     def id(i, tmp_wrd):
-        return (str(i + 1) + ": " + "\"" + tmp_wrd + "\": Unknown Identifier missing \"#\" symbol", "UNKNOWN IDENTIFIER")
+        return (str(i + 1) + ": " + "\"" + tmp_wrd + "\": Invalid token. Expecting \"#\" symbol after " + tmp_wrd, "UNKNOWN IDENTIFIER")
 
     def int(i, tmp_wrd):
-        return (str(i + 1) + ": " + "\"" + tmp_wrd + "\": tint too big", "TINT TOO BIG")
+        return (str(i + 1) + ": " + "\"" + tmp_wrd + "\": Invalid range. -999999 or 999999", "INVALID RANGE")
 
     def float(i, tmp_wrd):
-        return (str(i + 1) + ": " + "\"" + tmp_wrd + "\": flora too big", "TINT TOO BIG")
-
-    def string(i, tmp_wrd):
-        return (str(i + 1) + ": " + "\"" + tmp_wrd + "\": str too big", "TINT TOO BIG")
+        return (str(i + 1) + ": " + "\"" + tmp_wrd + "\": Invalid range. -999999.999999 or 999999.999999", "INVALID RANGE")

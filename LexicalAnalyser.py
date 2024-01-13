@@ -1288,23 +1288,23 @@ def lexical_analysis(program):
                         i += 1
                         break
 
-            if program[i - 1] != ".":
                 continue
 
-            # Flora
-            for x in range(7):
-                if i < len(program) and program[i].isdigit():
-                    tmp_wrd += program[i]
-                    i += 1
-                if x == 5:
-                    if program[i].isdigit():
+            if program[i - 1] == ".":
+                # Flora
+                for x in range(7):
+                    if i < len(program) and program[i].isdigit():
                         tmp_wrd += program[i]
-                        results.append(Error.float(i, tmp_wrd))
-                        i = skip(i, program)
-                        continue
-                    elif program[i] in rd.delimtf:
-                        results.append((tmp_wrd, flora_lit))
-                        continue
+                        i += 1
+                    if x == 5:
+                        if program[i].isdigit():
+                            tmp_wrd += program[i]
+                            results.append(Error.float(i, tmp_wrd))
+                            i = skip(i, program)
+                            continue
+                        elif program[i] in rd.delimtf:
+                            results.append((tmp_wrd, flora_lit))
+                            continue
 
             if program[i] not in rd.delimtf:
                 results.append(Error.delim(i, tmp_wrd, program[i], rd.delimtf))
@@ -1317,7 +1317,7 @@ def lexical_analysis(program):
             tmp_wrd += program[i]
             i += 1
             if i < len(program) and program[i].isascii():
-                for x in range(150):
+                while True:
                     if program[i] == "\n":
                         results.append(Error.delim(i, tmp_wrd, program[i], ["\""]))
                         i = skip(i, program)
@@ -1325,12 +1325,6 @@ def lexical_analysis(program):
                     if i < len(program) and program[i].isascii():
                         tmp_wrd += program[i]
                         i += 1
-                    if x == 149:
-                        if program[i].isascii():
-                            tmp_wrd += program[i]
-                            results.append(Error.float(i, tmp_wrd))
-                            i = skip(i, program)
-                            continue
                     if program[i] == '"':
                         tmp_wrd += program[i]
                         i += 1
@@ -1361,13 +1355,13 @@ def lexical_analysis(program):
                     i += 1
                     if i < len(program) and program[i] in rd.delimtf:
                         results.append((tmp_wrd, ch_lit))
-                        break
+                        continue
                     else:
                         # Finish whole word if error
                         results.append(Error.delim(
                             i, tmp_wrd, program[i], rd.delimtf))
                         i = skip(i, program)
-                        break
+                        continue
                 else:
                     results.append(Error.delim(i, tmp_wrd, program[i], ["'"]))
                     i = skip(i, program)

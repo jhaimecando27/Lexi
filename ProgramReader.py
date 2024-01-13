@@ -19,15 +19,18 @@ class AnalyzerGui:
         # Frame Sections
         # For the Code Input
         self.inputFrame = tk.Frame(self.root, borderwidth=2, relief="solid")
-        self.inputFrame.place(relx=0.005, rely=0.01, relwidth=0.678, relheight=0.7)
+        self.inputFrame.place(relx=0.005, rely=0.01,
+                              relwidth=0.678, relheight=0.7)
 
         # For the Error/s Display
         self.errorFrame = tk.Frame(self.root, borderwidth=2, relief="solid")
-        self.errorFrame.place(relx=0.005, rely=0.725, relwidth=0.678, relheight=0.255)
+        self.errorFrame.place(relx=0.005, rely=0.725,
+                              relwidth=0.678, relheight=0.255)
 
         # For Tokenization Table
         self.tableFrame = tk.Frame(self.root, borderwidth=2, relief="solid")
-        self.tableFrame.place(relx=0.692, rely=0.01, relwidth=0.3, relheight=0.97)
+        self.tableFrame.place(relx=0.692, rely=0.01,
+                              relwidth=0.3, relheight=0.97)
 
         # Widgets
         self.lexBtn = tk.Button(
@@ -108,7 +111,8 @@ class AnalyzerGui:
             end = time.time()
             print(str(end - start) + "s")
 
-            errors_list = ["UNKNOWN IDENTIFIER", "UNKNOWN DELIMITER", "TINT TOO BIG"]
+            errors_list = ["UNKNOWN IDENTIFIER",
+                           "UNKNOWN DELIMITER", "INVALID RANGE"]
 
             for lexeme, token in self.tokens:
                 if token in errors_list:
