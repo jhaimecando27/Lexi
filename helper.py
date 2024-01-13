@@ -33,6 +33,11 @@ class Error(object):
     def id(i, tmp_wrd):
         return (str(i + 1) + ": " + "\"" + tmp_wrd + "\": Unknown Identifier missing \"#\" symbol", "UNKNOWN IDENTIFIER")
 
-    # int too big
     def int(i, tmp_wrd):
-        return (str(i + 1) + ": " + "\"" + tmp_wrd + "\": Integer too big", "TINT TOO BIG")
+        return (str(i + 1) + ": " + "\"" + tmp_wrd + "\": tint too big", "TINT TOO BIG")
+
+    def float(i, tmp_wrd):
+        return (str(i + 1) + ": " + "\"" + tmp_wrd + "\": flora too big", "TINT TOO BIG")
+
+    def string(i, tmp_wrd):
+        return (str(i + 1) + ": " + "\"" + tmp_wrd + "\": str too big", "TINT TOO BIG")

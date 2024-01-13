@@ -7,7 +7,11 @@ from helper import esc, skip, skipV1
 def lexical_analysis(program):
     rw = "RESERVED WORD"
     rs = "RESERVED SYMBOL"
-    lit = "LITERAL"
+    tint_lit = "TINT LIT"
+    flora_lit = "FLORA LIT"
+    str_lit = "STRING LIT"
+    ch_lit = "CHARD LIT"
+    id = "IDENTIFIER"
     i = 0
     results = []
 
@@ -215,13 +219,13 @@ def lexical_analysis(program):
                         if i < len(program) and program[i] == 'e':
                             i += 1
                             tmp_wrd = "false"
-                            if i < len(program) and program[i] in rd.delim1:
+                            if i < len(program) and program[i] in rd.delimb:
                                 results.append(("false", rw))
                                 continue
                             else:
                                 # Finish whole word if error
                                 results.append(Error.delim(
-                                    i, tmp_wrd, program[i], rd.delim1))
+                                    i, tmp_wrd, program[i], rd.delimb))
                                 i = skip(i, program)
                                 continue
             # FERN
@@ -641,13 +645,13 @@ def lexical_analysis(program):
                     if i < len(program) and program[i] == 'e':
                         i += 1
                         tmp_wrd = "true"
-                        if i < len(program) and program[i] in rd.delim1:
+                        if i < len(program) and program[i] in rd.delimb:
                             results.append(("true", rw))
                             continue
                         else:
                             # Finish whole word if error
                             results.append(Error.delim(
-                                i, tmp_wrd, program[i], rd.delim1))
+                                i, tmp_wrd, program[i], rd.delimb))
                             i = skip(i, program)
                             continue
                 # TULIP
@@ -1150,6 +1154,28 @@ def lexical_analysis(program):
             tmp_wrd = "#"
             if i < len(program) and program[i] in rd.delim20:
                 results.append(("#", rs))
+                tmp_wrd = ""
+                tmp_wrd = program[i]
+                i += 1
+                for x in range(50):
+                    if program[i] == "\n":
+                        results.append(Error.delim(i, tmp_wrd, program[i], ["\""]))
+                        i = skip(i, program)
+                        break
+                    if i < len(program) and program[i].isalnum():
+                        tmp_wrd += program[i]
+                        i += 1
+                    if x == 49:
+                        if program[i].isalnum():
+                            tmp_wrd += program[i]
+                            results.append(Error.id(i, tmp_wrd))
+                            i = skip(i, program)
+                            continue
+                    if program[i] in rd.delimi:
+                        results.append((tmp_wrd, id))
+                        break
+                continue
+
                 continue
             else:
                 # Finish whole word if error
@@ -1241,36 +1267,116 @@ def lexical_analysis(program):
 
         # ---------------------- Literals ---------------------- #
 
-        # INTEGER with max 6 digits
+        # Tint
         elif i < len(program) and program[i].isdigit():
-            for x in range(5):
+            for x in range(6):
                 if i < len(program) and program[i].isdigit():
                     tmp_wrd += program[i]
                     i += 1
-                if program[i] == '.':
-                    break
-                if program[i] in rd.delimtf:
-                    results.append((tmp_wrd, lit))
-                    break
 
-            if program[i] == '.':
-                for x in range(5):
-                    if i < len(program) and program[i].isdigit():
+                if x == 5:
+                    if program[i].isdigit():
+                        tmp_wrd += program[i]
+                        results.append(Error.int(i, tmp_wrd))
+                        i = skip(i, program)
+                        continue
+                    elif program[i] in rd.delimtf:
+                        results.append((tmp_wrd, tint_lit))
+                        continue
+                    elif program[i] == ".":
                         tmp_wrd += program[i]
                         i += 1
-                    print(tmp_wrd)
-                    if program[i] == '.':
-                        break
-                    if program[i] in rd.delimtf:
-                        results.append((tmp_wrd, lit))
                         break
 
-            if i < len(program) and program[i].isdigit():
-                tmp_wrd += program[i]
-                results.append(Error.int(i, tmp_wrd))
-                i = skip(i, program)
+            if program[i - 1] != ".":
                 continue
 
+            # Flora
+            for x in range(7):
+                if i < len(program) and program[i].isdigit():
+                    tmp_wrd += program[i]
+                    i += 1
+                if x == 5:
+                    if program[i].isdigit():
+                        tmp_wrd += program[i]
+                        results.append(Error.float(i, tmp_wrd))
+                        i = skip(i, program)
+                        continue
+                    elif program[i] in rd.delimtf:
+                        results.append((tmp_wrd, flora_lit))
+                        continue
+
+            if program[i] not in rd.delimtf:
+                results.append(Error.delim(i, tmp_wrd, program[i], rd.delimtf))
+                i = skip(i, program)
+                continue
+            continue
+
+        # String
+        elif i < len(program) and program[i] == '"':
+            tmp_wrd += program[i]
+            i += 1
+            if i < len(program) and program[i].isascii():
+                for x in range(150):
+                    if program[i] == "\n":
+                        results.append(Error.delim(i, tmp_wrd, program[i], ["\""]))
+                        i = skip(i, program)
+                        break
+                    if i < len(program) and program[i].isascii():
+                        tmp_wrd += program[i]
+                        i += 1
+                    if x == 149:
+                        if program[i].isascii():
+                            tmp_wrd += program[i]
+                            results.append(Error.float(i, tmp_wrd))
+                            i = skip(i, program)
+                            continue
+                    if program[i] == '"':
+                        tmp_wrd += program[i]
+                        i += 1
+                        if i < len(program) and program[i] in rd.delimtf:
+                            results.append((tmp_wrd, str_lit))
+                            break
+                        else:
+                            # Finish whole word if error
+                            results.append(Error.delim(
+                                i, tmp_wrd, program[i], rd.delimtf))
+                            i = skip(i, program)
+                            break
+                continue
+
+        elif i < len(program) and program[i] == "'":
+            tmp_wrd += program[i]
+            i += 1
+            if i < len(program) and program[i].isascii():
+                if program[i] == "\n":
+                    results.append(Error.delim(i, tmp_wrd, program[i], ["\""]))
+                    i = skip(i, program)
+                    continue
+                if i < len(program) and program[i].isascii():
+                    tmp_wrd += program[i]
+                    i += 1
+                if program[i] == "'":
+                    tmp_wrd += program[i]
+                    i += 1
+                    if i < len(program) and program[i] in rd.delimtf:
+                        results.append((tmp_wrd, ch_lit))
+                        break
+                    else:
+                        # Finish whole word if error
+                        results.append(Error.delim(
+                            i, tmp_wrd, program[i], rd.delimtf))
+                        i = skip(i, program)
+                        break
+                else:
+                    results.append(Error.delim(i, tmp_wrd, program[i], ["'"]))
+                    i = skip(i, program)
+                    continue
+
+            if program[i] not in rd.delimtf:
+                results.append(Error.delim(i, tmp_wrd, program[i], rd.delimtf))
+                i = skip(i, program)
+                continue
             continue
 
         if program[i] == ' ':
