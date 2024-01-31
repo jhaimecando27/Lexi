@@ -2,6 +2,7 @@
 import tkinter as tk
 import time
 from LexicalAnalyser import lexical_analysis
+from SyntaxAnalyzer import syntax_analysis, display_tree
 
 
 # AnalyzerGui class
@@ -14,6 +15,7 @@ class AnalyzerGui:
         screen_height = self.root.winfo_screenheight()
         self.root.geometry(f"{screen_width}x{screen_height}")
         self.root.configure(bg="lightblue")
+        self.syntax_good = False
         self.tokens = []
 
         # Frame Sections
@@ -35,12 +37,36 @@ class AnalyzerGui:
         # Widgets
         self.lexBtn = tk.Button(
             self.inputFrame,
-            text="Lexicon",
-            font=("Arial", 12),
+            text="Analyze",
+            font=("Arial", 12, "bold"),
             activebackground="lightblue",
             command=self.lexeme_check,
         )
         self.lexBtn.place(x=10, y=14)
+
+        self.treeBtn = tk.Button(
+            self.inputFrame,
+            text="Parse Tree",
+            font=("Arial", 12, "bold"),
+            activebackground="lightblue",
+            command=display_tree,
+            state='disabled' if not self.syntax_good else "normal"
+        )
+        self.treeBtn.place(x=100, y=14)
+        
+        self.resetBtn = tk.Button(  # Matatanggal lang to kapag nag lalabas na output yung program
+            self.inputFrame,
+            text="Reset",
+            font=("Arial", 12, "bold"),
+            activebackground="lightblue",
+            command=self.reset_compiler,
+        )
+        self.resetBtn.place(x=210, y=14)
+
+        self.stageLbl = tk.Label(
+            self.inputFrame, text="Compiler Stage: ", font=("Arial", 12, "bold")
+        )
+        self.stageLbl.place(x=800, y=20.5)
 
         self.errorLbl = tk.Label(
             self.errorFrame, text="Error/s", font=("Arial", 14, "bold")
@@ -89,6 +115,7 @@ class AnalyzerGui:
         self.lexicTxt.configure(state="normal")
         self.tokenTxt.configure(state="normal")
         self.errorTxt.configure(state="normal")
+        self.stageLbl.configure(text='Compiler Stage: Lexer')
 
         # Clear ouput boxes
         self.lexicTxt.delete('1.0', tk.END)
@@ -136,11 +163,24 @@ class AnalyzerGui:
         self.lexicTxt.configure(state="disabled")
         self.tokenTxt.configure(state="disabled")
         self.errorTxt.configure(state="disabled")
+        
+        if not errors:
+            self.syntax_check() # Kaya ba to idelay ng 5 seconds?
 
     def insert_centered(self, text_widget, content):
         text_widget.insert(tk.END, content, "centered")
         text_widget.tag_configure("centered", justify="center")
         text_widget.tag_add("centered", "1.0", "end")
+
+    def syntax_check(self):
+        self.stageLbl.configure(text='Compiler Stage: Parser')
+        self.lexicLbl.configure(text='Token')
+        self.tokenLbl.configure(text='Lexeme')
+        
+    def reset_compiler(self):
+        self.stageLbl.configure(text='Compiler Stage: ')
+        self.lexicLbl.configure(text='Lexeme')
+        self.tokenLbl.configure(text='Token')
 
 
 # Main function
