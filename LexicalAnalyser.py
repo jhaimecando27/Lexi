@@ -1323,6 +1323,31 @@ def lexical_analysis(program):
                     if i < len(program) and program[i].isascii():
                         tmp_wrd += program[i]
                         i += 1
+
+                    if i < len(program) and program[i] == '\\':
+                        tmp_esc = "\\"
+                        i += 1
+                        if i < len(program) and program[i] == 'n':
+                            tmp_esc = "\\n"
+                            i += 1
+                            results.append((tmp_esc, str_lit))
+                        elif i < len(program) and program[i] == '\\':
+                            tmp_esc = "\\\\"
+                            i += 1
+                            results.append((tmp_esc, str_lit))
+                        elif i < len(program) and program[i] == '"':
+                            tmp_esc = "\\\""
+                            i += 1
+                            results.append((tmp_esc, str_lit))
+                        elif i < len(program) and program[i] == 't':
+                            tmp_esc = "\\t"
+                            i += 1
+                            results.append((tmp_esc, str_lit))
+                        elif i < len(program) and program[i] == '\'':
+                            tmp_esc = "\\'"
+                            i += 1
+                            results.append((tmp_esc, str_lit))
+
                     if program[i] == '"':
                         tmp_wrd += program[i]
                         i += 1
