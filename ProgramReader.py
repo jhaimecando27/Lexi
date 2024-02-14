@@ -53,7 +53,7 @@ class AnalyzerGui:
             state='disabled' if not self.syntax_good else "normal"
         )
         self.treeBtn.place(x=100, y=14)
-        
+
         self.resetBtn = tk.Button(  # Matatanggal lang to kapag nag lalabas na output yung program
             self.inputFrame,
             text="Reset",
@@ -163,8 +163,9 @@ class AnalyzerGui:
         self.lexicTxt.configure(state="disabled")
         self.tokenTxt.configure(state="disabled")
         self.errorTxt.configure(state="disabled")
-        
+
         if not errors:
+            time.sleep(5)
             self.syntax_check() # Kaya ba to idelay ng 5 seconds?
 
     def insert_centered(self, text_widget, content):
@@ -176,7 +177,7 @@ class AnalyzerGui:
         self.stageLbl.configure(text='Compiler Stage: Parser')
         self.lexicLbl.configure(text='Token')
         self.tokenLbl.configure(text='Lexeme')
-        
+
     def reset_compiler(self):
         self.stageLbl.configure(text='Compiler Stage: ')
         self.lexicLbl.configure(text='Lexeme')
