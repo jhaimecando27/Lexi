@@ -4,6 +4,7 @@ from helper import Errors
 from helper import esc, skip, skipV1 # Walang escape characters na nachechek sa string
 
 
+
 def lexical_analysis(program):
     rw = "RESERVED WORD"
     rs = "RESERVED SYMBOL"
@@ -12,6 +13,7 @@ def lexical_analysis(program):
     str_lit = "STRING LIT"
     ch_lit = "CHARD LIT"
     Id = "IDENTIFIER"
+    cmnt = "COMMENT"
     i = 0
     results = []
 
@@ -997,12 +999,24 @@ def lexical_analysis(program):
                         i, tmp_wrd, program[i], rd.delim22))
                     i = skip(i, program)
                     continue
-            else:
-                # Finish whole word if error
-                results.append(Errors.delim(
-                    i, tmp_wrd, program[i], rd.delim22))
-                i = skip(i, program)
-                continue
+
+            # <--
+            elif i < len(program) and program[i] == '-':
+                i += 1
+                tmp_wrd = "<-"
+                if i < len(program) and program[i] == '-':
+                    i += 1
+                    tmp_wrd = "<--"
+                    if i < len(program) and program[i] in rd.delim14:
+                        results.append(("<--", rs))
+                        continue
+                    else:
+                        # Finish whole word if error
+                        results.append(Errors.delim(
+                            i, tmp_wrd, program[i], rd.delim14))
+                        i = skip(i, program)
+                        continue
+
             # Finish whole word if error
             i, tmp_wrd = skipV1(i, program, tmp_wrd)
             results.append(Errors.Id(i, tmp_wrd))
@@ -1188,6 +1202,15 @@ def lexical_analysis(program):
             tmp_wrd = "?"
             if i < len(program) and program[i] in rd.delim20:
                 results.append(("?", rs))
+
+                comment = ''
+                single_symbols = [" ", "\n", "\t", ";", ",", "(", ")", "#"]
+                while i < len(program) and program[i] not in single_symbols:
+                    comment += program[i]
+                    i += 1
+
+                results.append((comment, cmnt))
+
                 continue
             else:
                 # Finish whole word if error

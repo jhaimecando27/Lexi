@@ -5,11 +5,11 @@ cfg = {
     "<import>" : ["transplant #identifier; <import>", "EPSILON"],
     "<global>" : ["floral #identifier; <global>", "EPSILON"],
     "<statement>" : [
-                     "<local-variable>; <statement>", "<i/o-statement>; <statement>", 
-                     "<assignment>; <statement>", 
-                     "leaf (<condition>) (<statement>); <more-condition> <else>; <statement>", 
-                     "<iterative>; <statement>", "<math>; <statement>", 
-                     "#identifier (<argument>) <statement>", 
+                     "<local-variable>; <statement>", "<i/o-statement>; <statement>",
+                     "<assignment>; <statement>",
+                     "leaf (<condition>) (<statement>); <more-condition> <else>; <statement>",
+                     "<iterative>; <statement>", "<math>; <statement>",
+                     "#identifier (<argument>) <statement>",
                      "clear; <statement>", "break;", "EPSILON"
                     ],
     "<local-variable>" : [
@@ -448,7 +448,7 @@ predict_set = {
     "FIRST(numeric-cond-op->>=)" : ">",
     "FIRST(numeric-cond-op-><=)" : "<",
     "FIRST(numeric-cond-op->=&)" : "=",
-    "FIRST(numeric-cond-op->=/)" : "=", 
+    "FIRST(numeric-cond-op->=/)" : "=",
     "FIRST(string-cond-op->==)" : "=",
     "FIRST(string-cond-op->!=)" : "!",
     "FIRST(string-cond-op->=&)" : "=",
