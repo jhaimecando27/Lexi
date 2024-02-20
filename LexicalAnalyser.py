@@ -16,13 +16,35 @@ def lexical_analysis(programs):
     cmnt = "COMMENT"
     results = []
 
+    isComment = False
+
     for program in programs:
         i = 0
 
         program += "\n"
 
         while i < len(program) and program[i] != '\n':
-            tmp_wrd = ""
+
+            if isComment:
+                print("in comment: " + str(i))
+                tmp_wrd = ""
+                while i < len(program) and program[i] != '\n':
+                    print("in while: " + str(i) + " " + program[i])
+                    if i < len(program) and program[i] == '-':
+                        i += 1
+                        if i < len(program) and program[i] == '-':
+                            i += 1
+                            if i < len(program) and program[i] == '>':
+                                i += 1
+                                if i < len(program) and program[i] in rd.delim2:
+                                    results.append(("-->", rs))
+                                    isComment = False
+                                    break
+                    tmp_wrd += program[i]
+                    i += 1
+
+                print("end comment, i = " + str(i))
+                continue
 
             # ---------------------- Reserved Word ---------------------- #
             if i < len(program) and program[i] == 'b':
@@ -1013,6 +1035,8 @@ def lexical_analysis(programs):
                         tmp_wrd = "<--"
                         if i < len(program) and program[i] in rd.delim14:
                             results.append(("<--", rs))
+                            print("comment start")
+                            isComment = True
                             continue
                         else:
                             # Finish whole word if error
