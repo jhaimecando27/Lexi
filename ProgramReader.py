@@ -93,12 +93,12 @@ class AnalyzerGui:
         self.tokenLbl.grid(row=0, column=1, padx=(10, 0))
 
         self.lexicTxt = tk.Text(
-            self.tableFrame, font=("Arial", 14), bd=2, relief="solid", state="disabled"
+            self.tableFrame, font=("Arial", 12), bd=2, relief="solid", state="disabled"
         )
         self.lexicTxt.grid(row=1, column=0, padx=5, pady=(5, 5), sticky="nsew")
 
         self.tokenTxt = tk.Text(
-            self.tableFrame, font=("Arial", 14), bd=2, relief="solid", state="disabled"
+            self.tableFrame, font=("Arial", 12), bd=2, relief="solid", state="disabled"
         )
         self.tokenTxt.grid(row=1, column=1, padx=5, pady=(5, 5), sticky="nsew")
 
