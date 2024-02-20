@@ -129,44 +129,41 @@ class AnalyzerGui:
 
         line_num = 1
 
-        for line in lines:
-            # TEST
-            start = time.time()
-            print(line)
-            self.tokens = lexical_analysis(line + "\n")
-            # TEST
-            end = time.time()
-            print(str(end - start) + "s")
+        start = time.time()
+        print(lines)
 
-            errors_list = ["UNKNOWN IDENTIFIER",
-                           "UNKNOWN DELIMITER", "INVALID RANGE"]
+        self.tokens = lexical_analysis(lines)
 
-            for lexeme, token in self.tokens:
-                if token in errors_list:
-                    print(lexeme, token)
-                    errors.append(
-                        "line "
-                        + str(line_num)
-                        + ":"
-                        + lexeme
-                    )
-                    continue
+        errors_list = ["UNKNOWN IDENTIFIER",
+                       "UNKNOWN DELIMITER", "INVALID RANGE"]
 
-                self.insert_centered(self.lexicTxt, f"{lexeme}\n")
-                self.insert_centered(self.tokenTxt, f"{token}\n")
+        for lexeme, token in self.tokens:
+            if token in errors_list:
+                print(lexeme, token)
+                errors.append(
+                    "line "
+                    + str(line_num)
+                    + ":"
+                    + lexeme
+                )
+                continue
 
-            line_num += 1
+            self.insert_centered(self.lexicTxt, f"{lexeme}\n")
+            self.insert_centered(self.tokenTxt, f"{token}\n")
 
         for errors in errors:
             self.errorTxt.insert(tk.END, f"{errors}\n")
+
+        end = time.time()
+        print(str(end - start) + "s")
 
         self.lexicTxt.configure(state="disabled")
         self.tokenTxt.configure(state="disabled")
         self.errorTxt.configure(state="disabled")
 
-        if not errors:
-            time.sleep(5)
-            self.syntax_check() # Kaya ba to idelay ng 5 seconds?
+        #if not errors:
+        #    time.sleep(5)
+        #    self.syntax_check() # Kaya ba to idelay ng 5 seconds?
 
     def insert_centered(self, text_widget, content):
         text_widget.insert(tk.END, content, "centered")
