@@ -66,7 +66,7 @@ class AnalyzerGui:
         self.stageLbl = tk.Label(
             self.inputFrame, text="Compiler Stage: ", font=("Arial", 12, "bold")
         )
-        self.stageLbl.place(x=800, y=20.5)
+        self.stageLbl.place(x=700, y=20.5)
 
         self.errorLbl = tk.Label(
             self.errorFrame, text="Error/s", font=("Arial", 14, "bold")
@@ -161,9 +161,8 @@ class AnalyzerGui:
         self.tokenTxt.configure(state="disabled")
         self.errorTxt.configure(state="disabled")
 
-        #if not errors:
-        #    time.sleep(5)
-        #    self.syntax_check() # Kaya ba to idelay ng 5 seconds?
+        if not errors:
+            self.syntax_check()
 
     def insert_centered(self, text_widget, content):
         text_widget.insert(tk.END, content, "centered")
@@ -171,9 +170,23 @@ class AnalyzerGui:
         text_widget.tag_add("centered", "1.0", "end")
 
     def syntax_check(self):
+        self.lexicTxt.configure(state="normal")
+        self.tokenTxt.configure(state="normal")
+        self.errorTxt.configure(state="normal")
+
         self.stageLbl.configure(text='Compiler Stage: Parser')
         self.lexicLbl.configure(text='Token')
         self.tokenLbl.configure(text='Lexeme')
+
+        test = syntax_analysis(self.tokens)
+
+        for lexeme, token in test:
+            self.insert_centered(self.lexicTxt, f"{lexeme}\n")
+            self.insert_centered(self.tokenTxt, f"{token}\n")
+
+        self.lexicTxt.configure(state="disabled")
+        self.tokenTxt.configure(state="disabled")
+        self.errorTxt.configure(state="disabled")
 
     def reset_compiler(self):
         self.stageLbl.configure(text='Compiler Stage: ')
