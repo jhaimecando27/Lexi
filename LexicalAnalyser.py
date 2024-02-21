@@ -1363,7 +1363,7 @@ def lexical_analysis(programs):
 
             # String
             elif i < len(program) and program[i] == '"':
-                tmp_wrd += program[i]
+                tmp_wrd = program[i]
                 i += 1
                 if i < len(program) and program[i].isascii():
                     while True:
