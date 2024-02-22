@@ -117,9 +117,31 @@ def syntax_analysis(programs):
             results.append(("garden error", err))
             return results
 
-        print(str(i) + ": end = " + lexeme[i])
+        # Statement
+        if i < len(lexeme) and lexeme[i] == "(":
+            print(str(i) + ": have (")
+            i += 1
+
+            # Statement starts here
+
+            if i < len(lexeme) and lexeme[i] == ")":
+                print(str(i) + ": have )")
+                i += 1
+                if i < len(lexeme) and lexeme[i] == ";":
+                    print(str(i) + ": have ;")
+                    i += 1
     else:
         results.append(("seed missing", err))
+
+    # plant
+    if i < len(lexeme) and lexeme[i] == "plant":
+        print(str(i) + ": have plant")
+        i += 1
+    else:
+        results.append(("plant error", err))
+        return results
+
+    print(str(i) + ": end = " + lexeme[i])
 
     return results
 
