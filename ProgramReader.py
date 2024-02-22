@@ -135,7 +135,7 @@ class AnalyzerGui:
         self.tokens = lexical_analysis(lines)
 
         errors_list = ["UNKNOWN IDENTIFIER",
-                       "UNKNOWN DELIMITER", "INVALID RANGE"]
+                       "UNKNOWN DELIMITER", "INVALID RANGE", "SYNTAX ERROR"]
 
         for lexeme, token in self.tokens:
             if token in errors_list:
@@ -180,9 +180,26 @@ class AnalyzerGui:
 
         test = syntax_analysis(self.tokens)
 
+        errors = []
+        errors_list = ["SYNTAX ERROR"]
+        line_num = 0
+
         for lexeme, token in test:
+            if token in errors_list:
+                print(lexeme, token)
+                errors.append(
+                    "line "
+                    + str(line_num)
+                    + ":"
+                    + lexeme
+                )
+                continue
+
             self.insert_centered(self.lexicTxt, f"{lexeme}\n")
             self.insert_centered(self.tokenTxt, f"{token}\n")
+
+        for errors in errors:
+            self.errorTxt.insert(tk.END, f"{errors}\n")
 
         self.lexicTxt.configure(state="disabled")
         self.tokenTxt.configure(state="disabled")
