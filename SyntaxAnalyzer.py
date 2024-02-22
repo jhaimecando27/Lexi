@@ -60,29 +60,38 @@ def syntax_analysis(programs):
 
                             # value
                             if program[i] == "=":
+                                print(str(i) + ": have value")
                                 i += 1
+                                # TODO: specific literal depending on local-var
                                 if "LIT" in token[i]:
+                                    print(str(i) + ": have lit")
                                     i += 1
                                 else:
+                                    print(str(i) + ": have error lit")
                                     results.append(("literal error", err))
                                     return results
                         else:
+                            print(str(i) + ": have error local")
                             results.append(("local error", err))
                             return results
 
                         while True:
                             # identifier
                             if i < len(lexeme) and lexeme[i][0] == "#":
+                                print(str(i) + ": have more local")
                                 print(str(i) + ": have local")
                                 i += 2
 
                                 # value
                                 if program[i] == "=":
+                                    print(str(i) + ": have more value")
                                     i += 1
                                     if "LIT" in token[i]:
+                                        print(str(i) + ": have more lit")
                                         i += 1
                                     else:
                                         results.append(("literal error", err))
+                                        print(str(i) + ": have error lit")
                                         return results
                             else:
                                 break
