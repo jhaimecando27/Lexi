@@ -160,7 +160,7 @@ class AnalyzerGui:
         self.lexicLbl.configure(text='Token')
         self.tokenLbl.configure(text='Lexeme')
 
-        test = syntax_analysis(self.tokens)
+        test = syntax_analysis(self.tokens, self.errorTxt)
 
         errors = []
         errors_list = ["SYNTAX ERROR"]

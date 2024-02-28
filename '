@@ -1,0 +1,100 @@
+# Syntax Analyzer Logic
+from grammar import cfg, first_set, follow_set, predict_set
+
+
+# For checking the syntax of the program
+def syntax_analysis(programs, output):
+    results = []
+    err = "E: Syntax Analyzer: "
+
+    for program in programs:
+        if program[0] == "<space>":
+            programs.remove(program)
+
+    programs.append(("EPSILON", "EPSILON"))
+
+    lexeme, token = zip(*programs)
+
+    i = 0
+
+    # seed
+    if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<program>"]:
+        output.insert("end", "I: seed found\n")
+        i += 1
+    else:
+        output.insert("end", err + "seed not found\n")
+        return [(lexeme[i], "SYNTAX ERROR")]
+
+    # <global>
+    while lexeme[i] != "EPSILON" and lexeme[i] in first_set["<global>"]:
+        output.insert("end", "I: global found\n")
+
+        # floral
+        if lexeme[i] != "EPSILON" and lexeme[i] == "floral":
+            i += 1
+        else:
+            output.insert("end", err + "floral not found\n")
+            return [(lexeme[i], "SYNTAX ERROR")]
+
+        # <constant>
+        if lexeme[i] != "EPSILON" and lexeme[i] == "hard":
+            output.insert("end", "I: constant found\n")
+            i += 1
+
+        # <all-type>
+        if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<all-type>"]:
+            output.insert("end", "I: all-type found\n")
+            i += 1
+        else:
+            output.insert("end", err + "all-type not found\n")
+            return [(lexeme[i], "SYNTAX ERROR")]
+
+        # #identifier
+        if lexeme[i] != "EPSILON" and lexeme[i] == "#":
+            output.insert("end", "I: identifier found\n")
+            i += 2  # skip hashtag and identifier name
+        else:
+            output.insert("end", err + "identifier not found\n")
+            return [(lexeme[i], "SYNTAX ERROR")]
+
+        # <insert-variable>
+        if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<insert-variable>"]:
+            output.insert("end", "I: insert-variable found\n")
+
+            # <all-assignment>
+            if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<all-assignment>"]:
+                output.insert("end", "I: all-assignment found\n")
+                i += 1
+            else:
+                output.insert("end", err + "all-assignment not found\n")
+                return [(lexeme[i], "SYNTAX ERROR")]
+
+            # <flora-tint-value>
+            if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<flora-tint-value>"]:
+                output.insert("end", "I: flora-tint-value found\n")
+
+                # <insert-flora-tint>
+                if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<insert-flora-tint>"]:
+                    output.insert("end", "I: insert-flora-tint found\n")
+                    i += 1
+
+                    # tint literal
+                    if lexeme[i] != "EPSILON" and token[i] == "TINT LIT":
+                        output.insert("end", "I: tint literal found\n")
+                        i += 1
+                    # flora literal
+                    elif lexeme[i] != "EPSILON" and token[i] == "FLORA LIT":
+                        output.insert("end", "I: flora literal found\n")
+                        i += 1
+
+    return results
+
+
+# For displaying the Parse Tree
+def display_tree():
+    pass
+
+
+# For displaying the token stream e.g., tint a; == reserved word identifier reserved symbol
+def token_stream():
+    pass
