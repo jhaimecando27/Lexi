@@ -3,9 +3,9 @@ from grammar import cfg, first_set, follow_set, predict_set
 
 
 # For checking the syntax of the program
-def syntax_analysis(programs):
+def syntax_analysis(programs, output):
     results = []
-    err = "SYNTAX ERROR"
+    err = "E: Syntax Analyzer: "
 
     for program in programs:
         if program[0] == "<space>":
@@ -15,457 +15,298 @@ def syntax_analysis(programs):
 
     lexeme, token = zip(*programs)
 
-    print(programs)
-    print(lexeme)
-    print(token)
-
-    print(len(lexeme))
-
     i = 0
-    if lexeme[i] in first_set["<program>"]:
-        print(str(i) + ": have <program>")
+
+    # seed
+    if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<program>"]:
+        output.insert("end", "I: seed found\n")
         i += 1
+    else:
+        output.insert("end", err + "seed not found\n")
+        return [(lexeme[i], "SYNTAX ERROR")]
 
-        # Global
-        while True:
-            # puro global
-            if i < len(lexeme) and lexeme[i] == "floral":
-                print(str(i) + ": have floral")
-                i += 1
+    # <global> TODO: string assignment
+    while lexeme[i] != "EPSILON" and lexeme[i] in first_set["<global>"]:
+        output.insert("end", "I: global found\n")
 
-                # constant
-                if i < len(lexeme) and lexeme[i] in first_set["<constant>"]:
-                    print(str(i) + ": have ")
-                    i += 1
-
-                # all-types
-                if i < len(lexeme) and lexeme[i] in first_set["<common-type>"]:
-                    print(str(i) + ": have common-type")
-                    i += 1
-                elif i < len(lexeme) and lexeme[i] in first_set["<sqnc-type>"]:
-                    print(str(i) + ": have sqnc-type")
-                    i += 1
-                else:
-                    results.append(("all-types error", err))
-                    return results
-
-                # identifier
-                if i < len(lexeme) and lexeme[i][0] == "#":
-                    print(str(i) + ": have " + lexeme[i][0])
-                    i += 2
-                else:
-                    results.append(("floral identifier error", err))
-                    return results
-
-                # insert variable
-                while True:
-                    # <all-assignment> <flora-tint-value> <more-flora-tint>
-
-                    # <all-assignment>
-                    if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<all-assignment>"]:
-                        print(str(i) + ": have all-assignment")
-                        i += 1
-                    else:
-                        if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<string-assignment>"]:
-                            print(str(i) + ": have string-assignment")
-                            i += 1
-                        else:
-                            results.append(("assignment error", err))
-                            return results
-
-                    # <flora-tint-value>
-                    if i < len(lexeme) and lexeme[i] in first_set["<flora-tint-value>"]:
-                        i += 1
-
-                        # <insert-flora-tint> <operate-flora-tint>
-                        if i < len(lexeme) and lexeme[i] in first_set["<insert-flora-tint>"]:
-                            i += 1
-                            # TODO (wip) identifier
-                            if i < len(lexeme) and lexeme[i - 1] == "#":
-                                print(str(i) + ": have " + lexeme[i - 1][0])
-                                i += 1
-
-                            # lent
-                            elif i < len(lexeme) and lexeme[i - 1] == "lent":
-                                print(str(i) + ": have lent")
-                                if i < len(lexeme) and lexeme[i] == "(":
-                                    print(str(i) + ": have (")
-                                    i += 1
-
-                                    # TODO: all-type-values
-
-                                    if i < len(lexeme) and lexeme[i] == ")":
-                                        print(str(i) + ": have )")
-                                        i += 1
-                                    else:
-                                        results.append(("lent", err))
-                                        return results
-                                else:
-                                    results.append(("lent", err))
-                                    return results
-
-                            # TODO <operate-flora-tint>
-                            if i < len(lexeme) and lexeme[i] in first_set["<operate-flora-tint>"]:
-                                i += 1
-
-                        else:
-                            results.append(("flora-tint-value error", err))
-                            return results
-                    else:
-                        results.append(("flora-tint-value error", err))
-                        return results
-
-                    # more-flora-tint
-                    if i < len(lexeme) and lexeme[i] == ",":
-                        print(str(i) + ": have ,")
-                        i += 1
-                    else:
-                        break
-
-                while True:
-                    # identifier
-                    if i < len(lexeme) and lexeme[i][0] == "#":
-                        print(str(i) + ": have " + lexeme[i][0])
-                        i += 2
-
-                # identifier
-                if i < len(lexeme) and lexeme[i] == ";":
-                    print(str(i) + ": have ;")
-                    i += 2
-                else:
-                    print(lexeme[i])
-                    results.append(("floral identifier error", err))
-                    return results
-
-            # Global
-            else:
-                break
-
-        # garden ()
-        if i < len(lexeme) and lexeme[i] == "garden":
-            print(str(i) + ": have garden")
+        # floral
+        if lexeme[i] != "EPSILON" and lexeme[i] == "floral":
             i += 1
-
-            if i < len(lexeme) and lexeme[i] == "(":
-                print(str(i) + ": have (")
-                i += 1
-            else:
-                results.append(("garden error", err))
-                return results
-
-            if i < len(lexeme) and lexeme[i] == ")":
-                print(str(i) + ": have )")
-                i += 1
-            else:
-                results.append(("garden error", err))
-                return results
         else:
-            results.append(("garden error", err))
-            return results
+            output.insert("end", err + "floral not found\n")
+            return [(lexeme[i], "SYNTAX ERROR")]
 
-        # Statement
-        if i < len(lexeme) and lexeme[i] == "(":
-            print(str(i) + ": have (")
+        # <constant>
+        if lexeme[i] != "EPSILON" and lexeme[i] == "hard":
+            output.insert("end", "I: constant found\n")
             i += 1
 
-            # --- Statement starts here ---
-            while True:
-                # <statement>
+        # <all-type>
+        if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<all-types>"]:
+            output.insert("end", "I: all-types found\n")
+            i += 1
+        else:
+            output.insert("end", err + "all-types not found\n")
+            return [(lexeme[i], "SYNTAX ERROR")]
 
-                # 1. <constant> <all-types> #identifer <insert-variable>;
-                # constant
-                if i < len(lexeme) and lexeme[i] in first_set["<constant>"]:
-                    print(str(i) + ": have ")
-                    i += 1
+        # #identifier
+        if lexeme[i] != "EPSILON" and lexeme[i] == "#":
+            output.insert("end", "I: identifier found\n")
+            i += 2  # skip hashtag and identifier name
+        else:
+            output.insert("end", err + "identifier not found\n")
+            return [(lexeme[i], "SYNTAX ERROR")]
 
-                # all-types
-                if i < len(lexeme) and lexeme[i] in first_set["<common-type>"]:
-                    print(str(i) + ": have common-type")
-                    i += 1
-                elif i < len(lexeme) and lexeme[i] in first_set["<sqnc-type>"]:
-                    print(str(i) + ": have sqnc-type")
-                    i += 1
-                else:
-                    results.append(("all-types error", err))
-                    return results
+        # <insert-variable>
+        if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<insert-variable>"]:
+            output.insert("end", "I: insert-variable found\n")
 
-                # identifier
-                if i < len(lexeme) and lexeme[i][0] == "#":
-                    print(str(i) + ": have " + lexeme[i][0])
-                    i += 2
-                else:
-                    results.append(("floral identifier error", err))
-                    return results
+            # <all-assignment>
+            if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<all-assignment>"]:
+                output.insert("end", "I: all-assignment found\n")
+                i += 1
+            else:
+                output.insert("end", err + "all-assignment not found\n")
+                return [(lexeme[i], "SYNTAX ERROR")]
 
-                # insert variable
-                while True:
-                    # <all-assignment> <flora-tint-value> <more-flora-tint>
+            # <flora-tint-value>
+            while lexeme[i] != "EPSILON" and (lexeme[i] in first_set["<insert-flora-tint>"] or token[i] in first_set["<insert-flora-tint>"]):
+                output.insert("end", "I: flora-tint-value found\n")
 
-                    # <all-assignment>
-                    if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<all-assignment>"]:
-                        print(str(i) + ": have all-assignment")
+                # <insert-flora-tint>
+                if lexeme[i] != "EPSILON" and (lexeme[i] in first_set["<insert-flora-tint>"] or token[i] in first_set["<insert-flora-tint>"]):
+                    output.insert("end", "I: insert-flora-tint found\n")
+
+                    # tint literal
+                    if lexeme[i] != "EPSILON" and token[i] == "tint literal":
+                        output.insert("end", "I: tint literal found\n")
                         i += 1
-                    else:
-                        if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<string-assignment>"]:
-                            print(str(i) + ": have string-assignment")
-                            i += 1
-                        else:
-                            results.append(("assignment error", err))
-                            return results
-
-                    # <flora-tint-value>
-                    if i < len(lexeme) and lexeme[i] in first_set["<flora-tint-value>"]:
+                    # flora literal
+                    elif lexeme[i] != "EPSILON" and token[i] == "flora literal":
+                        output.insert("end", "I: flora literal found\n")
                         i += 1
-
-                        # <insert-flora-tint> <operate-flora-tint>
-                        if i < len(lexeme) and lexeme[i] in first_set["<insert-flora-tint>"]:
-                            i += 1
-                            # TODO (wip) identifier
-                            if i < len(lexeme) and lexeme[i - 1] == "#":
-                                print(str(i) + ": have " + lexeme[i - 1][0])
-                                i += 1
-
-                            # lent
-                            elif i < len(lexeme) and lexeme[i - 1] == "lent":
-                                print(str(i) + ": have lent")
-                                if i < len(lexeme) and lexeme[i] == "(":
-                                    print(str(i) + ": have (")
-                                    i += 1
-
-                                    # TODO: all-type-values
-
-                                    if i < len(lexeme) and lexeme[i] == ")":
-                                        print(str(i) + ": have )")
-                                        i += 1
-                                    else:
-                                        results.append(("lent", err))
-                                        return results
-                                else:
-                                    results.append(("lent", err))
-                                    return results
-
-                            # TODO <operate-flora-tint>
-                            if i < len(lexeme) and lexeme[i] in first_set["<operate-flora-tint>"]:
-                                i += 1
-
-                        else:
-                            results.append(("flora-tint-value error", err))
-                            return results
-                    else:
-                        results.append(("flora-tint-value error", err))
-                        return results
-
-                    # more-flora-tint
-                    if i < len(lexeme) and lexeme[i] == ",":
-                        print(str(i) + ": have ,")
-                        i += 1
-                    else:
-                        break
-
-                while True:
-                    # identifier
-                    if i < len(lexeme) and lexeme[i][0] == "#":
-                        print(str(i) + ": have " + lexeme[i][0])
+                    # identifer
+                    elif lexeme[i] != "EPSILON" and lexeme[i] == "#":
+                        output.insert("end", "I: identifier found\n")
                         i += 2
 
-                # identifier
-                if i < len(lexeme) and lexeme[i] == ";":
-                    print(str(i) + ": have ;")
-                    i += 2
-                else:
-                    print(lexeme[i])
-                    results.append(("floral identifier error", err))
-                    return results
+                        # <insert-func>
+                        if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<insert-func>"]:
+                            output.insert("end", "I: insert-func found\n")
 
+                            # (
+                            if lexeme[i] != "EPSILON" and lexeme[i] == "(":
+                                output.insert("end", "I: ( found\n")
+                                i += 1
+                            else:
+                                output.insert("end", err + "( not found\n")
+                                return [(lexeme[i], "SYNTAX ERROR")]
 
-                # 2. <i/o-statement>;
-                # mint(<all-type-value>)
-                if i < len(lexeme) and lexeme[i] == "mint":
-                    print(str(i) + ": have mint")
-                    i += 1
+                            # TODO: <argument>
 
-                    if i < len(lexeme) and lexeme[i] == "(":
-                        print(str(i) + ": have (")
-                        i += 1
-                    else:
-                        results.append(("mint error", err))
-                        return results
+                            # )
+                            if lexeme[i] != "EPSILON" and lexeme[i] == ")":
+                                output.insert("end", "I: ) found\n")
+                                i += 1
+                            else:
+                                output.insert("end", err + ") not found\n")
+                                return [(lexeme[i], "SYNTAX ERROR")]
 
-                    # <all-type-value>
-                    if i < len(lexeme) and lexeme[i] in first_set["<all-type-value>"]:
-                        print(str(i) + ": have all-type-value")
-                        i += 1
+                        # TODO: (wip) <instance-grab> TODO
+                        if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<instance-grab>"]:
+                            output.insert("end", "I: instance-grab found\n")
 
-                    if i < len(lexeme) and lexeme[i] == ")":
-                        print(str(i) + ": have )")
-                        i += 1
-                    else:
-                        results.append(("mint error", err))
-                        return results
-
-                    if i < len(lexeme) and lexeme[i] == ";":
-                        print(str(i) + ": have ;")
-                        i += 1
-                    else:
-                        results.append(("mint error", err))
-                        return results
-
-                # <insert-inpetal> inpetal(string literal)
-                # 3. #identifier <insert-func> <more-id> <insert-assignment>;
-                # 4. leaf(<all-type-value>) <more-all> <insert-condition) (<statement>);
-                # 5. <iterative>;
-                # 6. tree(#identifier) (branch <all-type-value> <insert-branch>; <more-branch);
-                # 7. clear;
-                # 8. break;
-
-            if i < len(lexeme) and lexeme[i] == ")":
-                print(str(i) + ": have )")
-                i += 1
-                if i < len(lexeme) and lexeme[i] == ";":
-                    print(str(i) + ": have ;")
-                    i += 1
-                else:
-                    results.append(("function error: expecting ;", err))
-                    return results
-
-        # ----- function -----
-        while True:
-            # <common-type>
-            if i < len(lexeme) and lexeme[i] in first_set["<common-type>"]:
-                print(str(i) + ": have common-type")
-                i += 1
-
-                # identifier
-                if i < len(lexeme) and lexeme[i][0] == "#":
-                    print(str(i) + ": have " + lexeme[i][0])
-                    i += 2
-                    # parameter
-                    if i < len(lexeme) and lexeme[i] == "(":
-                        print(str(i) + ": have (")
+                            # identifier
+                            if lexeme[i] != "EPSILON" and lexeme[i] == "#":
+                                output.insert("end", "I: identifier found\n")
+                                i += 6  # #identifer().identifer
+                            else:
+                                output.insert(
+                                    "end", err + "identifier not found\n")
+                                return [(lexeme[i], "SYNTAX ERROR")]
+                    # lent(<all-type-value>)
+                    elif lexeme[i] != "EPSILON" and lexeme[i] == "lent":
+                        output.insert("end", "I: lent found\n")
                         i += 1
 
-                        # <insert-parameter>
-                        # <keyword-param> <more-key-param>
-                        # <common-type>
-                        # all-types
-                        if i < len(lexeme) and lexeme[i] in first_set["<common-type>"]:
-                            print(str(i) + ": have common-type")
+                        # (
+                        if lexeme[i] != "EPSILON" and lexeme[i] == "(":
+                            output.insert("end", "I: ( found\n")
                             i += 1
                         else:
-                            # No (
-                            results.append(
-                                ("function error: common-type", err))
-                            return results
+                            output.insert("end", err + "( not found\n")
+                            return [(lexeme[i], "SYNTAX ERROR")]
 
-                        if i < len(lexeme) and lexeme[i][0] == "*":
-                            print(str(i) + ": have common-type")
+                        # TODO: <all-type-value>
+                        if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<all-type-value>"]:
+                            output.insert("end", "I: all-type-value found\n")
+
+                        else:
+                            output.insert(
+                                "end", err + "all-type-value not found\n")
+                            return [(lexeme[i], "SYNTAX ERROR")]
+
+                        # )
+                        if lexeme[i] != "EPSILON" and lexeme[i] == ")":
+                            output.insert("end", "I: ) found\n")
                             i += 1
-                            if i < len(lexeme) and lexeme[i][1] == "*":
-                                print(str(i) + ": have common-type")
-                                i += 1
-                        # identifier
-                        if i < len(lexeme) and lexeme[i][0] == "#":
-                            print(str(i) + ": have " + lexeme[i][0])
-                            i += 2
-
-                            # more identifier
-                            while True:
-                                if i < len(lexeme) and lexeme[i] == ",":
-                                    i += 1
-                                    if i < len(lexeme) and lexeme[i] in first_set["<common-type>"]:
-                                        print(str(i) + ": have common-type")
-                                        i += 1
-
-                                        if i < len(lexeme) and lexeme[i] == "*":
-                                            print(str(i) + ": have common-type")
-                                            i += 1
-                                            if i < len(lexeme) and lexeme[i] == "*":
-                                                print(
-                                                    str(i) + ": have common-type")
-                                                i += 1
-                                        # identifier
-                                        if i < len(lexeme) and lexeme[i][0] == "#":
-                                            print(str(i) + ": have " +
-                                                  lexeme[i][0])
-                                            i += 2
-                                else:
-                                    break
-
-                            if i < len(lexeme) and lexeme[i] == ")":
-                                print(str(i) + ": have )")
-                                i += 1
-                                if i < len(lexeme) and lexeme[i] == "(":
-                                    print(str(i) + ": have (")
-                                    i += 1
-
-                                    # Statement
-
-                                    if i < len(lexeme) and lexeme[i] == ")":
-                                        print(str(i) + ": have )")
-                                        i += 1
-
-                                        if i < len(lexeme) and lexeme[i] == ";":
-                                            print(str(i) + ": have ;")
-                                            i += 1
-                                        else:
-                                            # No ;
-                                            results.append(
-                                                ("function error: expecting ;", err))
-                                            return results
-                                    else:
-                                        # No )
-                                        results.append(
-                                            ("function error: expecting )", err))
-                                        return results
-                                else:
-                                    # No (
-                                    results.append(
-                                        ("function error: expecting (", err))
-                                    return results
-                            else:
-                                # No )
-                                results.append(
-                                    ("function error: expecting )", err))
-                                return results
-
+                        else:
+                            output.insert("end", err + ") not found\n")
+                            return [(lexeme[i], "SYNTAX ERROR")]
                     else:
-                        # No (
-                        results.append(("function error: expecting (", err))
-                        return results
+                        output.insert(
+                            "end", err + "tint literal, flora literal, identifier, or lent not found\n")
+                        return [(lexeme[i], "SYNTAX ERROR")]
 
+                # TODO: <operate-flora-tint>
+                if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<operate-flora-tint>"]:
+                    output.insert("end", "I: operate-flora-tint found\n")
+
+                    # <operator>
+                    if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<operator>"]:
+                        output.insert("end", "I: operator found\n")
+                        i += 1
+                    else:
+                        output.insert("end", err + "operator not found\n")
+                        return [(lexeme[i], "SYNTAX ERROR")]
+
+                    # <insert-operation>
+                    if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<insert-operation>"]:
+                        output.insert("end", "I: insert-operation found\n")
+
+                        # (
+                        if lexeme[i] != "EPSILON" and lexeme[i] == "(":
+                            output.insert("end", "I: ( found\n")
+                            i += 1
+                        else:
+                            output.insert("end", err + "( not found\n")
+                            return [(lexeme[i], "SYNTAX ERROR")]
+
+                        # <insert-flora-tint>
+                        if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<insert-flora-tint>"]:
+                            output.insert(
+                                "end", "I: insert-flora-tint found\n")
+                            i += 1
+
+                            # tint literal
+                            if lexeme[i] != "EPSILON" and token[i] == "TINT LIT":
+                                output.insert("end", "I: tint literal found\n")
+                                i += 1
+                            # flora literal
+                            elif lexeme[i] != "EPSILON" and token[i] == "FLORA LIT":
+                                output.insert(
+                                    "end", "I: flora literal found\n")
+                                i += 1
+                            # identifer
+                            elif lexeme[i] != "EPSILON" and lexeme[i] == "#":
+                                output.insert("end", "I: identifier found\n")
+                                i += 2
+
+                                # <insert-func>
+                                if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<insert-func>"]:
+                                    output.insert(
+                                        "end", "I: insert-func found\n")
+
+                                    # (
+                                    if lexeme[i] != "EPSILON" and lexeme[i] == "(":
+                                        output.insert("end", "I: ( found\n")
+                                        i += 1
+                                    else:
+                                        output.insert(
+                                            "end", err + "( not found\n")
+                                        return [(lexeme[i], "SYNTAX ERROR")]
+
+                                    # TODO: <argument>
+
+                                    # )
+                                    if lexeme[i] != "EPSILON" and lexeme[i] == ")":
+                                        output.insert("end", "I: ) found\n")
+                                        i += 1
+                                    else:
+                                        output.insert(
+                                            "end", err + ") not found\n")
+                                        return [(lexeme[i], "SYNTAX ERROR")]
+
+                                # TODO: <instance-grab>
+                                if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<instance-grab>"]:
+                                    output.insert(
+                                        "end", "I: instance-grab found\n")
+
+                                    # identifier
+                                    if lexeme[i] != "EPSILON" and lexeme[i] == "#":
+                                        output.insert(
+                                            "end", "I: identifier found\n")
+                                        i += 6  # #identifer().identifer
+                                    else:
+                                        output.insert(
+                                            "end", err + "identifier not found\n")
+                                        return [(lexeme[i], "SYNTAX ERROR")]
+                            # lent(<all-type-value>)
+                            elif lexeme[i] != "EPSILON" and lexeme[i] == "lent":
+                                output.insert("end", "I: lent found\n")
+                                i += 1
+
+                                # (
+                                if lexeme[i] != "EPSILON" and lexeme[i] == "(":
+                                    output.insert("end", "I: ( found\n")
+                                    i += 1
+                                else:
+                                    output.insert("end", err + "( not found\n")
+                                    return [(lexeme[i], "SYNTAX ERROR")]
+
+                                # TODO: <all-type-value>
+                                if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<all-type-value>"]:
+                                    output.insert(
+                                        "end", "I: all-type-value found\n")
+
+                                else:
+                                    output.insert(
+                                        "end", err + "all-type-value not found\n")
+                                    return [(lexeme[i], "SYNTAX ERROR")]
+
+                                # )
+                                if lexeme[i] != "EPSILON" and lexeme[i] == ")":
+                                    output.insert("end", "I: ) found\n")
+                                    i += 1
+                                else:
+                                    output.insert("end", err + ") not found\n")
+                                    return [(lexeme[i], "SYNTAX ERROR")]
+                            else:
+                                output.insert(
+                                    "end", err + "tint literal, flora literal, identifier, or lent not found\n")
+                                return [(lexeme[i], "SYNTAX ERROR")]
+
+                            # )
+                            if lexeme[i] != "EPSILON" and lexeme[i] == ")":
+                                output.insert("end", "I: ) found\n")
+                                i += 1
+                            else:
+                                output.insert("end", err + ") not found\n")
+                                return [(lexeme[i], "SYNTAX ERROR")]
+
+                # ,
+                if lexeme[i] != "EPSILON" and lexeme[i] == ",":
+                    output.insert("end", "I: , found\n")
+                    i += 1
                 else:
-                    # No hash
-                    results.append(("function error: identifier error", err))
-                    return results
+                    break
 
-                print(str(i) + ": function created")
-            else:
-                # No <common-type> (have EPSILON)
-                break
-
-    else:
-        results.append(("seed missing", err))
-
-    # plant
-    if i < len(lexeme) and lexeme[i] == "plant":
-        print(str(i) + ": have plant")
-        i += 1
-    else:
-        results.append(("plant error", err))
-        return results
-
-    print(str(i) + ": end = " + lexeme[i])
+        # ;
+        if lexeme[i] != "EPSILON" and lexeme[i] == ";":
+            output.insert("end", "I: ; found\n")
+            i += 1
+        else:
+            output.insert("end", err + "; not found\n")
+            return [(lexeme[i], "SYNTAX ERROR")]
 
     return results
 
+
 # For displaying the Parse Tree
-
-
 def display_tree():
     pass
 
+
 # For displaying the token stream e.g., tint a; == reserved word identifier reserved symbol
-
-
 def token_stream():
     pass
