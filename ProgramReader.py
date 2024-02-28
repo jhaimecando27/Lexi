@@ -44,32 +44,13 @@ class AnalyzerGui:
         )
         self.lexBtn.place(x=10, y=14)
 
-        self.treeBtn = tk.Button(
-            self.inputFrame,
-            text="Parse Tree",
-            font=("Arial", 12, "bold"),
-            activebackground="lightblue",
-            command=display_tree,
-            state='disabled' if not self.syntax_good else "normal"
-        )
-        self.treeBtn.place(x=100, y=14)
-
-        self.resetBtn = tk.Button(  # Matatanggal lang to kapag nag lalabas na output yung program
-            self.inputFrame,
-            text="Reset",
-            font=("Arial", 12, "bold"),
-            activebackground="lightblue",
-            command=self.reset_compiler,
-        )
-        self.resetBtn.place(x=210, y=14)
-
         self.stageLbl = tk.Label(
             self.inputFrame, text="Compiler Stage: ", font=("Arial", 12, "bold")
         )
         self.stageLbl.place(x=700, y=20.5)
 
         self.errorLbl = tk.Label(
-            self.errorFrame, text="Error/s", font=("Arial", 14, "bold")
+            self.errorFrame, text="Ouput", font=("Arial", 14, "bold")
         )
         self.errorLbl.pack(anchor="w")
 
@@ -162,6 +143,7 @@ class AnalyzerGui:
         self.errorTxt.configure(state="disabled")
 
         if not errors:
+            self.errorTxt.insert(tk.END, "LexicalAnalyser: No Error Found.\n")
             self.syntax_check()
 
     def insert_centered(self, text_widget, content):
@@ -178,7 +160,7 @@ class AnalyzerGui:
         self.lexicLbl.configure(text='Token')
         self.tokenLbl.configure(text='Lexeme')
 
-        test = syntax_analysis(self.tokens)
+        test = syntax_analysis(self.tokens, self.errorTxt)
 
         errors = []
         errors_list = ["SYNTAX ERROR"]
