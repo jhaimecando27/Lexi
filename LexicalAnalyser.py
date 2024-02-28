@@ -8,10 +8,10 @@ from helper import esc, skip, skipV1 # Walang escape characters na nachechek sa 
 def lexical_analysis(programs):
     rw = "RESERVED WORD"
     rs = "RESERVED SYMBOL"
-    tint_lit = "TINT LIT"
-    flora_lit = "FLORA LIT"
-    str_lit = "STRING LIT"
-    ch_lit = "CHARD LIT"
+    tint_lit = "tint literal"
+    flora_lit = "flora literal"
+    str_lit = "string literal"
+    ch_lit = "chard literal"
     Id = "IDENTIFIER"
     cmnt = "COMMENT"
     results = []
