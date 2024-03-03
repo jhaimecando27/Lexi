@@ -43,7 +43,7 @@ class Errors():
         return (
                 str(i + 1) + ": " + \
                 "\"" + tmp_wrd + \
-                "\": Invalid token. Expecting \"#\" symbol after " + \
+                "\": Invalid token. Expecting \"#\" symbol before " + \
                 tmp_wrd, "UNKNOWN IDENTIFIER"
                 )
 
