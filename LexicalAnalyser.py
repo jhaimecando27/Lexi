@@ -254,13 +254,13 @@ def lexical_analysis(programs):
                             if i < len(program) and program[i] == 'f':
                                 i += 1
                                 tmp_wrd = "eleaf"
-                                if i < len(program) and program[i] in rd.delim4:
+                                if i < len(program) and program[i] in rd.delim24:
                                     results.append(("eleaf", rw))
                                     continue
                                 else:
                                     # Finish whole word if error
                                     results.append(Errors.delim(
-                                        i, tmp_wrd, program[i], rd.delim4))
+                                        i, tmp_wrd, program[i], rd.delim24))
                                     i = skip(i, program)
                                     continue
 
@@ -627,13 +627,13 @@ def lexical_analysis(programs):
                         if i < len(program) and program[i] == 's':
                             i += 1
                             tmp_wrd = "moss"
-                            if i < len(program) and program[i] in rd.delim21:
+                            if i < len(program) and program[i] in rd.delim24:
                                 results.append(("moss", rw))
                                 continue
                             else:
                                 # Finish whole word if error
                                 results.append(Errors.delim(
-                                    i, tmp_wrd, program[i], rd.delim21))
+                                    i, tmp_wrd, program[i], rd.delim24))
                                 i = skip(i, program)
                                 continue
 
