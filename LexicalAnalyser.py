@@ -28,7 +28,7 @@ def lexical_analysis(programs):
             if isComment:
                 print("in comment: " + str(i))
                 tmp_wrd = ""
-                while i < len(program) and program[i] != '\n':
+                while i < len(program) and program[i] != '\n' and isComment == True:
                     print("in while: " + str(i) + " " + program[i])
                     if i < len(program) and program[i] == '-':
                         i += 1
@@ -987,22 +987,6 @@ def lexical_analysis(programs):
                             i, tmp_wrd, program[i], rd.delim19))
                         i = skip(i, program)
                         continue
-                # --> delim2
-                elif i < len(program) and program[i] == '-':
-                    i += 1
-                    tmp_wrd = "--"
-                    if i < len(program) and program[i] == '>':
-                        i += 1
-                        tmp_wrd = "-->"
-                        if i < len(program) and program[i] in rd.delim2:
-                            results.append(("-->", rs))
-                            continue
-                        else:
-                            # Finish whole word if error
-                            results.append(Errors.delim(
-                                i, tmp_wrd, program[i], rd.delim2))
-                            i = skip(i, program)
-                            continue
                 else:
                     # Finish whole word if error
                     results.append(Errors.delim(
@@ -1428,14 +1412,9 @@ def lexical_analysis(programs):
                 if i < len(program) and program[i] in rd.delim20:
                     results.append(("?", rs))
 
-                    comment = ''
                     single_symbols = [" ", "\n", "\t", ";", ",", "(", ")", "#"]
                     while i < len(program) and program[i] not in single_symbols:
-                        comment += program[i]
                         i += 1
-
-                    results.append((comment, cmnt))
-
                     continue
                 else:
                     # Finish whole word if error

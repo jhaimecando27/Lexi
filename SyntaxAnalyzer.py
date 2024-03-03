@@ -2391,13 +2391,15 @@ def syntax_analysis(programs, output):
     results = []
     err = "E: Syntax Analyzer: "
 
-    for program in programs:
-        if program[0] == "<space>":
-            programs.remove(program)
-
     programs.append(("EPSILON", "EPSILON"))
+    print(programs)
+
+    # remove "<--", "-->", "<space> from the list of tuple in programs
+    programs = [program for program in programs if program[0] != "<--" and program[0] != "-->" and program[0] != "<space>" and program[0] != "?"]
 
     lexeme, token = zip(*programs)
+
+    print(programs)
 
     i = 0
 
@@ -2871,7 +2873,7 @@ def syntax_analysis(programs, output):
                 return [(lexeme[i], "SYNTAX ERROR")]
 
     # ---------- # plant # ---------- #
-    if lexeme[i] != "EPSILON" and lexeme[i] == "plant":
+    if lexeme[i] != "EPSILON" and lexeme[-1] == "plant":
         output.insert("end", "I: plant found\n")
         i += 1
     else:
