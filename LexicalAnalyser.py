@@ -403,25 +403,28 @@ def lexical_analysis(programs):
                                             i, tmp_wrd, program[i], rd.delim3))
                                         i = skip(i, program)
                                         continue
-                    # GETITEM delim24
-                    elif i < len(program) and program[i] == 'e':
+                # GETITEM delim24
+                elif i < len(program) and program[i] == 'e':
+                    i += 1
+                    tmp_wrd = "ge"
+                    if i < len(program) and program[i] == 't':
                         i += 1
-                        tmp_wrd = "ge"
-                        if i < len(program) and program[i] == 't':
+                        tmp_wrd = "get"
+                        if i < len(program) and program[i] == 'I':
                             i += 1
-                            tmp_wrd = "get"
-                            if i < len(program) and program[i] == 'I':
+                            tmp_wrd = "getI"
+                            if i < len(program) and program[i] == 't':
                                 i += 1
-                                tmp_wrd = "getI"
-                                if i < len(program) and program[i] == 't':
+                                tmp_wrd = "getIt"
+                                if i < len(program) and program[i] == 'e':
                                     i += 1
-                                    tmp_wrd = "getIt"
-                                    if i < len(program) and program[i] == 'e':
+                                    tmp_wrd = "getIte"
+                                    if i < len(program) and program[i] == 'm':
                                         i += 1
-                                        tmp_wrd = "getIte"
-                                        if i < len(program) and program[i] == 'm':
+                                        tmp_wrd = "getItem"
+                                        if i < len(program) and program[i] == 's':
                                             i += 1
-                                            tmp_wrd = "getItem"
+                                            tmp_wrd = "getItems"
                                             if i < len(program) and program[i] in rd.delim24:
                                                 results.append(("getitem", rw))
                                                 continue
@@ -431,55 +434,55 @@ def lexical_analysis(programs):
                                                     i, tmp_wrd, program[i], rd.delim24))
                                                 i = skip(i, program)
                                                 continue
-                            # GETKEYS, GETVALUES delim24
-                            elif i < len(program) and program[i] == 'K':
+                        # GETKEYS, GETVALUES delim24
+                        elif i < len(program) and program[i] == 'k':
+                            i += 1
+                            tmp_wrd = "getk"
+                            if i < len(program) and program[i] == 'e':
                                 i += 1
-                                tmp_wrd = "getK"
-                                if i < len(program) and program[i] == 'e':
+                                tmp_wrd = "getke"
+                                if i < len(program) and program[i] == 'y':
                                     i += 1
-                                    tmp_wrd = "getKe"
-                                    if i < len(program) and program[i] == 'y':
+                                    tmp_wrd = "getkey"
+                                    if i < len(program) and program[i] == 's':
                                         i += 1
-                                        tmp_wrd = "getKey"
-                                        if i < len(program) and program[i] == 's':
-                                            i += 1
-                                            tmp_wrd = "getKeys"
-                                            if i < len(program) and program[i] in rd.delim24:
-                                                results.append(("getKeys", rw))
-                                                continue
-                                            else:
-                                                # Finish whole word if error
-                                                results.append(Errors.delim(
-                                                    i, tmp_wrd, program[i], rd.delim24))
-                                                i = skip(i, program)
-                                                continue
-                            elif i < len(program) and program[i] == 'V':
+                                        tmp_wrd = "getKeys"
+                                        if i < len(program) and program[i] in rd.delim24:
+                                            results.append(("getkeys", rw))
+                                            continue
+                                        else:
+                                            # Finish whole word if error
+                                            results.append(Errors.delim(
+                                                i, tmp_wrd, program[i], rd.delim24))
+                                            i = skip(i, program)
+                                            continue
+                        elif i < len(program) and program[i] == 'V':
+                            i += 1
+                            tmp_wrd = "getV"
+                            if i < len(program) and program[i] == 'a':
                                 i += 1
-                                tmp_wrd = "getV"
-                                if i < len(program) and program[i] == 'a':
+                                tmp_wrd = "getVa"
+                                if i < len(program) and program[i] == 'l':
                                     i += 1
-                                    tmp_wrd = "getVa"
-                                    if i < len(program) and program[i] == 'l':
+                                    tmp_wrd = "getVal"
+                                    if i < len(program) and program[i] == 'u':
                                         i += 1
-                                        tmp_wrd = "getVal"
-                                        if i < len(program) and program[i] == 'u':
+                                        tmp_wrd = "getValu"
+                                        if i < len(program) and program[i] == 'e':
                                             i += 1
-                                            tmp_wrd = "getValu"
-                                            if i < len(program) and program[i] == 'e':
+                                            tmp_wrd = "getValue"
+                                            if i < len(program) and program[i] == 's':
                                                 i += 1
-                                                tmp_wrd = "getValue"
-                                                if i < len(program) and program[i] == 's':
-                                                    i += 1
-                                                    tmp_wrd = "getValues"
-                                                    if i < len(program) and program[i] in rd.delim24:
-                                                        results.append(("getValues", rw))
-                                                        continue
-                                                    else:
-                                                        # Finish whole word if error
-                                                        results.append(Errors.delim(
-                                                            i, tmp_wrd, program[i], rd.delim24))
-                                                        i = skip(i, program)
-                                                        continue
+                                                tmp_wrd = "getValues"
+                                                if i < len(program) and program[i] in rd.delim24:
+                                                    results.append(("getValues", rw))
+                                                    continue
+                                                else:
+                                                    # Finish whole word if error
+                                                    results.append(Errors.delim(
+                                                        i, tmp_wrd, program[i], rd.delim24))
+                                                    i = skip(i, program)
+                                                    continue
 
                 # Finish whole word if error
                 i, tmp_wrd = skipV1(i, program, tmp_wrd)
@@ -571,11 +574,8 @@ def lexical_analysis(programs):
                                     i, tmp_wrd, program[i], rd.delim23))
                                 i = skip(i, program)
                                 continue
-                # LENT delim23
-                elif i < len(program) and program[i] == 'e':
-                    i += 1
-                    tmp_wrd = "le"
-                    if i < len(program) and program[i] == 'n':
+                    # LENT delim23
+                elif i < len(program) and program[i] == 'n':
                         i += 1
                         tmp_wrd = "len"
                         if i < len(program) and program[i] == 't':
@@ -627,13 +627,13 @@ def lexical_analysis(programs):
                         if i < len(program) and program[i] == 's':
                             i += 1
                             tmp_wrd = "moss"
-                            if i < len(program) and program[i] in rd.delim24:
+                            if i < len(program) and program[i] in rd.delim21:
                                 results.append(("moss", rw))
                                 continue
                             else:
                                 # Finish whole word if error
                                 results.append(Errors.delim(
-                                    i, tmp_wrd, program[i], rd.delim24))
+                                    i, tmp_wrd, program[i], rd.delim21))
                                 i = skip(i, program)
                                 continue
 
@@ -814,22 +814,6 @@ def lexical_analysis(programs):
                                     i, tmp_wrd, program[i], rd.delim3))
                                 i = skip(i, program)
                                 continue
-                    # TRUE
-                    if i < len(program) and program[i] == 'u':
-                        i += 1
-                        tmp_wrd = "tru"
-                        if i < len(program) and program[i] == 'e':
-                            i += 1
-                            tmp_wrd = "true"
-                            if i < len(program) and program[i] in rd.delimb:
-                                results.append(("true", rw))
-                                continue
-                            else:
-                                # Finish whole word if error
-                                results.append(Errors.delim(
-                                    i, tmp_wrd, program[i], rd.delimb))
-                                i = skip(i, program)
-                                continue
                 # TULIP
                 elif i < len(program) and program[i] == 'u':
                     i += 1
@@ -856,7 +840,23 @@ def lexical_analysis(programs):
                 elif i < len(program) and program[i] == 'r':
                     i += 1
                     tmp_wrd = "tr"
-                    if i < len(program) and program[i] == 'e':
+                    # TRUE
+                    if i < len(program) and program[i] == 'u':
+                        i += 1
+                        tmp_wrd = "tru"
+                        if i < len(program) and program[i] == 'e':
+                            i += 1
+                            tmp_wrd = "true"
+                            if i < len(program) and program[i] in rd.delimb:
+                                results.append(("true", rw))
+                                continue
+                            else:
+                                # Finish whole word if error
+                                results.append(Errors.delim(
+                                    i, tmp_wrd, program[i], rd.delimb))
+                                i = skip(i, program)
+                                continue
+                    elif i < len(program) and program[i] == 'e':
                         i += 1
                         tmp_wrd = "tre"
                         if i < len(program) and program[i] == 'e':
@@ -1021,6 +1021,38 @@ def lexical_analysis(programs):
                 if i < len(program) and program[i] in rd.delim13:
                     results.append(("*", rs))
                     continue
+                elif i < len(program) and program[i] == '#':
+                    i += 1
+                    tmp_wrd = "*#"
+                    if i < len(program) and program[i] in rd.delim25:
+                        results.append(("*#", rs))
+                        tmp_wrd = ""
+                        tmp_wrd = program[i]
+                        i += 1
+                        for x in range(50):
+                            if program[i] == "\n":
+                                results.append(Errors.delim(i, tmp_wrd, program[i], ["\""]))
+                                i = skip(i, program)
+                                break
+                            if i < len(program) and program[i].isalnum():
+                                tmp_wrd += program[i]
+                                i += 1
+                            if x == 49:
+                                if program[i].isalnum():
+                                    tmp_wrd += program[i]
+                                    results.append(Errors.Id(i, tmp_wrd))
+                                    i = skip(i, program)
+                                    continue
+                            if program[i] in rd.delimi:
+                                results.append((tmp_wrd, Id))
+                                break
+                        continue
+                    else:
+                        # Finish whole word if error
+                        results.append(Errors.delim(
+                            i, tmp_wrd, program[i], rd.delim25))
+                        i = skip(i, program)
+                        continue
                 # ** delim13
                 elif i < len(program) and program[i] == '*':
                     i += 1
@@ -1039,6 +1071,39 @@ def lexical_analysis(programs):
                             # Finish whole word if error
                             results.append(Errors.delim(
                                 i, tmp_wrd, program[i], rd.delim13))
+                            i = skip(i, program)
+                            continue
+                    # **#
+                    elif i < len(program) and program[i] == '#':
+                        i += 1
+                        tmp_wrd = "**#"
+                        if i < len(program) and program[i] in rd.delim26:
+                            results.append(("**#", rs))
+                            tmp_wrd = ""
+                            tmp_wrd = program[i]
+                            i += 1
+                            for x in range(50):
+                                if program[i] == "\n":
+                                    results.append(Errors.delim(i, tmp_wrd, program[i], ["\""]))
+                                    i = skip(i, program)
+                                    break
+                                if i < len(program) and program[i].isalnum():
+                                    tmp_wrd += program[i]
+                                    i += 1
+                                if x == 49:
+                                    if program[i].isalnum():
+                                        tmp_wrd += program[i]
+                                        results.append(Errors.Id(i, tmp_wrd))
+                                        i = skip(i, program)
+                                        continue
+                                if program[i] in rd.delimi:
+                                    results.append((tmp_wrd, Id))
+                                    break
+                            continue
+                        else:
+                            # Finish whole word if error
+                            results.append(Errors.delim(
+                                i, tmp_wrd, program[i], rd.delim26))
                             i = skip(i, program)
                             continue
                 # *= delim13
@@ -1181,13 +1246,13 @@ def lexical_analysis(programs):
                 elif i < len(program) and program[i] == '=':
                     i += 1
                     tmp_wrd = ">="
-                    if i < len(program) and program[i] in rd.delim22:
+                    if i < len(program) and program[i] in rd.delim13:
                         results.append((">=", rs))
                         continue
                     else:
                         # Finish whole word if error
                         results.append(Errors.delim(
-                            i, tmp_wrd, program[i], rd.delim22))
+                            i, tmp_wrd, program[i], rd.delim13))
                         i = skip(i, program)
                         continue
                 else:
@@ -1363,13 +1428,13 @@ def lexical_analysis(programs):
             elif i < len(program) and program[i] == '.':
                 i += 1
                 tmp_wrd = "."
-                if i < len(program) and program[i] in rd.delim8:
+                if i < len(program) and program[i] in rd.delim28:
                     results.append((".", rs))
                     continue
                 else:
                     # Finish whole word if error
                     results.append(Errors.delim(
-                        i, tmp_wrd, program[i], rd.delim8))
+                        i, tmp_wrd, program[i], rd.delim28))
                     i = skip(i, program)
                     continue
 
