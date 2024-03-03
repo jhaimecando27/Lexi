@@ -140,10 +140,10 @@ class AnalyzerGui:
 
         self.lexicTxt.configure(state="disabled")
         self.tokenTxt.configure(state="disabled")
-        self.errorTxt.configure(state="disabled")
 
         if not errors:
             self.errorTxt.insert(tk.END, "LexicalAnalyser: No Error Found.\n")
+            self.errorTxt.configure(state="disabled")
             self.syntax_check()
 
     def insert_centered(self, text_widget, content):
