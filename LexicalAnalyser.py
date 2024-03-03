@@ -98,13 +98,13 @@ def lexical_analysis(programs):
                             if i < len(program) and program[i] == 'm':
                                 i += 1
                                 tmp_wrd = "bloom"
-                                if i < len(program) and program[i] in rd.delim4:
+                                if i < len(program) and program[i] in rd.delim3:
                                     results.append(("bloom", rw))
                                     continue
                                 else:
                                     # Finish whole word if error
                                     results.append(Errors.delim(
-                                        i, tmp_wrd, program[i], rd.delim4))
+                                        i, tmp_wrd, program[i], rd.delim3))
                                     i = skip(i, program)
                                     continue
                 elif i < len(program) and program[i] == 'r':
@@ -173,13 +173,13 @@ def lexical_analysis(programs):
                             if i < len(program) and program[i] == 'd':
                                 i += 1
                                 tmp_wrd = "chard"
-                                if i < len(program) and program[i] in rd.delimc:
+                                if i < len(program) and program[i] in rd.delim3:
                                     results.append(("chard", rw))
                                     continue
                                 else:
                                     # Finish whole word if error
                                     results.append(Errors.delim(
-                                        i, tmp_wrd, program[i], rd.delimc))
+                                        i, tmp_wrd, program[i], rd.delim3))
                                     i = skip(i, program)
                                     continue
                 # CLEAR
@@ -195,13 +195,13 @@ def lexical_analysis(programs):
                             if i < len(program) and program[i] == 'r':
                                 i += 1
                                 tmp_wrd = "clear"
-                                if i < len(program) and program[i] in rd.delim1:
+                                if i < len(program) and program[i] in rd.delim4:
                                     results.append(("clear", rw))
                                     continue
                                 else:
                                     # Finish whole word if error
                                     results.append(Errors.delim(
-                                        i, tmp_wrd, program[i], rd.delim1))
+                                        i, tmp_wrd, program[i], rd.delim4))
                                     i = skip(i, program)
                                     continue
 
@@ -223,13 +223,13 @@ def lexical_analysis(programs):
                         if i < len(program) and program[i] == 't':
                             i += 1
                             tmp_wrd = "dirt"
-                            if i < len(program) and program[i] in rd.delim4:
+                            if i < len(program) and program[i] in rd.delim3:
                                 results.append(("dirt", rw))
                                 continue
                             else:
                                 # Finish whole word if error
                                 results.append(Errors.delim(
-                                    i, tmp_wrd, program[i], rd.delim4))
+                                    i, tmp_wrd, program[i], rd.delim3))
                                 i = skip(i, program)
                                 continue
 
@@ -254,13 +254,13 @@ def lexical_analysis(programs):
                             if i < len(program) and program[i] == 'f':
                                 i += 1
                                 tmp_wrd = "eleaf"
-                                if i < len(program) and program[i] in rd.delim3:
+                                if i < len(program) and program[i] in rd.delim4:
                                     results.append(("eleaf", rw))
                                     continue
                                 else:
                                     # Finish whole word if error
                                     results.append(Errors.delim(
-                                        i, tmp_wrd, program[i], rd.delim3))
+                                        i, tmp_wrd, program[i], rd.delim4))
                                     i = skip(i, program)
                                     continue
 
@@ -327,7 +327,7 @@ def lexical_analysis(programs):
                             if i < len(program) and program[i] == 'a':
                                 i += 1
                                 tmp_wrd = "flora"
-                                if i < len(program) and program[i] in rd.delim4:
+                                if i < len(program) and program[i] in rd.delim3:
                                     results.append(("flora", rw))
                                     continue
 
@@ -335,7 +335,7 @@ def lexical_analysis(programs):
                                 elif i < len(program) and program[i] == 'l':
                                     i += 1
                                     tmp_wrd = "floral"
-                                    if i < len(program) and program[i] in rd.delim4:
+                                    if i < len(program) and program[i] in rd.delim3:
                                         results.append(("floral", rw))
                                         continue
                                     else:
@@ -361,13 +361,13 @@ def lexical_analysis(programs):
                                     if i < len(program) and program[i] == 't':
                                         i += 1
                                         tmp_wrd = "florist"
-                                        if i < len(program) and program[i] in rd.delim4:
+                                        if i < len(program) and program[i] in rd.delim3:
                                             results.append(("florist", rw))
                                             continue
                                         else:
                                             # Finish whole word if error
                                             results.append(Errors.delim(
-                                                i, tmp_wrd, program[i], rd.delim4))
+                                                i, tmp_wrd, program[i], rd.delim3))
                                             i = skip(i, program)
                                             continue
                 # Finish whole word if error
@@ -562,13 +562,13 @@ def lexical_analysis(programs):
                         if i < len(program) and program[i] == 'f':
                             i += 1
                             tmp_wrd = "leaf"
-                            if i < len(program) and program[i] in rd.delim3:
+                            if i < len(program) and program[i] in rd.delim23:
                                 results.append(("leaf", rw))
                                 continue
                             else:
                                 # Finish whole word if error
                                 results.append(Errors.delim(
-                                    i, tmp_wrd, program[i], rd.delim3))
+                                    i, tmp_wrd, program[i], rd.delim23))
                                 i = skip(i, program)
                                 continue
                 # LENT delim23
@@ -581,13 +581,13 @@ def lexical_analysis(programs):
                         if i < len(program) and program[i] == 't':
                             i += 1
                             tmp_wrd = "lent"
-                            if i < len(program) and program[i] in rd.delim23:
+                            if i < len(program) and program[i] in rd.delim3:
                                 results.append(("lent", rw))
                                 continue
                             else:
                                 # Finish whole word if error
                                 results.append(Errors.delim(
-                                    i, tmp_wrd, program[i], rd.delim23))
+                                    i, tmp_wrd, program[i], rd.delim3))
                                 i = skip(i, program)
                                 continue
                 # Finish whole word if error
@@ -627,13 +627,13 @@ def lexical_analysis(programs):
                         if i < len(program) and program[i] == 's':
                             i += 1
                             tmp_wrd = "moss"
-                            if i < len(program) and program[i] in rd.delim3:
+                            if i < len(program) and program[i] in rd.delim21:
                                 results.append(("moss", rw))
                                 continue
                             else:
                                 # Finish whole word if error
                                 results.append(Errors.delim(
-                                    i, tmp_wrd, program[i], rd.delim3))
+                                    i, tmp_wrd, program[i], rd.delim21))
                                 i = skip(i, program)
                                 continue
 
@@ -710,13 +710,13 @@ def lexical_analysis(programs):
                                 if i < len(program) and program[i] == 'w':
                                     i += 1
                                     tmp_wrd = "regrow"
-                                    if i < len(program) and program[i] in rd.delim9:
+                                    if i < len(program) and program[i] in rd.delim4:
                                         results.append(("regrow", rw))
                                         continue
                                     else:
                                         # Finish whole word if error
                                         results.append(Errors.delim(
-                                            i, tmp_wrd, program[i], rd.delim9))
+                                            i, tmp_wrd, program[i], rd.delim4))
                                         i = skip(i, program)
                                         continue
                 # Finish whole word if error
@@ -756,13 +756,13 @@ def lexical_analysis(programs):
                         if i < len(program) and program[i] == 'm':
                             i += 1
                             tmp_wrd = "stem"
-                            if i < len(program) and program[i] in rd.delim4:
+                            if i < len(program) and program[i] in rd.delim3:
                                 results.append(("stem", rw))
                                 continue
                             else:
                                 # Finish whole word if error
                                 results.append(Errors.delim(
-                                    i, tmp_wrd, program[i], rd.delim4))
+                                    i, tmp_wrd, program[i], rd.delim3))
                                 i = skip(i, program)
                                 continue
                     # STRING
@@ -778,13 +778,13 @@ def lexical_analysis(programs):
                                 if i < len(program) and program[i] == 'g':
                                     i += 1
                                     tmp_wrd = "string"
-                                    if i < len(program) and program[i] in rd.delim4:
+                                    if i < len(program) and program[i] in rd.delim3:
                                         results.append(("string", rw))
                                         continue
                                     else:
                                         # Finish whole word if error
                                         results.append(Errors.delim(
-                                            i, tmp_wrd, program[i], rd.delim4))
+                                            i, tmp_wrd, program[i], rd.delim3))
                                         i = skip(i, program)
                                         continue
                 # Finish whole word if error
@@ -925,13 +925,13 @@ def lexical_analysis(programs):
                                 if i < len(program) and program[i] == 'w':
                                     i += 1
                                     tmp_wrd = "willow"
-                                    if i < len(program) and program[i] in rd.delim4:
+                                    if i < len(program) and program[i] in rd.delim3:
                                         results.append(("willow", rw))
                                         continue
                                     else:
                                         # Finish whole word if error
                                         results.append(Errors.delim(
-                                            i, tmp_wrd, program[i], rd.delim4))
+                                            i, tmp_wrd, program[i], rd.delim3))
                                         i = skip(i, program)
                                         continue
                 # Finish whole word if error
