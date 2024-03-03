@@ -830,28 +830,28 @@ def lexical_analysis(programs):
                                     i, tmp_wrd, program[i], rd.delimb))
                                 i = skip(i, program)
                                 continue
-                    # TULIP
-                    elif i < len(program) and program[i] == 'u':
+                # TULIP
+                elif i < len(program) and program[i] == 'u':
+                    i += 1
+                    tmp_wrd = "tu"
+                    if i < len(program) and program[i] == 'l':
                         i += 1
-                        tmp_wrd = "tu"
-                        if i < len(program) and program[i] == 'l':
+                        tmp_wrd = "tul"
+                        if i < len(program) and program[i] == 'i':
                             i += 1
-                            tmp_wrd = "tul"
-                            if i < len(program) and program[i] == 'i':
+                            tmp_wrd = "tuli"
+                            if i < len(program) and program[i] == 'p':
                                 i += 1
-                                tmp_wrd = "tuli"
-                                if i < len(program) and program[i] == 'p':
-                                    i += 1
-                                    tmp_wrd = "tulip"
-                                    if i < len(program) and program[i] in rd.delim3:
-                                        results.append(("tulip", rw))
-                                        continue
-                                    else:
-                                        # Finish whole word if error
-                                        results.append(Errors.delim(
-                                            i, tmp_wrd, program[i], rd.delim3))
-                                        i = skip(i, program)
-                                        continue
+                                tmp_wrd = "tulip"
+                                if i < len(program) and program[i] in rd.delim3:
+                                    results.append(("tulip", rw))
+                                    continue
+                                else:
+                                    # Finish whole word if error
+                                    results.append(Errors.delim(
+                                        i, tmp_wrd, program[i], rd.delim3))
+                                    i = skip(i, program)
+                                    continue
                 # TREE delim24
                 elif i < len(program) and program[i] == 'r':
                     i += 1
