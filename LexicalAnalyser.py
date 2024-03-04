@@ -1077,16 +1077,12 @@ def lexical_analysis(programs):
                     elif i < len(program) and program[i] == '#':
                         i += 1
                         tmp_wrd = "**#"
-                        if i < len(program) and program[i] in rd.delim26:
+                        if i < len(program) and program[i] in rd.delim20:
                             results.append(("**#", rs))
                             tmp_wrd = ""
                             tmp_wrd = program[i]
                             i += 1
                             for x in range(50):
-                                if program[i] == "\n":
-                                    results.append(Errors.delim(i, tmp_wrd, program[i], ["\""]))
-                                    i = skip(i, program)
-                                    break
                                 if i < len(program) and program[i].isalnum():
                                     tmp_wrd += program[i]
                                     i += 1
@@ -1096,7 +1092,7 @@ def lexical_analysis(programs):
                                         results.append(Errors.Id(i, tmp_wrd))
                                         i = skip(i, program)
                                         continue
-                                if program[i] in rd.delimi:
+                                if program[i] in rd.delim26:
                                     results.append((tmp_wrd, Id))
                                     break
                             continue

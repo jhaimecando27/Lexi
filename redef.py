@@ -32,7 +32,7 @@ ascii = [
 # Delimiters
 delimi = space + ["=", ";", "."]
 delimtf = space + ["+", "-", "*", "/", "%",
-           ";", ")", "]", "}", "<", ">", "!", "=", ","]
+                   ";", ")", "]", "}", "<", ">", "!", "=", ","]
 delims = ["\"",]
 delimc = ["'"]
 delimb = space + ["=", "<", ">", "!", ";"]
@@ -55,7 +55,7 @@ delim9 = space + newline
 delim10 = [";", ' ',  "\n", ","]
 delim11 = [";", "+", " ", ",", ")", "}", "]"]
 delim12 = ["=", ";", ")", "}"]
-delim13 = dig + space + ht + ["("]
+delim13 = dig + space + ["("]
 delim14 = ascii
 delim15 = space + dig + let + newline + ["\""]
 delim16 = ["\n", " "]
@@ -68,7 +68,7 @@ delim22 = num + [" ", "(", "#"]
 delim23 = space + newline + ["\"", "}"]
 delim24 = ["("]
 delim25 = space + [")", ","]
-delim26 = space + [")"]
+delim26 = newline + space + [")"]
 delim27 = space + num + ht + [",", "_", "["]
 delim28 = let
 
