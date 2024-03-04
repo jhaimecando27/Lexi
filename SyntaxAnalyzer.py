@@ -2026,7 +2026,7 @@ def statement(lexeme, token, i, output):
                             output.insert("end", err + ") not found\n")
                             return i, [(lexeme[i], "SYNTAX ERROR")]
 
-                    # <common-data>
+                    # TODO: <common-data>
                     elif lexeme[i] != "EPSILON" and lexeme[i] in first_set["<common-data>"]:
                         output.insert("end", "I: common-data found\n")
                         i += 1
@@ -2373,6 +2373,47 @@ def statement(lexeme, token, i, output):
                 return i, [(lexeme[i], "SYNTAX ERROR")]
 
         # TODO: tree
+        if lexeme[i] != "EPSILON" and lexeme[i] in first_set["tree"]:
+            output.insert("end", "I: tree found\n")
+
+            # (
+            if lexeme[i] != "EPSILON" and lexeme[i] == "(":
+                output.insert("end", "I: ( found\n")
+                i += 1
+
+            # #identifier
+            if lexeme[i] != "EPSILON" and lexeme[i] == "#identifier":
+                output.insert("end", "I: identifier found\n")
+                i += 2
+
+            # )
+            if lexeme[i] != "EPSILON" and lexeme[i] == ")":
+                output.insert("end", "I: ) found\n")
+                i += 1
+
+            # (
+            if lexeme[i] != "EPSILON" and lexeme[i] == "(":
+                output.insert("end", "I: ( found\n")
+                i += 1
+
+            # branch
+            if lexeme[i] != "EPSILON" and lexeme[i] == "branch":
+                output.insert("end", "I: branch found\n")
+                i += 1
+            # <all-type-value>
+            # <insert-branch>
+            # ;
+            # <more-branch>
+
+            # statement
+            i, results = statement(lexeme, token, i, output)
+            if "SYNTAX ERROR" in results:
+                return results
+
+            # )
+            if lexeme[i] != "EPSILON" and lexeme[i] == ")":
+                output.insert("end", "I: ) found\n")
+                i += 1
 
         # clear
         elif lexeme[i] != "EPSILON" and lexeme[i] == "clear":
@@ -2383,6 +2424,8 @@ def statement(lexeme, token, i, output):
         elif lexeme[i] != "EPSILON" and lexeme[i] == "break":
             output.insert("end", "I: break found\n")
             i += 1
+            break
+
     return i, [("", "")]
 
 
@@ -2404,7 +2447,7 @@ def syntax_analysis(programs, output):
     i = 0
 
     # ---------- # seed # ---------- #
-    if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<program>"]:
+    if lexeme[i] != "EPSILON" and lexeme[0] == "seed":
         output.insert("end", "I: seed found\n")
         i += 1
     else:
