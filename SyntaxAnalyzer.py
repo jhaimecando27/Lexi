@@ -3224,13 +3224,14 @@ def syntax_analysis(programs, output):
                 return [(lexeme[i], "SYNTAX ERROR")]
 
     # ---------- # plant # ---------- #
-    if lexeme[i] != "EPSILON" and lexeme[-1] == "plant":
+    if lexeme[i] != "EPSILON" and lexeme[-2] == "plant":
         output.insert("end", "I: plant found\n")
         i += 1
     else:
         output.insert("end", err + "plant not found\n")
         return [(lexeme[i], "SYNTAX ERROR")]
 
+    output.insert("end", "SyntaxAnalyser: No Error Found.\n")
     return results
 
 
