@@ -53,7 +53,7 @@ delim13 = dig + space + ["("]
 delim14 = ascii
 delim15 = space + dig + let + newline + ["\"", ")"]
 delim16 = ["\n", " "]
-delim17 = ["=", "-", "/", "*", "+", "]", ")", "}", ",", ";", "\'", "("]
+delim17 = space + ["=", "-", "/", "*", "+", "]", ")", "}", ",", ";", "\'", "("]
 delim18 = [";", ",", "]", "),", "}", "."]
 delim19 = num + space, ht + ["("]
 delim20 = let
