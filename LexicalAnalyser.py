@@ -575,21 +575,21 @@ def lexical_analysis(programs):
                                 i = skip(i, program)
                                 continue
                     # LENT delim23
-                elif i < len(program) and program[i] == 'n':
-                        i += 1
-                        tmp_wrd = "len"
-                        if i < len(program) and program[i] == 't':
+                    elif i < len(program) and program[i] == 'n':
                             i += 1
-                            tmp_wrd = "lent"
-                            if i < len(program) and program[i] in rd.delim3:
-                                results.append(("lent", rw))
-                                continue
-                            else:
-                                # Finish whole word if error
-                                results.append(Errors.delim(
-                                    i, tmp_wrd, program[i], rd.delim3))
-                                i = skip(i, program)
-                                continue
+                            tmp_wrd = "len"
+                            if i < len(program) and program[i] == 't':
+                                i += 1
+                                tmp_wrd = "lent"
+                                if i < len(program) and program[i] in rd.delim3:
+                                    results.append(("lent", rw))
+                                    continue
+                                else:
+                                    # Finish whole word if error
+                                    results.append(Errors.delim(
+                                        i, tmp_wrd, program[i], rd.delim3))
+                                    i = skip(i, program)
+                                    continue
                 # Finish whole word if error
                 i, tmp_wrd = skipV1(i, program, tmp_wrd)
                 results.append(Errors.Id(i, tmp_wrd))
