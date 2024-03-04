@@ -1462,7 +1462,7 @@ def lexical_analysis(programs):
                             results.append(Errors.delim(i, tmp_wrd, program[i], ["\""]))
                             i = skip(i, program)
                             break
-                        if i < len(program) and program[i].isalnum():
+                        if i < len(program) and program[i] in rd.diglet:
                             tmp_wrd += program[i]
                             i += 1
                         if x == 49:
@@ -1473,6 +1473,11 @@ def lexical_analysis(programs):
                                 continue
                         if program[i] in rd.delimi:
                             results.append((tmp_wrd, Id))
+                            break
+
+                        if program[i] not in rd.delimi and program[i] not in rd.diglet:
+                            results.append(Errors.delim(i, tmp_wrd, program[i], rd.delimi))
+                            i = skip(i, program)
                             break
                     continue
                 else:
