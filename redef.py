@@ -47,7 +47,7 @@ delim6 = [
     "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F",
     "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R",
     "S", "T", "U", "V", "W", "X", "Y", "Z", ' ', "\"", "\n", "#", "(", "[",
-    "{", ")"
+    "{", ")", "\'"
 ]
 delim7 = dig + space + ht + ["\""]
 delim8 = num + ht + space + ["\""]
@@ -59,13 +59,13 @@ delim13 = dig + space + ht + ["("]
 delim14 = ascii
 delim15 = space + dig + let + newline + ["\""]
 delim16 = ["\n", " "]
-delim17 = ["=", "-", "/", "*", "+", "]", ")", "}", ",", ";"]
+delim17 = ["=", "-", "/", "*", "+", "]", ")", "}", ",", ";", "\'"]
 delim18 = [";", ",", "]", "),", "}"]
 delim19 = num + space, ht + ["("]
 delim20 = let
 delim21 = [":"]
 delim22 = num + [" ", "(", "#"]
-delim23 = space + newline + ["\""]
+delim23 = space + newline + ["\"", "}"]
 delim24 = ["("]
 delim25 = space + [")", ","]
 delim26 = space + [")"]
