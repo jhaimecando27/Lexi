@@ -49,7 +49,7 @@ delim6 = [
     "S", "T", "U", "V", "W", "X", "Y", "Z", ' ', "\"", "\n", "#", "(", "[",
     "{", ")", "\'", "]"
 ]
-delim7 = dig + space + ht + ["\"", "\'", "(" ,"[", "{"]
+delim7 = dig + space + ht + ["\"", "\'", "(", "[", "{"]
 delim8 = num + ht + space + ["\""]
 delim9 = space + newline
 delim10 = [";", ' ',  "\n", ","]

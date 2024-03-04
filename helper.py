@@ -32,7 +32,7 @@ class Errors():
         return (
                 str(i + 1) + ": " + \
                 "\"" + tmp_wrd + esc(delim) + \
-                "\": Invalid token \"" + esc(delim) + \
+                "\": Invalid Delimeter \"" + esc(delim) + \
                 "\". Expecting Delimeter after \"" + \
                 tmp_wrd + "\": Available " + \
                 str(delims), "UNKNOWN DELIMITER"
@@ -43,7 +43,7 @@ class Errors():
         return (
                 str(i + 1) + ": " + \
                 "\"" + tmp_wrd + \
-                "\": Invalid token. Expecting \"#\" symbol before " + \
+                "\": Invalid Identier. Expecting \"#\" symbol before " + \
                 tmp_wrd, "UNKNOWN IDENTIFIER"
                 )
 
