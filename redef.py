@@ -1,4 +1,3 @@
-
 # Regular Definitions:
 zero = "0"
 dig = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
@@ -42,7 +41,7 @@ delim2 = ["\n", ' ']
 delim3 = [' ', "("]
 delim4 = [" "]
 delim5 = num + space + ht + ["(", "["]
-delim6 = num + space + newline + ht + ["(", "[", "{", "\"", "\'", ")", "]"]
+delim6 = let + num + space + newline + ht + ["(", "[", "{", "\"", "\'", ")", "]"]
 delim7 = dig + space + ht + ["\"", "\'", "(", "[", "{"]
 delim8 = num + ht + space + ["\""]
 delim9 = space + newline
@@ -52,7 +51,7 @@ delim12 = ["=", ";", ")", "}"]
 delim13 = dig + space + ["("]
 delim14 = ascii
 delim15 = space + dig + let + newline + ["\"", ")"]
-delim16 = ["\n", " "]
+delim16 = ["\n", " ", ")"]
 delim17 = space + ["=", "-", "/", "*", "+", "]", ")", "}", ",", ";", "\'", "("]
 delim18 = [";", ",", "]", "),", "}", "."]
 delim19 = num + space, ht + ["("]
@@ -100,6 +99,7 @@ CLEAR = "clear"
 BARE = "bare"
 FLORAL = "floral"
 GARDEN = "garden"
+
 
 
 # Reserved Symbols
