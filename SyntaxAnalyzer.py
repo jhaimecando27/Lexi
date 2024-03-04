@@ -3402,9 +3402,6 @@ def statement(lexeme, token, i, output):
                     i, results = statement(lexeme, token, i, output)
                     if "SYNTAX ERROR" in results:
                         return results
-                        else:
-                            output.insert("end", err + ": not found\n")
-                            return i, [(lexeme[i], "SYNTAX ERROR")]
                 # leaf
                 elif lexeme[i] != "EPSILON" and lexeme[i] == "leaf":
                     output.insert("end", "I: leaf found\n")

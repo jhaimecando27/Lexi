@@ -10,6 +10,7 @@ let = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
 num = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 newline = ["\n"]
 diglet = dig + let
+id = let + num + ["_"]
 ht = ["#"]
 space = [" "]
 tab = "\t"
@@ -57,7 +58,7 @@ delim11 = [";", "+", " ", ",", ")", "}", "]"]
 delim12 = ["=", ";", ")", "}"]
 delim13 = dig + space + ["("]
 delim14 = ascii
-delim15 = space + dig + let + newline + ["\""]
+delim15 = space + dig + let + newline + ["\"", ")"]
 delim16 = ["\n", " "]
 delim17 = ["=", "-", "/", "*", "+", "]", ")", "}", ",", ";", "\'", "("]
 delim18 = [";", ",", "]", "),", "}", "."]
