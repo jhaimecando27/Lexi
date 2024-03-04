@@ -88,11 +88,16 @@ def statement(lexeme, token, i, output):
                                         output.insert(
                                             "end", "I: insert-argument found\n")
 
-                                        # <all-type-value>
+                                        # TODO: <all-type-value>
                                         if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<all-type-value>"]:
                                             output.insert(
                                                 "end", "I: all-type-value found\n")
-                                            i += 1
+                                            # <common-data>
+                                            if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<common-data>"]:
+                                                output.insert(
+                                                    "end", "I: common-data found\n")
+                                                i += 1
+
                                         # # identifier
                                         elif lexeme[i] != "EPSILON" and lexeme[i] == "#":
                                             output.insert(
@@ -3341,28 +3346,543 @@ def statement(lexeme, token, i, output):
             if lexeme[i] != "EPSILON" and lexeme[i] == "(":
                 output.insert("end", "I: ( found\n")
                 i += 1
+            else:
+                output.insert("end", err + "( not found\n")
+                return i, [(lexeme[i], "SYNTAX ERROR")]
 
             # #identifier
             if lexeme[i] != "EPSILON" and lexeme[i] == "#identifier":
                 output.insert("end", "I: identifier found\n")
                 i += 2
+            else:
+                output.insert("end", err + "identifier not found\n")
+                return i, [(lexeme[i], "SYNTAX ERROR")]
 
             # )
             if lexeme[i] != "EPSILON" and lexeme[i] == ")":
                 output.insert("end", "I: ) found\n")
                 i += 1
+            else:
+                output.insert("end", err + ") not found\n")
+                return i, [(lexeme[i], "SYNTAX ERROR")]
 
             # (
             if lexeme[i] != "EPSILON" and lexeme[i] == "(":
                 output.insert("end", "I: ( found\n")
                 i += 1
+            else:
+                output.insert("end", err + "( not found\n")
+                return i, [(lexeme[i], "SYNTAX ERROR")]
 
             # branch
             if lexeme[i] != "EPSILON" and lexeme[i] == "branch":
                 output.insert("end", "I: branch found\n")
                 i += 1
+            else:
+                output.insert("end", err + "branch not found\n")
+                return i, [(lexeme[i], "SYNTAX ERROR")]
+
             # <all-type-value>
+            if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<all-type-value>"]:
+                output.insert("end", "I: all-type-value found\n")
+                i += 1
+            else:
+                output.insert("end", err + "all-type-value not found\n")
+                return i, [(lexeme[i], "SYNTAX ERROR")]
+
             # <insert-branch>
+            if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<insert-branch>"]:
+                output.insert("end", "I: insert-branch found\n")
+
+                # :
+                if lexeme[i] != "EPSILON" and lexeme[i] == ":":
+                    output.insert("end", "I: : found\n")
+                    i += 1
+                    # statement
+                    i, results = statement(lexeme, token, i, output)
+                    if "SYNTAX ERROR" in results:
+                        return results
+                        else:
+                            output.insert("end", err + ": not found\n")
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
+                # leaf
+                elif lexeme[i] != "EPSILON" and lexeme[i] == "leaf":
+                    output.insert("end", "I: leaf found\n")
+                    i += 1
+
+                    # <all-type-value>
+                    if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<all-type-value>"]:
+                        output.insert("end", "I: all-type-value found\n")
+                        i += 1
+                    else:
+                        output.insert("end", err + "all-type-value not found\n")
+                        return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                    # <more-all>
+                    while lexeme[i] != "EPSILON" and lexeme[i] in first_set["<more-all>"]:
+                        output.insert("end", "I: more-all found\n")
+
+                        # ,
+                        if lexeme[i] != "EPSILON" and lexeme[i] == ",":
+                            output.insert("end", "I: , found\n")
+                            i += 1
+                        else:
+                            output.insert("end", err + ", not found\n")
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                        # <all-type-value>
+                        if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<all-type-value>"]:
+                            output.insert("end", "I: all-type-value found\n")
+                            i += 1
+                        else:
+                            output.insert("end", err + "all-type-value not found\n")
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                        # <insert-condition>
+                        if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<insert-condition>"]:
+                            output.insert("end", "I: insert-condition found\n")
+
+                            # <all-cond-operator>
+                            if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<all-cond-operator>"]:
+                                output.insert("end", "I: all-cond-operator found\n")
+                                i += 1
+
+                                # <insert-all-operand>
+                                if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<insert-all-operand>"]:
+                                    output.insert("end", "I: insert-all-operand found\n")
+
+                                    # <flora-tint-value>
+                                    if lexeme[i] != "EPSILON" and (lexeme[i] in first_set["<insert-flora-tint>"] or token[i] in first_set["<insert-flora-tint>"]):
+                                        while lexeme[i] != "EPSILON" and (lexeme[i] in first_set["<insert-flora-tint>"] or token[i] in first_set["<insert-flora-tint>"]):
+                                            output.insert("end", "I: flora-tint-value found\n")
+
+                                            # <insert-flora-tint>
+                                            if lexeme[i] != "EPSILON" and (lexeme[i] in first_set["<insert-flora-tint>"] or token[i] in first_set["<insert-flora-tint>"]):
+                                                output.insert("end", "I: insert-flora-tint found\n")
+
+                                                # tint literal
+                                                if lexeme[i] != "EPSILON" and token[i] == "tint literal":
+                                                    output.insert("end", "I: tint literal found\n")
+                                                    i += 1
+                                                # flora literal
+                                                elif lexeme[i] != "EPSILON" and token[i] == "flora literal":
+                                                    output.insert("end", "I: flora literal found\n")
+                                                    i += 1
+                                                # identifer
+                                                elif lexeme[i] != "EPSILON" and lexeme[i] == "#":
+                                                    output.insert("end", "I: identifier found\n")
+                                                    i += 2
+
+                                                    # <insert-func>
+                                                    if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<insert-func>"]:
+                                                        output.insert("end", "I: insert-func found\n")
+
+                                                        # (
+                                                        if lexeme[i] != "EPSILON" and lexeme[i] == "(":
+                                                            output.insert("end", "I: ( found\n")
+                                                            i += 1
+                                                        else:
+                                                            output.insert("end", err + "( not found\n")
+                                                            return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                                                        # <argument>
+                                                        if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<argument>"]:
+                                                            output.insert(
+                                                                "end", "I: argument found\n")
+
+                                                            # <insert-argument>
+                                                            while lexeme[i] != "EPSILON" and lexeme[i] in first_set["<insert-argument>"]:
+                                                                output.insert(
+                                                                    "end", "I: insert-argument found\n")
+
+                                                                # <all-type-value>
+                                                                if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<all-type-value>"]:
+                                                                    output.insert(
+                                                                        "end", "I: all-type-value found\n")
+                                                                    i += 1
+                                                                # # identifier
+                                                                elif lexeme[i] != "EPSILON" and lexeme[i] == "#":
+                                                                    output.insert(
+                                                                        "end", "I: identifier found\n")
+                                                                    i += 2
+
+                                                                    # (
+                                                                    if lexeme[i] != "EPSILON" and lexeme[i] == "(":
+                                                                        output.insert("end", "I: ( found\n")
+                                                                        i += 1
+                                                                    else:
+                                                                        output.insert(
+                                                                            "end", err + "( not found\n")
+                                                                        return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                                                                    # TODO: <2D-argument>
+
+                                                                    # )
+                                                                    if lexeme[i] != "EPSILON" and lexeme[i] == ")":
+                                                                        output.insert("end", "I: ) found\n")
+                                                                        i += 1
+                                                                    else:
+                                                                        output.insert(
+                                                                            "end", err + ") not found\n")
+                                                                        return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                                                                else:
+                                                                    output.insert(
+                                                                        "end", err + "insert-argument not found\n")
+                                                                    return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                                                                # ,
+                                                                if lexeme[i] != "EPSILON" and lexeme[i] == ",":
+                                                                    output.insert("end", "I: , found\n")
+                                                                    i += 1
+                                                                else:
+                                                                    output.insert(
+                                                                        "end", err + ", not found\n")
+                                                                    return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                                                            else:
+                                                                output.insert(
+                                                                    "end", err + "insert-argument not found\n")
+                                                                return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                                                                # -----
+
+
+                                                        # )
+                                                        if lexeme[i] != "EPSILON" and lexeme[i] == ")":
+                                                            output.insert("end", "I: ) found\n")
+                                                            i += 1
+                                                        else:
+                                                            output.insert("end", err + ") not found\n")
+                                                            return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                                                    # TODO: (wip) <instance-grab> TODO
+                                                    if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<instance-grab>"]:
+                                                        output.insert("end", "I: instance-grab found\n")
+
+                                                        # identifier
+                                                        if lexeme[i] != "EPSILON" and lexeme[i] == "#":
+                                                            output.insert("end", "I: identifier found\n")
+                                                            i += 6  # #identifer().identifer
+                                                        else:
+                                                            output.insert(
+                                                                "end", err + "identifier not found\n")
+                                                            return i, [(lexeme[i], "SYNTAX ERROR")]
+                                                # lent(<all-type-value>)
+                                                elif lexeme[i] != "EPSILON" and lexeme[i] == "lent":
+                                                    output.insert("end", "I: lent found\n")
+                                                    i += 1
+
+                                                    # (
+                                                    if lexeme[i] != "EPSILON" and lexeme[i] == "(":
+                                                        output.insert("end", "I: ( found\n")
+                                                        i += 1
+                                                    else:
+                                                        output.insert("end", err + "( not found\n")
+                                                        return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                                                    # TODO: <all-type-value>
+                                                    if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<all-type-value>"]:
+                                                        output.insert("end", "I: all-type-value found\n")
+
+                                                    else:
+                                                        output.insert(
+                                                            "end", err + "all-type-value not found\n")
+                                                        return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                                                    # )
+                                                    if lexeme[i] != "EPSILON" and lexeme[i] == ")":
+                                                        output.insert("end", "I: ) found\n")
+                                                        i += 1
+                                                    else:
+                                                        output.insert("end", err + ") not found\n")
+                                                        return i, [(lexeme[i], "SYNTAX ERROR")]
+                                                else:
+                                                    output.insert(
+                                                        "end", err + "tint literal, flora literal, identifier, or lent not found\n")
+                                                    return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                                            # TODO: <operate-flora-tint>
+                                            if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<operate-flora-tint>"]:
+                                                output.insert("end", "I: operate-flora-tint found\n")
+
+                                                # <operator>
+                                                if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<operator>"]:
+                                                    output.insert("end", "I: operator found\n")
+                                                    i += 1
+                                                else:
+                                                    output.insert("end", err + "operator not found\n")
+                                                    return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                                                # <insert-operation>
+                                                if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<insert-operation>"]:
+                                                    output.insert("end", "I: insert-operation found\n")
+
+                                                    # (
+                                                    if lexeme[i] != "EPSILON" and lexeme[i] == "(":
+                                                        output.insert("end", "I: ( found\n")
+                                                        i += 1
+                                                    else:
+                                                        output.insert("end", err + "( not found\n")
+                                                        return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                                                    # <insert-flora-tint>
+                                                    if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<insert-flora-tint>"]:
+                                                        output.insert(
+                                                            "end", "I: insert-flora-tint found\n")
+                                                        i += 1
+
+                                                        # tint literal
+                                                        if lexeme[i] != "EPSILON" and token[i] == "TINT LIT":
+                                                            output.insert("end", "I: tint literal found\n")
+                                                            i += 1
+                                                        # flora literal
+                                                        elif lexeme[i] != "EPSILON" and token[i] == "FLORA LIT":
+                                                            output.insert(
+                                                                "end", "I: flora literal found\n")
+                                                            i += 1
+                                                        # identifer
+                                                        elif lexeme[i] != "EPSILON" and lexeme[i] == "#":
+                                                            output.insert("end", "I: identifier found\n")
+                                                            i += 2
+
+                                                            # <insert-func>
+                                                            if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<insert-func>"]:
+                                                                output.insert(
+                                                                    "end", "I: insert-func found\n")
+
+                                                                # (
+                                                                if lexeme[i] != "EPSILON" and lexeme[i] == "(":
+                                                                    output.insert("end", "I: ( found\n")
+                                                                    i += 1
+                                                                else:
+                                                                    output.insert(
+                                                                        "end", err + "( not found\n")
+                                                                    return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                                                                # <argument>
+                                                                if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<argument>"]:
+                                                                    output.insert(
+                                                                        "end", "I: argument found\n")
+
+                                                                    # <insert-argument>
+                                                                    while lexeme[i] != "EPSILON" and lexeme[i] in first_set["<insert-argument>"]:
+                                                                        output.insert(
+                                                                            "end", "I: insert-argument found\n")
+
+                                                                        # <all-type-value>
+                                                                        if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<all-type-value>"]:
+                                                                            output.insert(
+                                                                                "end", "I: all-type-value found\n")
+                                                                            i += 1
+                                                                        # # identifier
+                                                                        elif lexeme[i] != "EPSILON" and lexeme[i] == "#":
+                                                                            output.insert(
+                                                                                "end", "I: identifier found\n")
+                                                                            i += 2
+
+                                                                            # (
+                                                                            if lexeme[i] != "EPSILON" and lexeme[i] == "(":
+                                                                                output.insert("end", "I: ( found\n")
+                                                                                i += 1
+                                                                            else:
+                                                                                output.insert(
+                                                                                    "end", err + "( not found\n")
+                                                                                return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                                                                            # TODO: <2D-argument>
+
+                                                                            # )
+                                                                            if lexeme[i] != "EPSILON" and lexeme[i] == ")":
+                                                                                output.insert("end", "I: ) found\n")
+                                                                                i += 1
+                                                                            else:
+                                                                                output.insert(
+                                                                                    "end", err + ") not found\n")
+                                                                                return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                                                                        else:
+                                                                            output.insert(
+                                                                                "end", err + "insert-argument not found\n")
+                                                                            return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                                                                        # ,
+                                                                        if lexeme[i] != "EPSILON" and lexeme[i] == ",":
+                                                                            output.insert("end", "I: , found\n")
+                                                                            i += 1
+                                                                        else:
+                                                                            output.insert(
+                                                                                "end", err + ", not found\n")
+                                                                            return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                                                                    else:
+                                                                        output.insert(
+                                                                            "end", err + "insert-argument not found\n")
+                                                                        return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                                                                        # -----
+
+                                                                # )
+                                                                if lexeme[i] != "EPSILON" and lexeme[i] == ")":
+                                                                    output.insert("end", "I: ) found\n")
+                                                                    i += 1
+                                                                else:
+                                                                    output.insert(
+                                                                        "end", err + ") not found\n")
+                                                                    return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                                                            # TODO: <instance-grab>
+                                                            if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<instance-grab>"]:
+                                                                output.insert(
+                                                                    "end", "I: instance-grab found\n")
+
+                                                                # identifier
+                                                                if lexeme[i] != "EPSILON" and lexeme[i] == "#":
+                                                                    output.insert(
+                                                                        "end", "I: identifier found\n")
+                                                                    i += 6  # #identifer().identifer
+                                                                else:
+                                                                    output.insert(
+                                                                        "end", err + "identifier not found\n")
+                                                                    return i, [(lexeme[i], "SYNTAX ERROR")]
+                                                        # lent(<all-type-value>)
+                                                        elif lexeme[i] != "EPSILON" and lexeme[i] == "lent":
+                                                            output.insert("end", "I: lent found\n")
+                                                            i += 1
+
+                                                            # (
+                                                            if lexeme[i] != "EPSILON" and lexeme[i] == "(":
+                                                                output.insert("end", "I: ( found\n")
+                                                                i += 1
+                                                            else:
+                                                                output.insert("end", err + "( not found\n")
+                                                                return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                                                            # TODO: <all-type-value>
+                                                            if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<all-type-value>"]:
+                                                                output.insert(
+                                                                    "end", "I: all-type-value found\n")
+
+                                                            else:
+                                                                output.insert(
+                                                                    "end", err + "all-type-value not found\n")
+                                                                return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                                                            # )
+                                                            if lexeme[i] != "EPSILON" and lexeme[i] == ")":
+                                                                output.insert("end", "I: ) found\n")
+                                                                i += 1
+                                                            else:
+                                                                output.insert("end", err + ") not found\n")
+                                                                return i, [(lexeme[i], "SYNTAX ERROR")]
+                                                        else:
+                                                            output.insert(
+                                                                "end", err + "tint literal, flora literal, identifier, or lent not found\n")
+                                                            return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                                                        # )
+                                                        if lexeme[i] != "EPSILON" and lexeme[i] == ")":
+                                                            output.insert("end", "I: ) found\n")
+                                                            i += 1
+                                                        else:
+                                                            output.insert("end", err + ") not found\n")
+                                                            return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                                            # ,
+                                            if lexeme[i] != "EPSILON" and lexeme[i] == ",":
+                                                output.insert("end", "I: , found\n")
+                                                i += 1
+                                            else:
+                                                break
+
+                                    # <common-type>
+                                    elif lexeme[i] != "EPSILON" and lexeme[i] in first_set["<common-type>"]:
+                                        while lexeme[i] != "EPSILON" and lexeme[i] in first_set["<common-type>"]:
+                                            output.insert("end", "I: common-type found\n")
+                                            i += 1
+
+                                            # ,
+                                            if lexeme[i] != "EPSILON" and lexeme[i] == ",":
+                                                output.insert("end", "I: , found\n")
+                                                i += 1
+                                            else:
+                                                break
+                                    else:
+                                        output.insert(
+                                            "end", err + "insert-all-operand not found\n")
+                                        return i, [(lexeme[i], "SYNTAX ERROR")]
+                                else:
+                                    output.insert(
+                                        "end", err + "insert-all-operand not found\n")
+                                    return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                            # <string-cond-op>
+                            elif lexeme[i] != "EPSILON" and lexeme[i] in first_set["<string-cond-op>"]:
+                                output.insert("end", "I: string-cond-op found\n")
+                                i += 1
+
+                                # <string-operand>
+                                if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<string-operand>"]:
+                                    output.insert("end", "I: string-operand found\n")
+
+                                    # TODO: <all-type-value>
+                                    if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<all-type-value>"]:
+                                        while lexeme[i] != "EPSILON" and lexeme[i] in first_set["<all-type-value>"]:
+                                            output.insert("end", "I: all-type-value found\n")
+                                            i += 1
+
+                                            # ,
+                                            if lexeme[i] != "EPSILON" and lexeme[i] == ",":
+                                                output.insert("end", "I: , found\n")
+                                                i += 1
+                                            else:
+                                                break
+                                    # <all-types>
+                                    if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<all-types>"]:
+                                        while lexeme[i] != "EPSILON" and lexeme[i] in first_set["<all-types>"]:
+                                            output.insert("end", "I: all-types found\n")
+                                            i += 1
+
+                                            # ,
+                                            if lexeme[i] != "EPSILON" and lexeme[i] == ",":
+                                                output.insert("end", "I: , found\n")
+                                                i += 1
+                                            else:
+                                                break
+                                    else:
+                                        output.insert("end", err + "string-op error\n")
+                                        return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                                else:
+                                    output.insert("end", err + "string-operand not found\n")
+                                    return i, [(lexeme[i], "SYNTAX ERROR")]
+
+                # (
+                if lexeme[i] != "EPSILON" and lexeme[i] == "(":
+                    output.insert("end", "I: ( found\n")
+                    i += 1
+                else:
+                    output.insert("end", err + "( not found\n")
+                    return [(lexeme[i], "SYNTAX ERROR")]
+
+                # <statement>
+                i, results = statement(lexeme, token, i, output)
+                if "SYNTAX ERROR" in results:
+                    return results
+
+                # )
+                if lexeme[i] != "EPSILON" and lexeme[i] == ")":
+                    output.insert("end", "I: ) found\n")
+                    i += 1
+                else:
+                    output.insert("end", err + ") not found\n")
+                    return [(lexeme[i], "SYNTAX ERROR")]
+
+
+                # --
+            else:
+                output.insert("end", err + "insert-branch not found\n")
+                return i, [(lexeme[i], "SYNTAX ERROR")]
             # ;
             # <more-branch>
 
@@ -4380,6 +4900,7 @@ def syntax_analysis(programs, output):
                 elif lexeme[i] != "EPSILON" and lexeme[i] == "**":
                     i += 1
                     if lexeme[i] != "EPSILON" and lexeme[i] == "#":
+                        output.insert("end", "I: **#id found\n")
                         i += 2
                     else:
                         output.insert("end", err + "identifier not found\n")
