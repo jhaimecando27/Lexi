@@ -1474,11 +1474,6 @@ def lexical_analysis(programs):
                         if program[i] in rd.delimi:
                             results.append((tmp_wrd, Id))
                             break
-
-                        if program[i] not in rd.delimi and program[i] not in rd.id:
-                            results.append(Errors.delim(i, tmp_wrd, program[i], rd.id))
-                            i = skip(i, program)
-                            break
                     continue
                 else:
                     # Finish whole word if error

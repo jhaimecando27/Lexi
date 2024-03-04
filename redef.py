@@ -31,7 +31,7 @@ ascii = [
 
 
 # Delimiters
-delimi = space + ["=", ";"]
+delimi = space + ["=", ";", ")"]
 delimtf = space + ["+", "-", "*", "/", "%",
                    ";", ")", "]", "}", "<", ">", "!", "=", ","]
 delims = ["\"",]
