@@ -50,7 +50,7 @@ delim11 = [";", "+", " ", ",", ")", "}", "]"]
 delim12 = ["=", ";", ")", "}"]
 delim13 = dig + space + ["("]
 delim14 = ascii
-delim15 = space + dig + let + newline + ["\"", ")"]
+delim15 = space + dig + let + newline + ["\"", ")", "]"]
 delim16 = ["\n", " ", ")"]
 delim17 = space + ["=", "-", "/", "*", "+", "]", ")", "}", ",", ";", "\'", "("]
 delim18 = [";", ",", "]", "),", "}", "."]
