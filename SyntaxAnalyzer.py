@@ -3339,7 +3339,7 @@ def statement(lexeme, token, i, output):
                 return i, [(lexeme[i], "SYNTAX ERROR")]
 
         # TODO: tree
-        if lexeme[i] != "EPSILON" and lexeme[i] in first_set["tree"]:
+        if lexeme[i] != "EPSILON" and lexeme[i] == "tree":
             output.insert("end", "I: tree found\n")
 
             # (
@@ -3977,7 +3977,7 @@ def syntax_analysis(programs, output):
                 return [(lexeme[i], "SYNTAX ERROR")]
 
             # <flora-tint-value>
-            while lexeme[i] != "EPSILON" and (lexeme[i] in first_set["<flora-tint-value>>"] or token[i] in first_set["<insert-flora-tint>"]):
+            while lexeme[i] != "EPSILON" and (lexeme[i] in first_set["<flora-tint-value>"] or token[i] in first_set["<insert-flora-tint>"]):
                 output.insert("end", "I: flora-tint-value found\n")
 
                 # <insert-flora-tint>
@@ -4374,6 +4374,9 @@ def syntax_analysis(programs, output):
         else:
             output.insert("end", err + "; not found\n")
             return [(lexeme[i], "SYNTAX ERROR")]
+    else:
+        output.insert("end", err + "garden not found\n")
+        return [(lexeme[i], "SYNTAX ERROR")]
 
     # ---------- # TODO: <function> # ---------- #
     while lexeme[i] != "EPSILON" and lexeme[i] in first_set["<function>"]:

@@ -41,7 +41,8 @@ delim2 = ["\n", ' ']
 delim3 = [' ', "("]
 delim4 = [" "]
 delim5 = num + space + ht + ["(", "["]
-delim6 = let + num + space + newline + ht + ["(", "[", "{", "\"", "\'", ")", "]"]
+delim6 = let + num + space + newline + ht + \
+    ["(", "[", "{", "\"", "\'", ")", "]"]
 delim7 = dig + space + ht + ["\"", "\'", "(", "[", "{"]
 delim8 = num + ht + space + ["\"", "["]
 delim9 = space + newline
@@ -52,15 +53,16 @@ delim13 = dig + space + ["("]
 delim14 = ascii
 delim15 = space + dig + let + newline + ["\"", ")", "]"]
 delim16 = ["\n", " ", ")"]
-delim17 = space + ["=", "-", "/", "*", "+", "]", ")", "}", ",", ";", "\'", "("]
+delim17 = newline + space + ["=", "-", "/", "*", "+", "]",
+                   ")", "}", ",", ";", "\'", "("]
 delim18 = [";", ",", "]", "),", "}", "."]
-delim19 = num + space, ht + ["("]
+delim19 = num + space + ht + ["("]
 delim20 = let
 delim21 = [":"]
 delim22 = num + [" ", "(", "#"]
 delim23 = space + newline + ["\"", "}"] + dig
 delim24 = ["("]
-delim25 = space + [")", ","]
+delim25 = newline + space + [")", ","]
 delim26 = newline + space + [")"]
 delim27 = space + num + ht + [",", "_", "["]
 delim28 = let
@@ -99,7 +101,6 @@ CLEAR = "clear"
 BARE = "bare"
 FLORAL = "floral"
 GARDEN = "garden"
-
 
 
 # Reserved Symbols
