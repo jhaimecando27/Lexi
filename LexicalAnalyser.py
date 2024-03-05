@@ -435,9 +435,9 @@ def lexical_analysis(programs):
                                                 i = skip(i, program)
                                                 continue
                         # GETKEYS, GETVALUES delim24
-                        elif i < len(program) and program[i] == 'k':
+                        elif i < len(program) and program[i] == 'K':
                             i += 1
-                            tmp_wrd = "getk"
+                            tmp_wrd = "getK"
                             if i < len(program) and program[i] == 'e':
                                 i += 1
                                 tmp_wrd = "getke"
@@ -1021,10 +1021,11 @@ def lexical_analysis(programs):
                 if i < len(program) and program[i] in rd.delim13:
                     results.append(("*", rs))
                     continue
+                # *# IDENTIFIER
                 elif i < len(program) and program[i] == '#':
                     i += 1
                     tmp_wrd = "*#"
-                    if i < len(program) and program[i] in rd.delim25:
+                    if i < len(program) and program[i] in rd.id:
                         results.append(("*#", rs))
                         tmp_wrd = ""
                         tmp_wrd = program[i]
@@ -1034,7 +1035,7 @@ def lexical_analysis(programs):
                                 results.append(Errors.delim(i, tmp_wrd, program[i], ["\""]))
                                 i = skip(i, program)
                                 break
-                            if i < len(program) and program[i].isalnum():
+                            if i < len(program) and program[i] in rd.id:
                                 tmp_wrd += program[i]
                                 i += 1
                             if x == 49:
@@ -1043,14 +1044,14 @@ def lexical_analysis(programs):
                                     results.append(Errors.Id(i, tmp_wrd))
                                     i = skip(i, program)
                                     continue
-                            if program[i] in rd.delimi:
+                            if program[i] in rd.delim26:
                                 results.append((tmp_wrd, Id))
                                 break
                         continue
                     else:
                         # Finish whole word if error
                         results.append(Errors.delim(
-                            i, tmp_wrd, program[i], rd.delim25))
+                            i, tmp_wrd, program[i], rd.delim26))
                         i = skip(i, program)
                         continue
                 # ** delim13
@@ -1073,17 +1074,21 @@ def lexical_analysis(programs):
                                 i, tmp_wrd, program[i], rd.delim13))
                             i = skip(i, program)
                             continue
-                    # **#
+                    # **# IDENTIFIER
                     elif i < len(program) and program[i] == '#':
                         i += 1
                         tmp_wrd = "**#"
-                        if i < len(program) and program[i] in rd.delim20:
+                        if i < len(program) and program[i] in rd.id:
                             results.append(("**#", rs))
                             tmp_wrd = ""
                             tmp_wrd = program[i]
                             i += 1
                             for x in range(50):
-                                if i < len(program) and program[i].isalnum():
+                                if program[i] == "\n":
+                                    results.append(Errors.delim(i, tmp_wrd, program[i], ["\""]))
+                                    i = skip(i, program)
+                                    break
+                                if i < len(program) and program[i] in rd.id:
                                     tmp_wrd += program[i]
                                     i += 1
                                 if x == 49:
@@ -1448,7 +1453,7 @@ def lexical_analysis(programs):
                     i = skip(i, program)
                     continue
 
-            # # delim20
+            # # delim20 IDENTIFIER
             elif i < len(program) and program[i] == '#':
                 i += 1
                 tmp_wrd = "#"
@@ -1489,13 +1494,9 @@ def lexical_analysis(programs):
                 if i < len(program) and program[i] in rd.delim20:
                     results.append(("?", rs))
 
-                    comment = ''
                     single_symbols = [" ", "\n", "\t", ";", ",", "(", ")", "#"]
                     while i < len(program) and program[i] not in single_symbols:
-                        comment += program[i]
                         i += 1
-
-                    results.append((comment, cmnt))
 
                     continue
                 else:
@@ -1622,35 +1623,34 @@ def lexical_analysis(programs):
 
             # String
             elif i < len(program) and program[i] == '"':
-                tmp_wrd += program[i]
+                tmp_wrd = program[i]
                 i += 1
-                if i < len(program) and program[i].isascii():
+                if i < len(program) and program[i] in rd.ascii:
                     while True:
                         if program[i] == "\n":
                             results.append(Errors.delim(i, tmp_wrd, program[i], ["\""]))
                             i = skip(i, program)
                             break
-                        if i < len(program) and program[i].isascii():
-                            tmp_wrd += program[i]
-                            i += 1
 
-                        if i < len(program) and program[i] == '\\':
+                        tmp_wrd += program[i]
+                        i += 1
+
+                        if i < len(program) and program[i - 1] == '\\':
                             tmp_esc = "\\"
-                            i += 1
                             if i < len(program) and program[i] == 'n':
-                                tmp_esc = "\\n"
+                                tmp_esc = "n"
                                 i += 1
                                 results.append((tmp_esc, str_lit))
                             elif i < len(program) and program[i] == '\\':
-                                tmp_esc = "\\\\"
+                                tmp_esc = "\\"
                                 i += 1
                                 results.append((tmp_esc, str_lit))
                             elif i < len(program) and program[i] == '"':
-                                tmp_esc = "\\\""
+                                tmp_esc = '"'
                                 i += 1
                                 results.append((tmp_esc, str_lit))
                             elif i < len(program) and program[i] == 't':
-                                tmp_esc = "\\t"
+                                tmp_esc = "t"
                                 i += 1
                                 results.append((tmp_esc, str_lit))
                             elif i < len(program) and program[i] == '\'':
