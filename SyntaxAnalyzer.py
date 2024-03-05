@@ -4375,7 +4375,7 @@ def syntax_analysis(programs, output):
             output.insert("end", err + "; not found\n")
             return [(lexeme[i], "SYNTAX ERROR")]
     else:
-        output.insert("end", err + "garden not found\n")
+        output.insert("end", err + "garden or floral not found\n")
         return [(lexeme[i], "SYNTAX ERROR")]
 
     # ---------- # TODO: <function> # ---------- #

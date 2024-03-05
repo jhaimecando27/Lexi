@@ -9,33 +9,21 @@ let = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
 num = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 newline = ["\n"]
 diglet = dig + let
-id = let + num + ["_"]
+id = let + num + ["_", "-"]
 ht = ["#"]
 space = [" "]
 tab = "\t"
 invalid = "`@$?"
-ascii = [
-    "\x00", "\x01", "\x02", "\x03", "\x04", "\x05", "\x06", "\x07",
-    "\x08", "\t", "\n", "\x0b", "\x0c", "\r", "\x0e", "\x0f", "\x10",
-    "\x11", "\x12", "\x13", "\x14", "\x15", "\x16", "\x17", "\x18",
-    "\x19", "\x1a", "\x1b", "\x1c", "\x1d", "\x1e", "\x1f", " ", "!",
-    "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".",
-    "/", ":", ";", "<", "=", ">", "?", "@", "A", "B", "C", "D", "E", "F",
-    "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
-    "U", "V", "W", "X", "Y", "Z", "[", "\\", "]", "^", "_", "`", "a", "b",
-    "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
-    "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "{", "|", "}", "~",
-    "\x7f"
-]
+ascii = [chr(i) for i in range(128)]
 
 
 # Delimiters
 delimi = space + ["=", ";", ")"]
-delimtf = space + ["+", "-", "*", "/", "%",
+delimtf = newline + space + ["+", "-", "*", "/", "%",
                    ";", ")", "]", "}", "<", ">", "!", "=", ",", ":"]
 delims = ["\"",]
 delimc = ["'"]
-delimb = space + ["=", "<", ">", "!", ";", "]"]
+delimb = space + ["=", "<", ">", "!", ";", "]", ")"]
 delim1 = [";", " "]
 delim2 = ["\n", ' ']
 delim3 = [' ', "("]
@@ -43,29 +31,29 @@ delim4 = [" "]
 delim5 = num + space + ht + ["(", "["]
 delim6 = let + num + space + newline + ht + \
     ["(", "[", "{", "\"", "\'", ")", "]"]
-delim7 = dig + space + ht + ["\"", "\'", "(", "[", "{"]
-delim8 = num + ht + space + ["\"", "["]
+delim7 = newline + dig + space + ht + ["\"", "\'", "(", "[", "{"]
+delim8 = let + num + ht + space + ["\"", "["]
 delim9 = space + newline
 delim10 = [";", ' ',  "\n", ","]
 delim11 = [";", "+", " ", ",", ")", "}", "]"]
-delim12 = ["=", ";", ")", "}"]
+delim12 = space + ["=", ";", ")", "}"]
 delim13 = dig + space + ["("]
 delim14 = ascii
 delim15 = space + dig + let + newline + ["\"", ")", "]"]
-delim16 = ["\n", " ", ")"]
+delim16 = let + ht + ["\n", " ", ")"]
 delim17 = newline + space + ["=", "-", "/", "*", "+", "]",
-                   ")", "}", ",", ";", "\'", "("]
+                             ")", "}", ",", ";", "\'", "(", "."]
 delim18 = [";", ",", "]", "),", "}", "."]
 delim19 = num + space + ht + ["("]
 delim20 = let
-delim21 = [":"]
+delim21 = space + [":", "("]
 delim22 = num + [" ", "(", "#"]
-delim23 = space + newline + ["\"", "}"] + dig
-delim24 = ["("]
+delim23 = space + newline + ["\"", "}", "("] + dig
+delim24 = space + ["("]
 delim25 = newline + space + [")", ","]
 delim26 = newline + space + [")"]
-delim27 = space + num + ht + [",", "_", "["]
-delim28 = let
+delim27 = space + num + ht + [",", "_", "[", ")", ":"]
+delim28 = let + ht
 
 
 # Reserved Words
