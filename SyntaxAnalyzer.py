@@ -860,6 +860,7 @@ def statement(lexeme, token, i, output):
                 # ,
                 if lexeme[i] != "EPSILON" and lexeme[i] == ",":
                     output.insert("end", "I: , found\n")
+
                     i += 1
                 else:
                     output.insert("end", err + ", not found\n")
@@ -3764,6 +3765,7 @@ def statement(lexeme, token, i, output):
                                                             else:
                                                                 output.insert(
                                                                     "end", err + "all-type-value not found\n")
+
                                                                 return i, [(lexeme[i], "SYNTAX ERROR")]
 
                                                             # )
