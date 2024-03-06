@@ -18,7 +18,7 @@ ascii = [chr(i) for i in range(128)]
 
 
 # Delimiters
-delimi = space + ["=", ";", ")"]
+delimi = space + ["=", ";", ")", "("]
 delimtf = newline + space + ["+", "-", "*", "/", "%",
                    ";", ")", "]", "}", "<", ">", "!", "=", ",", ":"]
 delims = ["\"",]
