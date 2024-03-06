@@ -392,9 +392,6 @@ def syntax_analysis(programs, output):
 
     if lexeme[i] != "EPSILON":
         output.insert("end", err + "EPSILON found\n")
-    else:
-        output.insert("end", "SyntaxAnalyser: No Error Found.\n")
-        return results
 
 
 # For displaying the Parse Tree

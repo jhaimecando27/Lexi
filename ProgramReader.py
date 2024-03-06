@@ -161,27 +161,31 @@ class AnalyzerGui:
         self.tokenLbl.configure(text='Lexeme')
 
         test = syntax_analysis(self.tokens, self.errorTxt)
+        print(test)
 
         errors = []
         errors_list = ["SYNTAX ERROR"]
         line_num = 0
 
-        for lexeme, token in test:
-            if token in errors_list:
-                print(lexeme, token)
-                errors.append(
-                    "line "
-                    + str(line_num)
-                    + ":"
-                    + lexeme
-                )
-                continue
+        if not errors:
+            self.errorTxt.insert(tk.END, "SyntaxAnalyzer: No Error Found.\n")
+        else:
+            for lexeme, token in test:
+                if token in errors_list:
+                    print(lexeme, token)
+                    errors.append(
+                        + str(line_num)
+                        + ":"
+                        + lexeme
+                    )
+                    continue
 
-            self.insert_centered(self.lexicTxt, f"{lexeme}\n")
-            self.insert_centered(self.tokenTxt, f"{token}\n")
+                self.insert_centered(self.lexicTxt, f"{lexeme}\n")
+                self.insert_centered(self.tokenTxt, f"{token}\n")
 
-        for errors in errors:
-            self.errorTxt.insert(tk.END, f"{errors}\n")
+            for errors in errors:
+                self.errorTxt.insert(tk.END, f"{errors}\n")
+
 
         self.lexicTxt.configure(state="disabled")
         self.tokenTxt.configure(state="disabled")

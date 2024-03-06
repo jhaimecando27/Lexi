@@ -15,7 +15,7 @@ def insert_index(lexeme, token, i, output):
         else:
             output.insert(
                 "end", err + "tint or string literal not found\n")
-            return [(lexeme[i], "SYNTAX ERROR")]
+            return i, [(lexeme[i], "SYNTAX ERROR")]
     return i, results
 
 
@@ -29,7 +29,7 @@ def D3_start_end_step(lexeme, token, i, output):
         if lexeme[i] != "[":
             output.insert(
                 "end", err + "[ not found\n")
-            return [(lexeme[i], "SYNTAX ERROR")]
+            return i, [(lexeme[i], "SYNTAX ERROR")]
         i += 1
 
         # <3D-insert-start>
@@ -38,13 +38,13 @@ def D3_start_end_step(lexeme, token, i, output):
             if lexeme[i] in first_set["<insert-index>"]:
                 i, results = insert_index(lexeme, token, i, output)
                 if "SYNTAX ERROR" in results:
-                    return results
+                    return i, results
 
                 # :
                 if lexeme[i] != ":":
                     output.insert(
                         "end", err + ": not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 1
 
                 # <3D-close-start>
@@ -58,20 +58,20 @@ def D3_start_end_step(lexeme, token, i, output):
                             if token[i] != "tint literal":
                                 output.insert(
                                     "end", err + "tint literal not found\n")
-                                return [(lexeme[i], "SYNTAX ERROR")]
+                                return i, [(lexeme[i], "SYNTAX ERROR")]
                             i += 1
 
                         # ]
                         if lexeme[i] != "]":
                             output.insert(
                                 "end", err + "] not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                         i += 1
                     # <insert-index>
                     if lexeme[i] in first_set["<insert-index>"]:
                         i, results = insert_index(lexeme, token, i, output)
                         if "SYNTAX ERROR" in results:
-                            return results
+                            return i, results
 
                         # <3D-close-end>
                         if lexeme[i] in first_set["<3D-close-end>"]:
@@ -82,19 +82,19 @@ def D3_start_end_step(lexeme, token, i, output):
                                 if token[i] != "tint literal":
                                     output.insert(
                                         "end", err + "tint literal not found\n")
-                                    return [(lexeme[i], "SYNTAX ERROR")]
+                                    return i, [(lexeme[i], "SYNTAX ERROR")]
                                 i += 1
 
                             # ]
                             if lexeme[i] != "]":
                                 output.insert(
                                     "end", err + "] not found\n")
-                                return [(lexeme[i], "SYNTAX ERROR")]
+                                return i, [(lexeme[i], "SYNTAX ERROR")]
                             i += 1
                     else:
                         output.insert(
                             "end", err + "3d-close-end or insert-index not found\n")
-                        return [(lexeme[i], "SYNTAX ERROR")]
+                        return i, [(lexeme[i], "SYNTAX ERROR")]
             elif lexeme[i] == "[":
                 i += 1
 
@@ -104,7 +104,7 @@ def D3_start_end_step(lexeme, token, i, output):
                     if lexeme[i] in first_set["<insert-index>"]:
                         i, results = insert_index(lexeme, token, i, output)
                         if "SYNTAX ERROR" in results:
-                            return results
+                            return i, results
 
                     # <3D-close-end>
                     if lexeme[i] in first_set["<3D-close-end>"]:
@@ -119,23 +119,23 @@ def D3_start_end_step(lexeme, token, i, output):
                             if token[i] != "tint literal":
                                 output.insert(
                                     "end", err + "tint literal not found\n")
-                                return [(lexeme[i], "SYNTAX ERROR")]
+                                return i, [(lexeme[i], "SYNTAX ERROR")]
                             i += 1
 
                             # ]
                             if lexeme[i] != "]":
                                 output.insert(
                                     "end", err + "] not found\n")
-                                return [(lexeme[i], "SYNTAX ERROR")]
+                                return i, [(lexeme[i], "SYNTAX ERROR")]
                             i += 1
                         else:
                             output.insert(
                                 "end", err + "] or : not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
             else:
                 output.insert(
                     "end", err + "3D-insert-start error\n")
-                return [(lexeme[i], "SYNTAX ERROR")]
+                return i, [(lexeme[i], "SYNTAX ERROR")]
     return i, results
 
 
@@ -148,7 +148,7 @@ def D2_start_end_step(lexeme, token, i, output):
         if lexeme[i] != "[":
             output.insert(
                 "end", err + "[ not found\n")
-            return [(lexeme[i], "SYNTAX ERROR")]
+            return i, [(lexeme[i], "SYNTAX ERROR")]
         i += 1
 
         # <2D-insert-start>
@@ -157,13 +157,13 @@ def D2_start_end_step(lexeme, token, i, output):
             if lexeme[i] in first_set["<insert-index>"]:
                 i, results = insert_index(lexeme, token, i, output)
                 if "SYNTAX ERROR" in results:
-                    return results
+                    return i, results
 
                 # :
                 if lexeme[i] != ":":
                     output.insert(
                         "end", err + ": not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 1
 
                 # <2D-close-start>
@@ -178,7 +178,7 @@ def D2_start_end_step(lexeme, token, i, output):
                             i, results = D3_start_end_step(
                                 lexeme, token, i, output)
                             if "SYNTAX ERROR" in results:
-                                return results
+                                return i, results
 
                         # :
                         elif lexeme[i] == ":":
@@ -187,29 +187,29 @@ def D2_start_end_step(lexeme, token, i, output):
                             if token[i] != "tint literal":
                                 output.insert(
                                     "end", err + "tint literal not found\n")
-                                return [(lexeme[i], "SYNTAX ERROR")]
+                                return i, [(lexeme[i], "SYNTAX ERROR")]
 
                             # ]
                             if lexeme[i] != "]":
                                 output.insert(
                                     "end", err + "] not found\n")
-                                return [(lexeme[i], "SYNTAX ERROR")]
+                                return i, [(lexeme[i], "SYNTAX ERROR")]
                             i += 1
 
                             # <3D-start-end-step>
                             i, results = D3_start_end_step(
                                 lexeme, token, i, output)
                             if "SYNTAX ERROR" in results:
-                                return results
+                                return i, results
                         else:
                             output.insert(
                                 "end", err + "] not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                     # <insert-index>
                     elif lexeme[i] in first_set["<insert-index>"]:
                         i, results = insert_index(lexeme, token, i, output)
                         if "SYNTAX ERROR" in results:
-                            return results
+                            return i, results
 
                         # <2D-close-end>
                         if lexeme[i] in first_set["<2D-close-end>"]:
@@ -221,7 +221,7 @@ def D2_start_end_step(lexeme, token, i, output):
                                 i, results = D3_start_end_step(
                                     lexeme, token, i, output)
                                 if "SYNTAX ERROR" in results:
-                                    return results
+                                    return i, results
 
                             # :
                             elif lexeme[i] == ":":
@@ -230,32 +230,32 @@ def D2_start_end_step(lexeme, token, i, output):
                                 if token[i] != "tint literal":
                                     output.insert(
                                         "end", err + "tint literal not found\n")
-                                    return [(lexeme[i], "SYNTAX ERROR")]
+                                    return i, [(lexeme[i], "SYNTAX ERROR")]
 
                                 # ]
                                 if lexeme[i] != "]":
                                     output.insert(
                                         "end", err + "] not found\n")
-                                    return [(lexeme[i], "SYNTAX ERROR")]
+                                    return i, [(lexeme[i], "SYNTAX ERROR")]
                                 i += 1
 
                                 # <3D-start-end-step>
                                 i, results = D3_start_end_step(
                                     lexeme, token, i, output)
                                 if "SYNTAX ERROR" in results:
-                                    return results
+                                    return i, results
                             else:
                                 output.insert(
                                     "end", err + "] not found\n")
-                                return [(lexeme[i], "SYNTAX ERROR")]
+                                return i, [(lexeme[i], "SYNTAX ERROR")]
                         else:
                             output.insert(
                                 "end", err + "2D-close-end not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                     else:
                         output.insert(
                             "end", err + "2D-close-start not found\n")
-                        return [(lexeme[i], "SYNTAX ERROR")]
+                        return i, [(lexeme[i], "SYNTAX ERROR")]
             # :
             elif lexeme[i] == ":":
                 i += 1
@@ -266,7 +266,7 @@ def D2_start_end_step(lexeme, token, i, output):
                     if lexeme[i] in first_set["<insert-index>"]:
                         i, results = insert_index(lexeme, token, i, output)
                         if "SYNTAX ERROR" in results:
-                            return results
+                            return i, results
 
                     # <2D-close-end>
                     if lexeme[i] in first_set["<2D-close-end>"]:
@@ -278,7 +278,7 @@ def D2_start_end_step(lexeme, token, i, output):
                             i, results = D3_start_end_step(
                                 lexeme, token, i, output)
                             if "SYNTAX ERROR" in results:
-                                return results
+                                return i, results
 
                         # :
                         elif lexeme[i] == ":":
@@ -287,28 +287,28 @@ def D2_start_end_step(lexeme, token, i, output):
                             if token[i] != "tint literal":
                                 output.insert(
                                     "end", err + "tint literal not found\n")
-                                return [(lexeme[i], "SYNTAX ERROR")]
+                                return i, [(lexeme[i], "SYNTAX ERROR")]
 
                             # ]
                             if lexeme[i] != "]":
                                 output.insert(
                                     "end", err + "] not found\n")
-                                return [(lexeme[i], "SYNTAX ERROR")]
+                                return i, [(lexeme[i], "SYNTAX ERROR")]
                             i += 1
 
                             # <3D-start-end-step>
                             i, results = D3_start_end_step(
                                 lexeme, token, i, output)
                             if "SYNTAX ERROR" in results:
-                                return results
+                                return i, results
                         else:
                             output.insert(
                                 "end", err + "] not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                     else:
                         output.insert(
                             "end", err + "2D-skip-start not found\n")
-                        return [(lexeme[i], "SYNTAX ERROR")]
+                        return i, [(lexeme[i], "SYNTAX ERROR")]
                 # :
                 elif lexeme[i] == ":":
                     i += 1
@@ -316,27 +316,27 @@ def D2_start_end_step(lexeme, token, i, output):
                     if token[i] != "tint literal":
                         output.insert(
                             "end", err + "tint literal not found\n")
-                        return [(lexeme[i], "SYNTAX ERROR")]
+                        return i, [(lexeme[i], "SYNTAX ERROR")]
 
                     # ]
                     if lexeme[i] != "]":
                         output.insert(
                             "end", err + "] not found\n")
-                        return [(lexeme[i], "SYNTAX ERROR")]
+                        return i, [(lexeme[i], "SYNTAX ERROR")]
                     i += 1
 
                     # <3D-start-end-step>
                     i, results = D3_start_end_step(lexeme, token, i, output)
                     if "SYNTAX ERROR" in results:
-                        return results
+                        return i, results
                 else:
                     output.insert(
                         "end", err + "2D-skip-start not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
             else:
                 output.insert(
                     "end", err + "2D-insert-start not found\n")
-                return [(lexeme[i], "SYNTAX ERROR")]
+                return i, [(lexeme[i], "SYNTAX ERROR")]
 
     return i, results
 
@@ -350,7 +350,7 @@ def start_end_step(lexeme, token, i, output):
         if lexeme[i] != "[":
             output.insert(
                 "end", err + "[ not found\n")
-            return [(lexeme[i], "SYNTAX ERROR")]
+            return i, [(lexeme[i], "SYNTAX ERROR")]
         i += 1
 
         # <insert-start>
@@ -359,13 +359,13 @@ def start_end_step(lexeme, token, i, output):
             if lexeme[i] in first_set["<insert-index>"]:
                 i, results = insert_index(lexeme, token, i, output)
                 if "SYNTAX ERROR" in results:
-                    return results
+                    return i, results
 
                 # :
                 if lexeme[i] != ":":
                     output.insert(
                         "end", err + ": not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 1
 
                 # <close-start>
@@ -374,13 +374,13 @@ def start_end_step(lexeme, token, i, output):
                     if lexeme[i] in first_set["<insert-index>"]:
                         i, results = insert_index(lexeme, token, i, output)
                         if "SYNTAX ERROR" in results:
-                            return results
+                            return i, results
 
                         # :
                         if lexeme[i] != ":":
                             output.insert(
                                 "end", err + ": not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                         i += 1
 
                         # <close-start>
@@ -395,7 +395,7 @@ def start_end_step(lexeme, token, i, output):
                                     i, results = D2_start_end_step(
                                         lexeme, token, i, output)
                                     if "SYNTAX ERROR" in results:
-                                        return results
+                                        return i, results
 
                                 # :
                                 elif lexeme[i] == ":":
@@ -404,31 +404,31 @@ def start_end_step(lexeme, token, i, output):
                                     if token[i] != "tint literal":
                                         output.insert(
                                             "end", err + "tint literal not found\n")
-                                        return [(lexeme[i], "SYNTAX ERROR")]
+                                        return i, [(lexeme[i], "SYNTAX ERROR")]
 
                                     # ]
                                     if lexeme[i] != "]":
                                         output.insert(
                                             "end", err + "] not found\n")
-                                        return [(lexeme[i], "SYNTAX ERROR")]
+                                        return i, [(lexeme[i], "SYNTAX ERROR")]
                                     i += 1
 
                                     # <2D-start-end-step>
                                     i, results = D2_start_end_step(
                                         lexeme, token, i, output)
                                     if "SYNTAX ERROR" in results:
-                                        return results
+                                        return i, results
                                 else:
                                     output.insert(
                                         "end", err + "] not found\n")
-                                    return [(lexeme[i], "SYNTAX ERROR")]
+                                    return i, [(lexeme[i], "SYNTAX ERROR")]
 
                             # <insert-index>
                             elif lexeme[i] in first_set["<insert-index>"]:
                                 i, results = insert_index(
                                     lexeme, token, i, output)
                                 if "SYNTAX ERROR" in results:
-                                    return results
+                                    return i, results
 
                                 # <close-end>
                                 if lexeme[i] in first_set["<close-end>"]:
@@ -440,7 +440,7 @@ def start_end_step(lexeme, token, i, output):
                                         i, results = D2_start_end_step(
                                             lexeme, token, i, output)
                                         if "SYNTAX ERROR" in results:
-                                            return results
+                                            return i, results
 
                                     # :
                                     elif lexeme[i] == ":":
@@ -449,32 +449,32 @@ def start_end_step(lexeme, token, i, output):
                                         if token[i] != "tint literal":
                                             output.insert(
                                                 "end", err + "tint literal not found\n")
-                                            return [(lexeme[i], "SYNTAX ERROR")]
+                                            return i, [(lexeme[i], "SYNTAX ERROR")]
 
                                         # ]
                                         if lexeme[i] != "]":
                                             output.insert(
                                                 "end", err + "] not found\n")
-                                            return [(lexeme[i], "SYNTAX ERROR")]
+                                            return i, [(lexeme[i], "SYNTAX ERROR")]
                                         i += 1
 
                                         # <2D-start-end-step>
                                         i, results = D2_start_end_step(
                                             lexeme, token, i, output)
                                         if "SYNTAX ERROR" in results:
-                                            return results
+                                            return i, results
                                     else:
                                         output.insert(
                                             "end", err + "] not found\n")
-                                        return [(lexeme[i], "SYNTAX ERROR")]
+                                        return i, [(lexeme[i], "SYNTAX ERROR")]
                                 else:
                                     output.insert(
                                         "end", err + "close-end not found\n")
-                                    return [(lexeme[i], "SYNTAX ERROR")]
+                                    return i, [(lexeme[i], "SYNTAX ERROR")]
                             else:
                                 output.insert(
                                     "end", err + "close-start not found\n")
-                                return [(lexeme[i], "SYNTAX ERROR")]
+                                return i, [(lexeme[i], "SYNTAX ERROR")]
                     # <close-end>
                     elif lexeme[i] in first_set["<close-end>"]:
                         # ]
@@ -485,7 +485,7 @@ def start_end_step(lexeme, token, i, output):
                             i, results = D2_start_end_step(
                                 lexeme, token, i, output)
                             if "SYNTAX ERROR" in results:
-                                return results
+                                return i, results
 
                         # :
                         elif lexeme[i] == ":":
@@ -494,28 +494,28 @@ def start_end_step(lexeme, token, i, output):
                             if token[i] != "tint literal":
                                 output.insert(
                                     "end", err + "tint literal not found\n")
-                                return [(lexeme[i], "SYNTAX ERROR")]
+                                return i, [(lexeme[i], "SYNTAX ERROR")]
 
                             # ]
                             if lexeme[i] != "]":
                                 output.insert(
                                     "end", err + "] not found\n")
-                                return [(lexeme[i], "SYNTAX ERROR")]
+                                return i, [(lexeme[i], "SYNTAX ERROR")]
                             i += 1
 
                             # <2D-start-end-step>
                             i, results = D2_start_end_step(
                                 lexeme, token, i, output)
                             if "SYNTAX ERROR" in results:
-                                return results
+                                return i, results
                         else:
                             output.insert(
                                 "end", err + "] not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                     else:
                         output.insert(
                             "end", err + "close-start not found\n")
-                        return [(lexeme[i], "SYNTAX ERROR")]
+                        return i, [(lexeme[i], "SYNTAX ERROR")]
             # :
             elif lexeme[i] == ":":
                 i += 1
@@ -526,7 +526,7 @@ def start_end_step(lexeme, token, i, output):
                     if lexeme[i] in first_set["<insert-index>"]:
                         i, results = insert_index(lexeme, token, i, output)
                         if "SYNTAX ERROR" in results:
-                            return results
+                            return i, results
 
                     # <close-end>
                     if lexeme[i] in first_set["<close-end>"]:
@@ -538,7 +538,7 @@ def start_end_step(lexeme, token, i, output):
                             i, results = D2_start_end_step(
                                 lexeme, token, i, output)
                             if "SYNTAX ERROR" in results:
-                                return results
+                                return i, results
 
                         # :
                         elif lexeme[i] == ":":
@@ -547,28 +547,28 @@ def start_end_step(lexeme, token, i, output):
                             if token[i] != "tint literal":
                                 output.insert(
                                     "end", err + "tint literal not found\n")
-                                return [(lexeme[i], "SYNTAX ERROR")]
+                                return i, [(lexeme[i], "SYNTAX ERROR")]
 
                             # ]
                             if lexeme[i] != "]":
                                 output.insert(
                                     "end", err + "] not found\n")
-                                return [(lexeme[i], "SYNTAX ERROR")]
+                                return i, [(lexeme[i], "SYNTAX ERROR")]
                             i += 1
 
                             # <2D-start-end-step>
                             i, results = D2_start_end_step(
                                 lexeme, token, i, output)
                             if "SYNTAX ERROR" in results:
-                                return results
+                                return i, results
                         else:
                             output.insert(
                                 "end", err + "] not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                     else:
                         output.insert(
                             "end", err + "skip-start not found\n")
-                        return [(lexeme[i], "SYNTAX ERROR")]
+                        return i, [(lexeme[i], "SYNTAX ERROR")]
                 # :
                 elif lexeme[i] == ":":
                     i += 1
@@ -576,27 +576,27 @@ def start_end_step(lexeme, token, i, output):
                     if token[i] != "tint literal":
                         output.insert(
                             "end", err + "tint literal not found\n")
-                        return [(lexeme[i], "SYNTAX ERROR")]
+                        return i, [(lexeme[i], "SYNTAX ERROR")]
 
                     # ]
                     if lexeme[i] != "]":
                         output.insert(
                             "end", err + "] not found\n")
-                        return [(lexeme[i], "SYNTAX ERROR")]
+                        return i, [(lexeme[i], "SYNTAX ERROR")]
                     i += 1
 
                     # <2D-start-end-step>
                     i, results = D2_start_end_step(lexeme, token, i, output)
                     if "SYNTAX ERROR" in results:
-                        return results
+                        return i, results
                 else:
                     output.insert(
                         "end", err + "skip-start not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
             else:
                 output.insert(
                     "end", err + "insert-start not found\n")
-                return [(lexeme[i], "SYNTAX ERROR")]
+                return i, [(lexeme[i], "SYNTAX ERROR")]
     return i, results
 
 
@@ -611,7 +611,7 @@ def indexing(lexeme, token, i, output):
         if lexeme[i] != "[":
             output.insert(
                 "end", err + "[ not found\n")
-            return [(lexeme[i], "SYNTAX ERROR")]
+            return i, [(lexeme[i], "SYNTAX ERROR")]
 
         # <insert-index>
         if lexeme[i] != "EPSILON" and lexeme[i] in first_set["<insert-index>"]:
@@ -627,7 +627,7 @@ def indexing(lexeme, token, i, output):
         # ]
         if lexeme[i] != "]":
             output.insert("end", err + "] not found\n")
-            return [(lexeme[i], "SYNTAX ERROR")]
+            return i, [(lexeme[i], "SYNTAX ERROR")]
     return i, results
 
 
@@ -650,21 +650,21 @@ def string_value(lexeme, token, i, output):
             i += 2
             i, results = insert_func(lexeme, token, i, output)
             if "SYNTAX ERROR" in results:
-                return results
+                return i, results
 
             # <start-end-step>
             i, results = start_end_step(lexeme, token, i, output)
             if "SYNTAX ERROR" in results:
-                return results
+                return i, results
 
             # <indexing>
             i, results = indexing(lexeme, token, i, output)
             if "SYNTAX ERROR" in results:
-                return results
+                return i, results
         else:
             output.insert(
                 "end", err + "string-value not found\n")
-            return [(lexeme[i], "SYNTAX ERROR")]
+            return i, [(lexeme[i], "SYNTAX ERROR")]
     return i, results
 
 
@@ -673,15 +673,15 @@ def common_data(lexeme, token, i, output):
     err = "E: Syntax Analyzer: "
     if lexeme[i] in first_set["<common-data>"]:
         # <insert-flora-tint>
-        if lexeme[i] in first_set["<insert-flora-tint>"]:
+        if lexeme[i] in first_set["<insert-flora-tint>"] or token[i] in first_set["<insert-flora-tint>"]:
             i, results = insert_flora_tint(lexeme, token, i, output)
             if "SYNTAX ERROR" in results:
-                return results
+                return i, results
         # <string-value>
         elif lexeme[i] in first_set["<string-value>"]:
             i, results = string_value(lexeme, token, i, output)
             if "SYNTAX ERROR" in results:
-                return results
+                return i, results
 
             # <concatenate>
             while True:
@@ -692,13 +692,13 @@ def common_data(lexeme, token, i, output):
                 if lexeme[i] != "+":
                     output.insert(
                         "end", err + "+ not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 1
 
                 # <string-value>
                 i, results = string_value(lexeme, token, i, output)
                 if "SYNTAX ERROR" in results:
-                    return results
+                    return i, results
         # <all-types>
         elif lexeme[i] in first_set["<all-types>"]:
             i += 1
@@ -707,23 +707,23 @@ def common_data(lexeme, token, i, output):
             if lexeme[i] != "(":
                 output.insert(
                     "end", err + "( not found\n")
-                return [(lexeme[i], "SYNTAX ERROR")]
+                return i, [(lexeme[i], "SYNTAX ERROR")]
 
             # <all-type-value>
             i, results = all_type_value(lexeme, token, i, output)
             if "SYNTAX ERROR" in results:
-                return results
+                return i, results
 
             # )
             if lexeme[i] != ")":
                 output.insert("end", err + ") not found\n")
-                return [(lexeme[i], "SYNTAX ERROR")]
+                return i, [(lexeme[i], "SYNTAX ERROR")]
         # bare
         elif lexeme[i] == "bare":
             i += 1
         else:
             output.insert("end", err + "common-data not found\n")
-            return [(lexeme[i], "SYNTAX ERROR")]
+            return i, [(lexeme[i], "SYNTAX ERROR")]
 
         # <add-florist>
         while True:
@@ -733,7 +733,7 @@ def common_data(lexeme, token, i, output):
             # indexing
             i, results = indexing(lexeme, token, i, output)
             if "SYNTAX ERROR" in results:
-                return results
+                return i, results
 
             # +
             if lexeme[i] != "+":
@@ -744,7 +744,7 @@ def common_data(lexeme, token, i, output):
             # <all-type-value>
             i, results = all_type_value(lexeme, token, i, output)
             if "SYNTAX ERROR" in results:
-                return results
+                return i, results
     return i, results
 
 
@@ -757,7 +757,7 @@ def all_type_value(lexeme, token, i, output):
         if lexeme[i] in first_set["<common-data>"]:
             i, results = common_data(lexeme, token, i, output)
             if "SYNTAX ERROR" in results:
-                return results
+                return i, results
         # <open-bracket>
         elif lexeme[i] in first_set["<open-bracket>"]:
             i += 1
@@ -770,7 +770,7 @@ def all_type_value(lexeme, token, i, output):
                 # :
                 if lexeme[i] != ":":
                     output.insert("end", err + ": not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 1
 
             # <sequence>
@@ -784,7 +784,7 @@ def all_type_value(lexeme, token, i, output):
 
                             i, results = common_data(lexeme, token, i, output)
                             if "SYNTAX ERROR" in results:
-                                return results
+                                return i, results
 
                             # ,
                             if lexeme[i] != ",":
@@ -800,7 +800,7 @@ def all_type_value(lexeme, token, i, output):
                             # :
                             if lexeme[i] != ":":
                                 output.insert("end", err + ": not found\n")
-                                return [(lexeme[i], "SYNTAX ERROR")]
+                                return i, [(lexeme[i], "SYNTAX ERROR")]
                             i += 1
 
                         # <2D-sqnc>
@@ -814,7 +814,7 @@ def all_type_value(lexeme, token, i, output):
                                     i, results = common_data(
                                         lexeme, token, i, output)
                                     if "SYNTAX ERROR" in results:
-                                        return results
+                                        return i, results
                                 # <open-bracket>
                                 elif lexeme[i] in first_set["<open-bracket>"]:
                                     i += 1
@@ -827,14 +827,14 @@ def all_type_value(lexeme, token, i, output):
                                         if lexeme[i] != ":":
                                             output.insert(
                                                 "end", err + ": not found\n")
-                                            return [(lexeme[i], "SYNTAX ERROR")]
+                                            return i, [(lexeme[i], "SYNTAX ERROR")]
                                         i += 1
 
                                         # <common-data>
                                         i, results = common_data(
                                             lexeme, token, i, output)
                                         if "SYNTAX ERROR" in results:
-                                            return results
+                                            return i, results
 
                                         # <next-3D-sqnc>
                                         if lexeme[i] in first_set["<next-3D-sqnc>"]:
@@ -846,19 +846,19 @@ def all_type_value(lexeme, token, i, output):
                                                 i, results = common_data(
                                                     lexeme, token, i, output)
                                                 if "SYNTAX ERROR" in results:
-                                                    return results
+                                                    return i, results
 
                                                 # ,
                                                 if lexeme[i] != ",":
                                                     output.insert(
                                                         "end", err + ", not found\n")
-                                                    return [(lexeme[i], "SYNTAX ERROR")]
+                                                    return i, [(lexeme[i], "SYNTAX ERROR")]
                                                 i += 1
                                         # <close-bracket>
                                         if lexeme[i] not in first_set["<close-bracket>"]:
                                             output.insert(
                                                 "end", err + "close-bracket not found\n")
-                                            return [(lexeme[i], "SYNTAX ERROR")]
+                                            return i, [(lexeme[i], "SYNTAX ERROR")]
                                         i += 1
                                 # ,
                                 if lexeme[i] != ",":
@@ -867,7 +867,7 @@ def all_type_value(lexeme, token, i, output):
                         if lexeme[i] not in first_set["<close-bracket>"]:
                             output.insert(
                                 "end", err + "close-bracket not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                         i += 1
                     # ,
                     if lexeme[i] != ",":
@@ -882,34 +882,34 @@ def all_type_value(lexeme, token, i, output):
                         # (
                         if lexeme[i] != "(":
                             output.insert("end", err + "( not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
 
                         # identifier
                         if lexeme[i] != "#":
                             output.insert(
                                 "end", err + "identifier not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                         i += 2
 
                         # <insert-func>
                         i, result = insert_func(lexeme, token, i, output)
                         if "SYNTAX ERROR" in results:
-                            return results
+                            return i, results
 
                         if flag:
                             # indexing
                             i, results = indexing(lexeme, token, i, output)
                             if "SYNTAX ERROR" in results:
-                                return results
+                                return i, results
 
                         # )
                         if lexeme[i] != ")":
                             output.insert("end", err + ") not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                     else:
                         output.insert(
                             "end", err + "getItems/getKeys/getValues not found\n")
-                        return [(lexeme[i], "SYNTAX ERROR")]
+                        return i, [(lexeme[i], "SYNTAX ERROR")]
                 # inpetal
                 if lexeme[i] == "inpetal":
                     i += 1
@@ -917,31 +917,31 @@ def all_type_value(lexeme, token, i, output):
                     # (
                     if lexeme[i] != "(":
                         output.insert("end", err + "( not found\n")
-                        return [(lexeme[i], "SYNTAX ERROR")]
+                        return i, [(lexeme[i], "SYNTAX ERROR")]
                     i += 1
 
                     # string literal
                     if token[i] != "string literal":
                         output.insert(
                             "end", err + "string literal not found\n")
-                        return [(lexeme[i], "SYNTAX ERROR")]
+                        return i, [(lexeme[i], "SYNTAX ERROR")]
                     i += 1
 
                     # )
                     if lexeme[i] != ")":
                         output.insert("end", err + ") not found\n")
-                        return [(lexeme[i], "SYNTAX ERROR")]
+                        return i, [(lexeme[i], "SYNTAX ERROR")]
                     i += 1
             # <close-bracket>
             if lexeme[i] not in first_set["<close-bracket>"]:
                 output.insert("end", err + "close-bracket not found\n")
-                return [(lexeme[i], "SYNTAX ERROR")]
+                return i, [(lexeme[i], "SYNTAX ERROR")]
             i += 1
 
         else:
             output.insert(
                 "end", err + "open-bracket not found\n")
-            return [(lexeme[i], "SYNTAX ERROR")]
+            return i, [(lexeme[i], "SYNTAX ERROR")]
 
     return i, results
 
@@ -954,7 +954,7 @@ def insert_func(lexeme, token, i, output):
         if lexeme[i] != "(":
             output.insert(
                 "end", err + "( not found\n")
-            return [(lexeme[i], "SYNTAX ERROR")]
+            return i, [(lexeme[i], "SYNTAX ERROR")]
         i += 1
 
         # <argument>
@@ -968,7 +968,7 @@ def insert_func(lexeme, token, i, output):
                             if lexeme[i] not in first_set["<all-types>"]:
                                 output.insert(
                                     "end", err + "all-types not found\n")
-                                return [(lexeme[i], "SYNTAX ERROR")]
+                                return i, [(lexeme[i], "SYNTAX ERROR")]
                             i += 1
 
                             # ,
@@ -981,7 +981,7 @@ def insert_func(lexeme, token, i, output):
                         if lexeme[i] != "(":
                             output.insert(
                                 "end", err + "( not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                         i += 1
 
                         # <2D-argument>
@@ -995,7 +995,7 @@ def insert_func(lexeme, token, i, output):
                                 i, results = all_type_value(
                                     lexeme, token, i, output)
                                 if "SYNTAX ERROR" in results:
-                                    return results
+                                    return i, results
 
                                 # ,
                                 if lexeme[i] != ",":
@@ -1008,19 +1008,19 @@ def insert_func(lexeme, token, i, output):
             elif lexeme[i] in first_set["<common-data>"]:
                 i, results = common_data(lexeme, token, i, output)
                 if "SYNTAX ERROR" in results:
-                    return results
+                    return i, results
 
                 # identifier
                 if lexeme[i] != "#":
                     output.insert(
                         "end", err + "identifier not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 2
         # )
         if lexeme[i] != ")":
             output.insert(
                 "end", err + ") not found\n")
-            return [(lexeme[i], "SYNTAX ERROR")]
+            return i, [(lexeme[i], "SYNTAX ERROR")]
         i += 1
 
         # <instance-grab>
@@ -1029,28 +1029,28 @@ def insert_func(lexeme, token, i, output):
             if lexeme[i] != "#":
                 output.insert(
                     "end", err + "identifier not found\n")
-                return [(lexeme[i], "SYNTAX ERROR")]
+                return i, [(lexeme[i], "SYNTAX ERROR")]
             i += 2
 
             # (
             if lexeme[i] != "(":
                 output.insert(
                     "end", err + "( not found\n")
-                return [(lexeme[i], "SYNTAX ERROR")]
+                return i, [(lexeme[i], "SYNTAX ERROR")]
             i += 1
 
             # )
             if lexeme[i] != ")":
                 output.insert(
                     "end", err + ") not found\n")
-                return [(lexeme[i], "SYNTAX ERROR")]
+                return i, [(lexeme[i], "SYNTAX ERROR")]
             i += 1
 
             # identifier
             if lexeme[i] != "#":
                 output.insert(
                     "end", err + "identifier not found\n")
-                return [(lexeme[i], "SYNTAX ERROR")]
+                return i, [(lexeme[i], "SYNTAX ERROR")]
             i += 2
 
     return i, results
@@ -1068,27 +1068,27 @@ def insert_operation(lexeme, token, i, output):
             flag = True
 
         # <insert-flora-tint>
-        if lexeme[i] in first_set["<insert-flora-tint>"]:
+        if lexeme[i] in first_set["<insert-flora-tint>"] or token[i] in first_set["<insert-flora-tint>"]:
             i, results = insert_flora_tint(lexeme, token, i, output)
             if "SYNTAX ERROR" in results:
-                return results
+                return i, results
 
             # <operate-flora-tint>
             i, results = operate_flora_tint(lexeme, token, i, output)
             if "SYNTAX ERROR" in results:
-                return results
+                return i, results
 
         if flag:
             # )
             if lexeme[i] != ")":
                 output.insert("end", err + ") not found\n")
-                return [(lexeme[i], "SYNTAX ERROR")]
+                return i, [(lexeme[i], "SYNTAX ERROR")]
             i += 1
 
             # <operate-flora-tint>
             i, results = operate_flora_tint(lexeme, token, i, output)
             if "SYNTAX ERROR" in results:
-                return results
+                return i, results
 
     return i, results
 
@@ -1105,7 +1105,7 @@ def operate_flora_tint(lexeme, token, i, output):
             # <insert-operation>
             i, results = insert_operation(lexeme, token, i, output)
             if "SYNTAX ERROR" in results:
-                return results
+                return i, results
 
     return i, results
 
@@ -1126,12 +1126,12 @@ def insert_flora_tint(lexeme, token, i, output):
             # <insert-func>
             i, results = insert_func(lexeme, token, i, output)
             if "SYNTAX ERROR" in results:
-                return i, results
+                return i, i, results
 
             # indexing
             i, results = indexing(lexeme, token, i, output)
             if "SYNTAX ERROR" in results:
-                return i, results
+                return i, i, results
         # lent
         elif lexeme[i] == "lent":
             i += 1
@@ -1139,33 +1139,33 @@ def insert_flora_tint(lexeme, token, i, output):
             # (
             if lexeme[i] != "(":
                 output.insert("end", err + "( not found\n")
-                return [(lexeme[i], "SYNTAX ERROR")]
+                return i, [(lexeme[i], "SYNTAX ERROR")]
             i += 1
 
             # <all-type-value>
             i, results = all_type_value(lexeme, token, i, output)
             if "SYNTAX ERROR" in results:
-                return i, results
+                return i, i, results
 
             # )
             if lexeme[i] != ")":
                 output.insert("end", err + ") not found\n")
-                return [(lexeme[i], "SYNTAX ERROR")]
+                return i, [(lexeme[i], "SYNTAX ERROR")]
             i += 1
     else:
         output.insert("end", err + "insert-flora-tint not found\n")
-        return [(lexeme[i], "SYNTAX ERROR")]
+        return i, [(lexeme[i], "SYNTAX ERROR")]
 
     # <operate-flora-tint>
     if lexeme[i] in first_set["<operate-flora-tint>"]:
         i, results = operate_flora_tint(lexeme, token, i, output)
         if "SYNTAX ERROR" in results:
-            return i, results
+            return i, i, results
 
         # <insert-operation>
         i, results = insert_operation(lexeme, token, i, output)
         if "SYNTAX ERROR" in results:
-            return i, results
+            return i, i, results
 
     return i, results
 
@@ -1188,7 +1188,7 @@ def insert_variable(lexeme, token, i, output):
 
             i, results = insert_flora_tint(lexeme, token, i, output)
             if "SYNTAX ERROR" in results:
-                return results
+                return i, results
 
             # ,
             if lexeme[i] != ",":
@@ -1201,7 +1201,7 @@ def insert_variable(lexeme, token, i, output):
         # <all-type-value>
         i, results = all_type_value(lexeme, token, i, output)
         if "SYNTAX ERROR" in results:
-            return results
+            return i, results
 
     return i, results
 
@@ -1223,7 +1223,7 @@ def insert_condition(lexeme, token, i, output):
 
                     i, results = insert_flora_tint(lexeme, token, i, output)
                     if "SYNTAX ERROR" in results:
-                        return results
+                        return i, results
             # <common-type>
             elif lexeme[i] in first_set["<common-type>"]:
                 while True:
@@ -1248,7 +1248,7 @@ def insert_condition(lexeme, token, i, output):
 
                         i, results = all_type_value(lexeme, token, i, output)
                         if "SYNTAX ERROR" in results:
-                            return results
+                            return i, results
 
                         # ,
                         if lexeme[i] != ",":
@@ -1260,7 +1260,7 @@ def insert_condition(lexeme, token, i, output):
                         if lexeme[i] not in first_set["<all-types>"]:
                             output.insert(
                                 "end", err + "all-types not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                         i += 1
 
                         # ,
@@ -1269,13 +1269,13 @@ def insert_condition(lexeme, token, i, output):
                         i += 1
             else:
                 output.insert("end", err + "string-operand not found\n")
-                return [(lexeme[i], "SYNTAX ERROR")]
+                return i, [(lexeme[i], "SYNTAX ERROR")]
         else:
             output.insert("end", err + "string-cond-op not found\n")
-            return [(lexeme[i], "SYNTAX ERROR")]
+            return i, [(lexeme[i], "SYNTAX ERROR")]
     else:
         output.insert("end", err + "insert-condition not found\n")
-        return [(lexeme[i], "SYNTAX ERROR")]
+        return i, [(lexeme[i], "SYNTAX ERROR")]
 
     return i, results
 
@@ -1288,13 +1288,13 @@ def more_condition(lexeme, token, i, output):
         # eleaf
         if lexeme[i] != "eleaf":
             output.insert("end", err + "eleaf not found\n")
-            return [(lexeme[i], "SYNTAX ERROR")]
+            return i, [(lexeme[i], "SYNTAX ERROR")]
         i += 1
 
         # (
         if lexeme[i] != "(":
             output.insert("end", err + "( not found\n")
-            return [(lexeme[i], "SYNTAX ERROR")]
+            return i, [(lexeme[i], "SYNTAX ERROR")]
         i += 1
 
         # <all_type_value>
@@ -1306,7 +1306,7 @@ def more_condition(lexeme, token, i, output):
                 # <all-type-value>
                 i, results = all_type_value(lexeme, token, i, output)
                 if "SYNTAX ERROR" in results:
-                    return results
+                    return i, results
 
                 # ,
                 if lexeme[i] != ",":
@@ -1315,29 +1315,29 @@ def more_condition(lexeme, token, i, output):
         # <insert-condition>
         i, results = insert_condition(lexeme, token, i, output)
         if "SYNTAX ERROR" in results:
-            return results
+            return i, results
 
         # )
         if lexeme[i] != ")":
             output.insert("end", err + ") not found\n")
-            return [(lexeme[i], "SYNTAX ERROR")]
+            return i, [(lexeme[i], "SYNTAX ERROR")]
         i += 1
 
         # (
         if lexeme[i] != "(":
             output.insert("end", err + "( not found\n")
-            return [(lexeme[i], "SYNTAX ERROR")]
+            return i, [(lexeme[i], "SYNTAX ERROR")]
         i += 1
 
         # statement
         i, results = statement(lexeme, token, i, output)
         if "SYNTAX ERROR" in results:
-            return results
+            return i, results
 
         # )
         if lexeme[i] != ")":
             output.insert("end", err + ") not found\n")
-            return [(lexeme[i], "SYNTAX ERROR")]
+            return i, [(lexeme[i], "SYNTAX ERROR")]
 
         i, results = more_condition(lexeme, token, i, output)
 
@@ -1351,29 +1351,37 @@ def statement(lexeme, token, i, output):
     if lexeme[i] in first_set["<statement>"]:
         while True:
             # <constant>
-            if lexeme[i] == "hard":
-                i += 1
+            if lexeme[i] == "hard" or lexeme[i] in first_set["<all-types>"]:
+                if lexeme[i] == "hard":
+                    print("hard found")
+                    i += 1
 
                 # <all-types>
-                if lexeme[i] in first_set["<all-types>"]:
-                    i += 1
+                if lexeme[i] not in first_set["<all-types>"]:
+                    output.insert("end", err + "all-types not found\n")
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
+                i += 1
+                print("all-types found")
 
                 # identifier
                 if lexeme[i] != "#":
                     output.insert("end", err + "identifier not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 2
+                print("identifier found")
 
                 # <insert-variable>
                 i, results = insert_variable(lexeme, token, i, output)
                 if "SYNTAX ERROR" in results:
-                    return results
+                    return i, results
+                print("insert-variable found")
 
                 # ;
                 if lexeme[i] != ";":
                     output.insert("end", err + "; not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 1
+                print("; found")
 
                 continue
 
@@ -1386,18 +1394,18 @@ def statement(lexeme, token, i, output):
                     # (
                     if lexeme[i] != "(":
                         output.insert("end", err + "( not found\n")
-                        return [(lexeme[i], "SYNTAX ERROR")]
+                        return i, [(lexeme[i], "SYNTAX ERROR")]
                     i += 1
 
                     # <all-type-value>
                     i, results = all_type_value(lexeme, token, i, output)
                     if "SYNTAX ERROR" in results:
-                        return results
+                        return i, results
 
                     # )
                     if lexeme[i] != ")":
                         output.insert("end", err + ") not found\n")
-                        return [(lexeme[i], "SYNTAX ERROR")]
+                        return i, [(lexeme[i], "SYNTAX ERROR")]
                     i += 1
 
                 # <insert-inpetal>
@@ -1413,11 +1421,11 @@ def statement(lexeme, token, i, output):
                             # <insert-func>
                             i, results = insert_func(lexeme, token, i, output)
                             if "SYNTAX ERROR" in results:
-                                return results
+                                return i, results
                     else:
                         output.insert(
                             "end", err + "insert-inpetal not found\n")
-                        return [(lexeme[i], "SYNTAX ERROR")]
+                        return i, [(lexeme[i], "SYNTAX ERROR")]
 
                     # inpetal
                     if lexeme[i] == "inpetal":
@@ -1426,29 +1434,29 @@ def statement(lexeme, token, i, output):
                         # (
                         if lexeme[i] != "(":
                             output.insert("end", err + "( not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                         i += 1
 
                         # string literal
                         if token[i] != "string literal":
                             output.insert(
                                 "end", err + "string literal not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                         i += 1
 
                         # )
                         if lexeme[i] != ")":
                             output.insert("end", err + ") not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                         i += 1
                 else:
                     output.insert("end", err + "i/o-statement not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
 
                 # ;
                 if lexeme[i] != ";":
                     output.insert("end", err + "; not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 1
 
                 continue
@@ -1460,7 +1468,7 @@ def statement(lexeme, token, i, output):
                 # <insert-func>
                 i, results = insert_func(lexeme, token, i, output)
                 if "SYNTAX ERROR" in results:
-                    return results
+                    return i, results
 
                 # <more-id>
                 while True:
@@ -1475,18 +1483,18 @@ def statement(lexeme, token, i, output):
                     # identifier
                     if lexeme[i] != "#":
                         output.insert("end", err + "identifier not found\n")
-                        return [(lexeme[i], "SYNTAX ERROR")]
+                        return i, [(lexeme[i], "SYNTAX ERROR")]
                     i += 2
 
                     # <insert-func>
                     i, results = insert_func(lexeme, token, i, output)
                     if "SYNTAX ERROR" in results:
-                        return results
+                        return i, results
 
                     # indexing
                     i, results = indexing(lexeme, token, i, output)
                     if "SYNTAX ERROR" in results:
-                        return results
+                        return i, results
 
                 # <insert-assignment>
                 if lexeme[i] in first_set["<insert-assignment>"]:
@@ -1501,7 +1509,7 @@ def statement(lexeme, token, i, output):
                             i, results = all_type_value(
                                 lexeme, token, i, output)
                             if "SYNTAX ERROR" in results:
-                                return results
+                                return i, results
 
                             # ,
                             if lexeme[i] != ",":
@@ -1509,7 +1517,7 @@ def statement(lexeme, token, i, output):
                 # ;
                 if lexeme[i] != ";":
                     output.insert("end", err + "; not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 1
 
                 continue
@@ -1521,7 +1529,7 @@ def statement(lexeme, token, i, output):
                 # (
                 if lexeme[i] != "(":
                     output.insert("end", err + "( not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 1
 
                 # <all_type_value>
@@ -1533,53 +1541,53 @@ def statement(lexeme, token, i, output):
                         # <all-type-value>
                         i, results = all_type_value(lexeme, token, i, output)
                         if "SYNTAX ERROR" in results:
-                            return results
+                            return i, results
 
                         # ,
                         if lexeme[i] != ",":
                             break
                 else:
                     output.insert("end", err + "all-type-value not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
 
                 # <insert-condition>
                 i, results = insert_condition(lexeme, token, i, output)
                 if "SYNTAX ERROR" in results:
-                    return results
+                    return i, results
 
                 # )
                 if lexeme[i] != ")":
                     output.insert("end", err + ") not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 1
 
                 # (
                 if lexeme[i] != "(":
                     output.insert("end", err + "( not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 1
 
                 # <statement>
                 i, results = statement(lexeme, token, i, output)
                 if "SYNTAX ERROR" in results:
-                    return results
+                    return i, results
 
                 # )
                 if lexeme[i] != ")":
                     output.insert("end", err + ") not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 1
 
                 # ;
                 if lexeme[i] != ";":
                     output.insert("end", err + "; not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 1
 
                 # <more-condition>
                 i, results = more_condition(lexeme, token, i, output)
                 if "SYNTAX ERROR" in results:
-                    return results
+                    return i, results
 
                 # <else>
                 if lexeme[i] in first_set["<else>"]:
@@ -1590,22 +1598,22 @@ def statement(lexeme, token, i, output):
                         # (
                         if lexeme[i] != "(":
                             output.insert("end", err + "( not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                         i += 1
 
                         # <statement>
                         i, results = statement(lexeme, token, i, output)
                         if "SYNTAX ERROR" in results:
-                            return results
+                            return i, results
 
                         # )
                         if lexeme[i] != ")":
                             output.insert("end", err + ") not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                         i += 1
                     else:
                         output.insert("end", err + "moss not found\n")
-                        return [(lexeme[i], "SYNTAX ERROR")]
+                        return i, [(lexeme[i], "SYNTAX ERROR")]
                 continue
             # <iterative>
             elif lexeme[i] in first_set["<iterative>"]:
@@ -1616,7 +1624,7 @@ def statement(lexeme, token, i, output):
                     # (
                     if lexeme[i] != "(":
                         output.insert("end", err + "( not found\n")
-                        return [(lexeme[i], "SYNTAX ERROR")]
+                        return i, [(lexeme[i], "SYNTAX ERROR")]
                     i += 1
 
                     # identifier
@@ -1626,14 +1634,14 @@ def statement(lexeme, token, i, output):
                         # =
                         if lexeme[i] != "=":
                             output.insert("end", err + "= not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                         i += 1
 
                         # <insert-flora-tint>
                         i, results = insert_flora_tint(
                             lexeme, token, i, output)
                         if "SYNTAX ERROR" in results:
-                            return results
+                            return i, results
 
                         # <all_type_value>
                         if lexeme[i] in first_set["<all-type-value>"]:
@@ -1645,7 +1653,7 @@ def statement(lexeme, token, i, output):
                                 i, results = all_type_value(
                                     lexeme, token, i, output)
                                 if "SYNTAX ERROR" in results:
-                                    return results
+                                    return i, results
 
                                 # ,
                                 if lexeme[i] != ",":
@@ -1654,66 +1662,66 @@ def statement(lexeme, token, i, output):
                         # insert-condition
                         i, results = insert_condition(lexeme, token, i, output)
                         if "SYNTAX ERROR" in results:
-                            return results
+                            return i, results
 
                         # ;
                         if lexeme[i] != ";":
                             output.insert("end", err + "; not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                         i += 1
 
                         # identifier
                         if lexeme[i] != "#":
                             output.insert(
                                 "end", err + "identifier not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                         i += 2
 
                         # <all-assignment>
                         if lexeme[i] not in first_set["<all-assignment>"]:
                             output.insert(
                                 "end", err + "all-assignment not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                         i += 1
 
                         # <insert-flora-tint>
                         i, results = insert_flora_tint(
                             lexeme, token, i, output)
                         if "SYNTAX ERROR" in results:
-                            return results
+                            return i, results
 
                         # ;
                         if lexeme[i] != ";":
                             output.insert("end", err + "; not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                         i += 1
 
                         # )
                         if lexeme[i] != ")":
                             output.insert("end", err + ") not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                         # (
                         if lexeme[i] != "(":
                             output.insert("end", err + "( not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                         i += 1
 
                         # statement
                         i, results = statement(lexeme, token, i, output)
                         if "SYNTAX ERROR" in results:
-                            return results
+                            return i, results
 
                         # )
                         if lexeme[i] != ")":
                             output.insert("end", err + ") not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
 
                     # <common-data>
                     elif lexeme[i] in first_set["<common-data>"]:
                         while True:
                             i, results = common_data(lexeme, token, i, output)
                             if "SYNTAX ERROR" in results:
-                                return results
+                                return i, results
 
                             # ,
                             if lexeme[i] != ",":
@@ -1722,33 +1730,33 @@ def statement(lexeme, token, i, output):
                         # at
                         if lexeme[i] != "at":
                             output.insert("end", err + "at not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                         i += 1
 
                         # <all-type-value>
                         i, results = all_type_value(lexeme, token, i, output)
                         if "SYNTAX ERROR" in results:
-                            return results
+                            return i, results
 
                         # )
                         if lexeme[i] != ")":
                             output.insert("end", err + ") not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                         # (
                         if lexeme[i] != "(":
                             output.insert("end", err + "( not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                         i += 1
 
                         # statement
                         i, results = statement(lexeme, token, i, output)
                         if "SYNTAX ERROR" in results:
-                            return results
+                            return i, results
 
                         # )
                         if lexeme[i] != ")":
                             output.insert("end", err + ") not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
 
                 # willow
                 if lexeme[i] == "willow":
@@ -1757,7 +1765,7 @@ def statement(lexeme, token, i, output):
                     # (
                     if lexeme[i] != "(":
                         output.insert("end", err + "( not found\n")
-                        return [(lexeme[i], "SYNTAX ERROR")]
+                        return i, [(lexeme[i], "SYNTAX ERROR")]
                     i += 1
 
                     # <all_type_value>
@@ -1770,7 +1778,7 @@ def statement(lexeme, token, i, output):
                             i, results = all_type_value(
                                 lexeme, token, i, output)
                             if "SYNTAX ERROR" in results:
-                                return results
+                                return i, results
 
                             # ,
                             if lexeme[i] != ",":
@@ -1779,31 +1787,31 @@ def statement(lexeme, token, i, output):
                     # <insert-condition>
                     i, results = insert_condition(lexeme, token, i, output)
                     if "SYNTAX ERROR" in results:
-                        return results
+                        return i, results
 
                     # )
                     if lexeme[i] != ")":
                         output.insert("end", err + ") not found\n")
-                        return [(lexeme[i], "SYNTAX ERROR")]
+                        return i, [(lexeme[i], "SYNTAX ERROR")]
                     # (
                     if lexeme[i] != "(":
                         output.insert("end", err + "( not found\n")
-                        return [(lexeme[i], "SYNTAX ERROR")]
+                        return i, [(lexeme[i], "SYNTAX ERROR")]
                     i += 1
 
                     # statement
                     i, results = statement(lexeme, token, i, output)
                     if "SYNTAX ERROR" in results:
-                        return results
+                        return i, results
 
                     # )
                     if lexeme[i] != ")":
                         output.insert("end", err + ") not found\n")
-                        return [(lexeme[i], "SYNTAX ERROR")]
+                        return i, [(lexeme[i], "SYNTAX ERROR")]
                 # ;
                 if lexeme[i] != ";":
                     output.insert("end", err + "; not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 1
                 continue
 
@@ -1814,31 +1822,31 @@ def statement(lexeme, token, i, output):
                 # (
                 if lexeme[i] != "(":
                     output.insert("end", err + "( not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 1
 
                 # identifier
                 if lexeme[i] != "#":
                     output.insert("end", err + "identifier not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 2
 
                 # )
                 if lexeme[i] != ")":
                     output.insert("end", err + ") not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 1
 
                 # (
                 if lexeme[i] != "(":
                     output.insert("end", err + "( not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 1
 
                 # all-type-value
                 i, results = all_type_value(lexeme, token, i, output)
                 if "SYNTAX ERROR" in results:
-                    return results
+                    return i, results
 
                 # <insert-branch>
                 if lexeme[i] in first_set["<insert-branch>"]:
@@ -1849,7 +1857,7 @@ def statement(lexeme, token, i, output):
                         # <statement>
                         i, results = statement(lexeme, token, i, output)
                         if "SYNTAX ERROR" in results:
-                            return results
+                            return i, results
 
                     # leaf
                     elif lexeme[i] == "leaf":
@@ -1864,7 +1872,7 @@ def statement(lexeme, token, i, output):
                                 i, results = all_type_value(
                                     lexeme, token, i, output)
                                 if "SYNTAX ERROR" in results:
-                                    return results
+                                    return i, results
 
                                 # ,
                                 if lexeme[i] != ",":
@@ -1873,27 +1881,27 @@ def statement(lexeme, token, i, output):
                         # <insert-condition>
                         i, results = insert_condition(lexeme, token, i, output)
                         if "SYNTAX ERROR" in results:
-                            return results
+                            return i, results
 
                         # (
                         if lexeme[i] != "(":
                             output.insert("end", err + "( not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                         i += 1
 
                         # statement
                         i, results = statement(lexeme, token, i, output)
                         if "SYNTAX ERROR" in results:
-                            return results
+                            return i, results
 
                         # )
                         if lexeme[i] != ")":
                             output.insert("end", err + ") not found\n")
-                            return [(lexeme[i], "SYNTAX ERROR")]
+                            return i, [(lexeme[i], "SYNTAX ERROR")]
                 # ;
                 if lexeme[i] != ";":
                     output.insert("end", err + "; not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 1
 
                 # <more-branch>
@@ -1907,18 +1915,18 @@ def statement(lexeme, token, i, output):
                         # <all-type-value>
                         i, results = all_type_value(lexeme, token, i, output)
                         if "SYNTAX ERROR" in results:
-                            return results
+                            return i, results
 
                 # )
                 if lexeme[i] != ")":
                     output.insert("end", err + ") not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 1
 
                 # ;
                 if lexeme[i] != ";":
                     output.insert("end", err + "; not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 1
                 continue
 
@@ -1929,7 +1937,7 @@ def statement(lexeme, token, i, output):
                 # ;
                 if lexeme[i] != ";":
                     output.insert("end", err + "; not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 1
                 continue
 
@@ -1940,7 +1948,7 @@ def statement(lexeme, token, i, output):
                 # ;
                 if lexeme[i] != ";":
                     output.insert("end", err + "; not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 1
                 continue
 
@@ -1949,7 +1957,7 @@ def statement(lexeme, token, i, output):
                 break
             else:
                 output.insert("end", err + "insert-all-operand not found\n")
-                return [(lexeme[i], "SYNTAX ERROR")]
+                return i, [(lexeme[i], "SYNTAX ERROR")]
 
     return i, results
 
@@ -1969,26 +1977,26 @@ def next_D3_parameter(lexeme, token, i, output):
                 # <all-types>
                 if lexeme[i] not in first_set["<all-types>"]:
                     output.insert("end", err + "all-types not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 1
 
                 # identifier
                 if lexeme[i] != "#":
                     output.insert(
                         "end", err + "identifier not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 2
 
                 # insert_variable
                 i, results = insert_variable(lexeme, token, i, output)
                 if "SYNTAX ERROR" in results:
-                    return results
+                    return i, results
 
                 # ,
                 if lexeme[i] == ",":
                     i, results = next_D3_parameter(lexeme, token, i, output)
                     if "SYNTAX ERROR" in results:
-                        return results
+                        return i, results
     return i, results
 
 
@@ -2009,13 +2017,13 @@ def D2_parameter(lexeme, token, i, output):
                     if lexeme[i] != "*#":
                         output.insert(
                             "end", err + "identifier not found\n")
-                        return [(lexeme[i], "SYNTAX ERROR")]
+                        return i, [(lexeme[i], "SYNTAX ERROR")]
                     i += 3
                 # identifier
                 elif lexeme[i] != "**#":
                     output.insert(
                         "end", err + "identifier not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 4
 
         # <all-types>
@@ -2030,19 +2038,19 @@ def D2_parameter(lexeme, token, i, output):
                 if lexeme[i] != "#":
                     output.insert(
                         "end", err + "identifier not found\n")
-                    return [(lexeme[i], "SYNTAX ERROR")]
+                    return i, [(lexeme[i], "SYNTAX ERROR")]
                 i += 2
 
                 # insert_variable
                 i, results = insert_variable(lexeme, token, i, output)
                 if "SYNTAX ERROR" in results:
-                    return results
+                    return i, results
 
                 # ,
                 if lexeme[i] == ",":
                     i, results = D2_parameter(lexeme, token, i, output)
                     if "SYNTAX ERROR" in results:
-                        return results
+                        return i, results
         # identifier
         elif lexeme[i] == "#":
             i += 2
@@ -2050,33 +2058,33 @@ def D2_parameter(lexeme, token, i, output):
             # (
             if lexeme[i] != "(":
                 output.insert("end", err + "( not found\n")
-                return [(lexeme[i], "SYNTAX ERROR")]
+                return i, [(lexeme[i], "SYNTAX ERROR")]
             i += 1
 
             # <all-types>
             if lexeme[i] not in first_set["<all-types>"]:
                 output.insert("end", err + "all-types not found\n")
-                return [(lexeme[i], "SYNTAX ERROR")]
+                return i, [(lexeme[i], "SYNTAX ERROR")]
             i += 1
 
             # identifier
             if lexeme[i] != "#":
                 output.insert("end", err + "identifier not found\n")
-                return [(lexeme[i], "SYNTAX ERROR")]
+                return i, [(lexeme[i], "SYNTAX ERROR")]
             i += 2
 
             # insert_variable
             i, results = insert_variable(lexeme, token, i, output)
             if "SYNTAX ERROR" in results:
-                return results
+                return i, results
 
             i, results = next_D3_parameter(lexeme, token, i, output)
             if "SYNTAX ERROR" in results:
-                return results
+                return i, results
 
             # ,
             if lexeme[i] == ",":
                 i, results = D2_parameter(lexeme, token, i, output)
                 if "SYNTAX ERROR" in results:
-                    return results
+                    return i, results
     return i, results
