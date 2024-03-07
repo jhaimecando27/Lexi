@@ -635,15 +635,16 @@ def string_value(lexeme, token, i, output):
     results = []
     err = "E: Syntax Analyzer: "
 
-    if lexeme[i] in first_set["<string-value>"]:
+    if lexeme[i] in first_set["<string-value>"] or token[i] in first_set["<string-value>"]:
+        print("string-value found")
         # "chard literal"
-        if lexeme[i] == "chard literal":
+        if token[i] == "chard literal":
             i += 1
         # "string literal"
-        elif lexeme[i] == "string literal":
+        elif token[i] == "string literal":
             i += 1
         # "bloom literal"
-        elif lexeme[i] == "bloom literal":
+        elif token[i] == "bloom literal":
             i += 1
         # identifier
         elif lexeme[i] == "#":
