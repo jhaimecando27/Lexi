@@ -1175,6 +1175,7 @@ def insert_variable(lexeme, token, i, output):
     results = []
     err = "E: Syntax Analyzer: "
     print("inside insert-variable")
+    print("lexeme[i]: ", lexeme[i])
 
     # <all-assignment>
     if lexeme[i] in first_set["<all-assignment>"]:
@@ -1182,18 +1183,26 @@ def insert_variable(lexeme, token, i, output):
         i += 1
 
         # <flora-tint-value>
-        while True:
-            if lexeme[i] not in first_set["<flora-tint-value>"] and token[i] not in first_set["<flora-tint-value>"]:
-                break
+        if lexeme[i] in first_set["<flora-tint-value>"] or token[i] in first_set["<flora-tint-value>"]:
             print("inside flora-tint-value")
 
-            i, results = insert_flora_tint(lexeme, token, i, output)
-            if "SYNTAX ERROR" in results:
-                return i, results
+            while True:
+                if lexeme[i] not in first_set["<insert-flora-tint>"] and token[i] not in first_set["<insert-flora-tint>"]:
+                    break
+                print("inside while insert-flora-tint")
 
-            # ,
-            if lexeme[i] != ",":
-                break
+                i, results = insert_flora_tint(lexeme, token, i, output)
+                if "SYNTAX ERROR" in results:
+                    return i, results
+
+                print("results: ", results)
+
+                # ,
+                if lexeme[i] != ",":
+                    break
+                i += 1
+
+                print("more insert-flora-tint")
 
     # <string-assignment>
     elif lexeme[i] in first_set["<string-assignment>"]:
@@ -1364,12 +1373,15 @@ def statement(lexeme, token, i, output):
                 i += 1
                 print("all-types found")
 
+                print("lexeme[i]: ", lexeme[i])
                 # identifier
-                if lexeme[i] != "#":
+                if lexeme[i] == "#":
+                    i += 2
+                    print("identifier found")
+                    print("lexeme[i]: ", lexeme[i])
+                else:
                     output.insert("end", err + "identifier not found\n")
                     return i, [(lexeme[i], "SYNTAX ERROR")]
-                i += 2
-                print("identifier found")
 
                 # <insert-variable>
                 i, results = insert_variable(lexeme, token, i, output)
