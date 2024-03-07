@@ -167,25 +167,22 @@ class AnalyzerGui:
         errors_list = ["SYNTAX ERROR"]
         line_num = 0
 
-        if not errors:
-            self.errorTxt.insert(tk.END, "SyntaxAnalyzer: No Error Found.\n")
-        else:
+        if test is not None:
             for lexeme, token in test:
                 if token in errors_list:
                     print(lexeme, token)
                     errors.append(
-                        + str(line_num)
-                        + ":"
+                        ":"
                         + lexeme
                     )
                     continue
 
                 self.insert_centered(self.lexicTxt, f"{lexeme}\n")
                 self.insert_centered(self.tokenTxt, f"{token}\n")
-
-            for errors in errors:
+            for errors in test:
                 self.errorTxt.insert(tk.END, f"{errors}\n")
-
+        else:
+            self.errorTxt.insert(tk.END, "SyntaxAnalyzer: No Error Found.\n")
 
         self.lexicTxt.configure(state="disabled")
         self.tokenTxt.configure(state="disabled")
