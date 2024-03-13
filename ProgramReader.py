@@ -21,18 +21,15 @@ class AnalyzerGui:
         # Frame Sections
         # For the Code Input
         self.inputFrame = tk.Frame(self.root, borderwidth=2, relief="solid")
-        self.inputFrame.place(relx=0.005, rely=0.01,
-                              relwidth=0.678, relheight=0.7)
+        self.inputFrame.place(relx=0.005, rely=0.01, relwidth=0.678, relheight=0.7)
 
         # For the Error/s Display
         self.errorFrame = tk.Frame(self.root, borderwidth=2, relief="solid")
-        self.errorFrame.place(relx=0.005, rely=0.725,
-                              relwidth=0.678, relheight=0.255)
+        self.errorFrame.place(relx=0.005, rely=0.725, relwidth=0.678, relheight=0.255)
 
         # For Tokenization Table
         self.tableFrame = tk.Frame(self.root, borderwidth=2, relief="solid")
-        self.tableFrame.place(relx=0.692, rely=0.01,
-                              relwidth=0.3, relheight=0.97)
+        self.tableFrame.place(relx=0.692, rely=0.01, relwidth=0.3, relheight=0.97)
 
         # Widgets
         self.lexBtn = tk.Button(
@@ -96,37 +93,29 @@ class AnalyzerGui:
         self.lexicTxt.configure(state="normal")
         self.tokenTxt.configure(state="normal")
         self.errorTxt.configure(state="normal")
-        self.stageLbl.configure(text='Compiler Stage: Lexer')
+        self.stageLbl.configure(text="Compiler Stage: Lexer")
 
         # Clear ouput boxes
-        self.lexicTxt.delete('1.0', tk.END)
-        self.tokenTxt.delete('1.0', tk.END)
-        self.errorTxt.delete('1.0', tk.END)
+        self.lexicTxt.delete("1.0", tk.END)
+        self.tokenTxt.delete("1.0", tk.END)
+        self.errorTxt.delete("1.0", tk.END)
 
         prog = self.progTxt.get("1.0", "end-1c")
         lines = prog.splitlines(True)
 
         errors = []
 
-        line_num = 1
-
         start = time.time()
         print(lines)
 
         self.tokens = lexical_analysis(lines)
 
-        errors_list = ["UNKNOWN IDENTIFIER",
-                       "UNKNOWN DELIMITER", "INVALID RANGE", "SYNTAX ERROR"]
+        errors_list = ["UNKNOWN IDENTIFIER", "UNKNOWN DELIMITER", "INVALID RANGE"]
 
         for lexeme, token in self.tokens:
             if token in errors_list:
                 print(lexeme, token)
-                errors.append(
-                    "line "
-                    + str(line_num)
-                    + ":"
-                    + lexeme
-                )
+                errors.append(lexeme)
                 continue
 
             self.insert_centered(self.lexicTxt, f"{lexeme}\n")
@@ -156,31 +145,16 @@ class AnalyzerGui:
         self.tokenTxt.configure(state="normal")
         self.errorTxt.configure(state="normal")
 
-        self.stageLbl.configure(text='Compiler Stage: Parser')
-        self.lexicLbl.configure(text='Token')
-        self.tokenLbl.configure(text='Lexeme')
+        self.stageLbl.configure(text="Compiler Stage: Parser")
+        self.lexicLbl.configure(text="Token")
+        self.tokenLbl.configure(text="Lexeme")
 
-        test = syntax_analysis(self.tokens, self.errorTxt)
-        print(test)
+        errors = syntax_analysis(self.tokens, self.errorTxt)
+        print(errors)
 
-        errors = []
-        errors_list = ["SYNTAX ERROR"]
-        line_num = 0
-
-        if test is not None:
-            for lexeme, token in test:
-                if token in errors_list:
-                    print(lexeme, token)
-                    errors.append(
-                        ":"
-                        + lexeme
-                    )
-                    continue
-
-                self.insert_centered(self.lexicTxt, f"{lexeme}\n")
-                self.insert_centered(self.tokenTxt, f"{token}\n")
-            for errors in test:
-                self.errorTxt.insert(tk.END, f"{errors}\n")
+        if errors:
+            for error in errors:
+                self.errorTxt.insert(tk.END, f"{error}\n")
         else:
             self.errorTxt.insert(tk.END, "SyntaxAnalyzer: No Error Found.\n")
 
@@ -189,9 +163,9 @@ class AnalyzerGui:
         self.errorTxt.configure(state="disabled")
 
     def reset_compiler(self):
-        self.stageLbl.configure(text='Compiler Stage: ')
-        self.lexicLbl.configure(text='Lexeme')
-        self.tokenLbl.configure(text='Token')
+        self.stageLbl.configure(text="Compiler Stage: ")
+        self.lexicLbl.configure(text="Lexeme")
+        self.tokenLbl.configure(text="Token")
 
 
 # Main function
