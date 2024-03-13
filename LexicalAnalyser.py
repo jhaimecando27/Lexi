@@ -17,13 +17,15 @@ def lexical_analysis(programs):
     results = []
 
     isComment = False
+    line_num = 1
 
     for program in programs:
         i = 0
 
-        program += "\n"
+        if program[-1] != '\n':
+            program += "\n"
 
-        while i < len(program) and program[i] != '\n':
+        while i < len(program):
 
             if isComment:
                 print("in comment: " + str(i))
@@ -60,7 +62,7 @@ def lexical_analysis(programs):
                     else:
                         # Finish whole word if error
                         results.append(Errors.delim(
-                            i, tmp_wrd, program[i], rd.delim4))
+                            i, line_num, tmp_wrd, program[i], rd.delim4))
                         i = skip(i, program)
                         continue
             elif i < len(program) and program[i] == 'b':
@@ -82,7 +84,7 @@ def lexical_analysis(programs):
                             else:
                                 # Finish whole word if error
                                 results.append(Errors.delim(
-                                    i, tmp_wrd, program[i], rd.delim1))
+                                    i, line_num, tmp_wrd, program[i], rd.delim1))
                                 i = skip(i, program)
                                 continue
                 # BLOOM
@@ -104,7 +106,7 @@ def lexical_analysis(programs):
                                 else:
                                     # Finish whole word if error
                                     results.append(Errors.delim(
-                                        i, tmp_wrd, program[i], rd.delim3))
+                                        i, line_num, tmp_wrd, program[i], rd.delim3))
                                     i = skip(i, program)
                                     continue
                 elif i < len(program) and program[i] == 'r':
@@ -129,7 +131,7 @@ def lexical_analysis(programs):
                                     else:
                                         # Finish whole word if error
                                         results.append(Errors.delim(
-                                            i, tmp_wrd, program[i], rd.delim27))
+                                            i, line_num, tmp_wrd, program[i], rd.delim27))
                                         i = skip(i, program)
                                         continue
                     # BREAK
@@ -148,13 +150,13 @@ def lexical_analysis(programs):
                                 else:
                                     # Finish whole word if error
                                     results.append(Errors.delim(
-                                        i, tmp_wrd, program[i], rd.delim1))
+                                        i, line_num, tmp_wrd, program[i], rd.delim1))
                                     i = skip(i, program)
                                     continue
 
                 # Finish whole word if error
                 i, tmp_wrd = skipV1(i, program, tmp_wrd)
-                results.append(Errors.Id(i, tmp_wrd))
+                results.append(Errors.Id(i, line_num, tmp_wrd))
                 continue
 
             # CHARD
@@ -179,7 +181,7 @@ def lexical_analysis(programs):
                                 else:
                                     # Finish whole word if error
                                     results.append(Errors.delim(
-                                        i, tmp_wrd, program[i], rd.delim3))
+                                        i, line_num, tmp_wrd, program[i], rd.delim3))
                                     i = skip(i, program)
                                     continue
                 # CLEAR
@@ -201,13 +203,13 @@ def lexical_analysis(programs):
                                 else:
                                     # Finish whole word if error
                                     results.append(Errors.delim(
-                                        i, tmp_wrd, program[i], rd.delim4))
+                                        i, line_num, tmp_wrd, program[i], rd.delim4))
                                     i = skip(i, program)
                                     continue
 
                 # Finish whole word if error
                 i, tmp_wrd = skipV1(i, program, tmp_wrd)
-                results.append(Errors.Id(i, tmp_wrd))
+                results.append(Errors.Id(i, line_num, tmp_wrd))
                 continue
 
             # DIRT
@@ -229,13 +231,13 @@ def lexical_analysis(programs):
                             else:
                                 # Finish whole word if error
                                 results.append(Errors.delim(
-                                    i, tmp_wrd, program[i], rd.delim3))
+                                    i, line_num, tmp_wrd, program[i], rd.delim3))
                                 i = skip(i, program)
                                 continue
 
                 # Finish whole word if error
                 i, tmp_wrd = skipV1(i, program, tmp_wrd)
-                results.append(Errors.Id(i, tmp_wrd))
+                results.append(Errors.Id(i, line_num, tmp_wrd))
                 continue
 
             # ELEAF
@@ -260,13 +262,13 @@ def lexical_analysis(programs):
                                 else:
                                     # Finish whole word if error
                                     results.append(Errors.delim(
-                                        i, tmp_wrd, program[i], rd.delim24))
+                                        i, line_num, tmp_wrd, program[i], rd.delim24))
                                     i = skip(i, program)
                                     continue
 
                 # Finish whole word if error
                 i, tmp_wrd = skipV1(i, program, tmp_wrd)
-                results.append(Errors.Id(i, tmp_wrd))
+                results.append(Errors.Id(i, line_num, tmp_wrd))
                 continue
 
             # FALSE
@@ -291,7 +293,7 @@ def lexical_analysis(programs):
                                 else:
                                     # Finish whole word if error
                                     results.append(Errors.delim(
-                                        i, tmp_wrd, program[i], rd.delimb))
+                                        i, line_num, tmp_wrd, program[i], rd.delimb))
                                     i = skip(i, program)
                                     continue
                 # FERN
@@ -310,7 +312,7 @@ def lexical_analysis(programs):
                             else:
                                 # Finish whole word if error
                                 results.append(Errors.delim(
-                                    i, tmp_wrd, program[i], rd.delim3))
+                                    i, line_num, tmp_wrd, program[i], rd.delim3))
                                 i = skip(i, program)
                                 continue
 
@@ -341,13 +343,13 @@ def lexical_analysis(programs):
                                     else:
                                         # Finish whole word if error
                                         results.append(Errors.delim(
-                                            i, tmp_wrd, program[i], rd.delim4))
+                                            i, line_num, tmp_wrd, program[i], rd.delim4))
                                         i = skip(i, program)
                                         continue
                                 else:
                                     # Finish whole word if error
                                     results.append(Errors.delim(
-                                        i, tmp_wrd, program[i], rd.delim4))
+                                        i, line_num, tmp_wrd, program[i], rd.delim4))
                                     i = skip(i, program)
                                     continue
 
@@ -367,12 +369,12 @@ def lexical_analysis(programs):
                                         else:
                                             # Finish whole word if error
                                             results.append(Errors.delim(
-                                                i, tmp_wrd, program[i], rd.delim3))
+                                                i, line_num, tmp_wrd, program[i], rd.delim3))
                                             i = skip(i, program)
                                             continue
                 # Finish whole word if error
                 i, tmp_wrd = skipV1(i, program, tmp_wrd)
-                results.append(Errors.Id(i, tmp_wrd))
+                results.append(Errors.Id(i, line_num, tmp_wrd))
                 continue
 
             # GARDEN
@@ -400,7 +402,7 @@ def lexical_analysis(programs):
                                     else:
                                         # Finish whole word if error
                                         results.append(Errors.delim(
-                                            i, tmp_wrd, program[i], rd.delim3))
+                                            i, line_num, tmp_wrd, program[i], rd.delim3))
                                         i = skip(i, program)
                                         continue
                 # GETITEM delim24
@@ -431,7 +433,7 @@ def lexical_analysis(programs):
                                             else:
                                                 # Finish whole word if error
                                                 results.append(Errors.delim(
-                                                    i, tmp_wrd, program[i], rd.delim24))
+                                                    i, line_num, tmp_wrd, program[i], rd.delim24))
                                                 i = skip(i, program)
                                                 continue
                         # GETKEYS, GETVALUES delim24
@@ -453,7 +455,7 @@ def lexical_analysis(programs):
                                         else:
                                             # Finish whole word if error
                                             results.append(Errors.delim(
-                                                i, tmp_wrd, program[i], rd.delim24))
+                                                i, line_num, tmp_wrd, program[i], rd.delim24))
                                             i = skip(i, program)
                                             continue
                         elif i < len(program) and program[i] == 'V':
@@ -480,13 +482,13 @@ def lexical_analysis(programs):
                                                 else:
                                                     # Finish whole word if error
                                                     results.append(Errors.delim(
-                                                        i, tmp_wrd, program[i], rd.delim24))
+                                                        i, line_num, tmp_wrd, program[i], rd.delim24))
                                                     i = skip(i, program)
                                                     continue
 
                 # Finish whole word if error
                 i, tmp_wrd = skipV1(i, program, tmp_wrd)
-                results.append(Errors.Id(i, tmp_wrd))
+                results.append(Errors.Id(i, line_num, tmp_wrd))
                 continue
 
             # HARD
@@ -508,12 +510,12 @@ def lexical_analysis(programs):
                             else:
                                 # Finish whole word if error
                                 results.append(Errors.delim(
-                                    i, tmp_wrd, program[i], rd.delim4))
+                                    i, line_num, tmp_wrd, program[i], rd.delim4))
                                 i = skip(i, program)
                                 continue
                 # Finish whole word if error
                 i, tmp_wrd = skipV1(i, program, tmp_wrd)
-                results.append(Errors.Id(i, tmp_wrd))
+                results.append(Errors.Id(i, line_num, tmp_wrd))
                 continue
 
             # INPETAL
@@ -544,12 +546,12 @@ def lexical_analysis(programs):
                                         else:
                                             # Finish whole word if error
                                             results.append(Errors.delim(
-                                                i, tmp_wrd, program[i], rd.delim3))
+                                                i, line_num, tmp_wrd, program[i], rd.delim3))
                                             i = skip(i, program)
                                             continue
                 # Finish whole word if error
                 i, tmp_wrd = skipV1(i, program, tmp_wrd)
-                results.append(Errors.Id(i, tmp_wrd))
+                results.append(Errors.Id(i, line_num, tmp_wrd))
                 continue
 
             # LEAF
@@ -571,7 +573,7 @@ def lexical_analysis(programs):
                             else:
                                 # Finish whole word if error
                                 results.append(Errors.delim(
-                                    i, tmp_wrd, program[i], rd.delim23))
+                                    i, line_num, tmp_wrd, program[i], rd.delim23))
                                 i = skip(i, program)
                                 continue
                     # LENT delim23
@@ -587,12 +589,12 @@ def lexical_analysis(programs):
                             else:
                                 # Finish whole word if error
                                 results.append(Errors.delim(
-                                    i, tmp_wrd, program[i], rd.delim3))
+                                    i, line_num, tmp_wrd, program[i], rd.delim3))
                                 i = skip(i, program)
                                 continue
                 # Finish whole word if error
                 i, tmp_wrd = skipV1(i, program, tmp_wrd)
-                results.append(Errors.Id(i, tmp_wrd))
+                results.append(Errors.Id(i, line_num, tmp_wrd))
                 continue
 
             # MINT
@@ -614,7 +616,7 @@ def lexical_analysis(programs):
                             else:
                                 # Finish whole word if error
                                 results.append(Errors.delim(
-                                    i, tmp_wrd, program[i], rd.delim3))
+                                    i, line_num, tmp_wrd, program[i], rd.delim3))
                                 i = skip(i, program)
                                 continue
                 # MOSS
@@ -633,13 +635,13 @@ def lexical_analysis(programs):
                             else:
                                 # Finish whole word if error
                                 results.append(Errors.delim(
-                                    i, tmp_wrd, program[i], rd.delim21))
+                                    i, line_num, tmp_wrd, program[i], rd.delim21))
                                 i = skip(i, program)
                                 continue
 
                 # Finish whole word if error
                 i, tmp_wrd = skipV1(i, program, tmp_wrd)
-                results.append(Errors.Id(i, tmp_wrd))
+                results.append(Errors.Id(i, line_num, tmp_wrd))
                 continue
 
             # NUT delim4
@@ -658,12 +660,12 @@ def lexical_analysis(programs):
                         else:
                             # Finish whole word if error
                             results.append(Errors.delim(
-                                i, tmp_wrd, program[i], rd.delim4))
+                                i, line_num, tmp_wrd, program[i], rd.delim4))
                             i = skip(i, program)
                             continue
                 # Finish whole word if error
                 i, tmp_wrd = skipV1(i, program, tmp_wrd)
-                results.append(Errors.Id(i, tmp_wrd))
+                results.append(Errors.Id(i, line_num, tmp_wrd))
                 continue
 
             # PLANT
@@ -688,7 +690,7 @@ def lexical_analysis(programs):
                                 else:
                                     # Finish whole word if error
                                     results.append(Errors.delim(
-                                        i, tmp_wrd, program[i], rd.delim2))
+                                        i, line_num, tmp_wrd, program[i], rd.delim2))
                                     i = skip(i, program)
                                     continue
             # REGROW
@@ -716,12 +718,12 @@ def lexical_analysis(programs):
                                     else:
                                         # Finish whole word if error
                                         results.append(Errors.delim(
-                                            i, tmp_wrd, program[i], rd.delim4))
+                                            i, line_num, tmp_wrd, program[i], rd.delim4))
                                         i = skip(i, program)
                                         continue
                 # Finish whole word if error
                 i, tmp_wrd = skipV1(i, program, tmp_wrd)
-                results.append(Errors.Id(i, tmp_wrd))
+                results.append(Errors.Id(i, line_num, tmp_wrd))
                 continue
 
             # SEED
@@ -743,7 +745,7 @@ def lexical_analysis(programs):
                             else:
                                 # Finish whole word if error
                                 results.append(Errors.delim(
-                                    i, tmp_wrd, program[i], rd.delim16))
+                                    i, line_num, tmp_wrd, program[i], rd.delim16))
                                 i = skip(i, program[i])
                                 continue
                 # STEM
@@ -762,7 +764,7 @@ def lexical_analysis(programs):
                             else:
                                 # Finish whole word if error
                                 results.append(Errors.delim(
-                                    i, tmp_wrd, program[i], rd.delim3))
+                                    i, line_num, tmp_wrd, program[i], rd.delim3))
                                 i = skip(i, program)
                                 continue
                     # STRING
@@ -784,12 +786,12 @@ def lexical_analysis(programs):
                                     else:
                                         # Finish whole word if error
                                         results.append(Errors.delim(
-                                            i, tmp_wrd, program[i], rd.delim3))
+                                            i, line_num, tmp_wrd, program[i], rd.delim3))
                                         i = skip(i, program)
                                         continue
                 # Finish whole word if error
                 i, tmp_wrd = skipV1(i, program, tmp_wrd)
-                results.append(Errors.Id(i, tmp_wrd))
+                results.append(Errors.Id(i, line_num, tmp_wrd))
                 continue
 
             # TINT
@@ -811,7 +813,7 @@ def lexical_analysis(programs):
                             else:
                                 # Finish whole word if error
                                 results.append(Errors.delim(
-                                    i, tmp_wrd, program[i], rd.delim3))
+                                    i, line_num, line_num, tmp_wrd, program[i], rd.delim3))
                                 i = skip(i, program)
                                 continue
                 # TULIP
@@ -833,7 +835,7 @@ def lexical_analysis(programs):
                                 else:
                                     # Finish whole word if error
                                     results.append(Errors.delim(
-                                        i, tmp_wrd, program[i], rd.delim3))
+                                        i, line_num, tmp_wrd, program[i], rd.delim3))
                                     i = skip(i, program)
                                     continue
                 # TREE delim24
@@ -853,7 +855,7 @@ def lexical_analysis(programs):
                             else:
                                 # Finish whole word if error
                                 results.append(Errors.delim(
-                                    i, tmp_wrd, program[i], rd.delimb))
+                                    i, line_num, tmp_wrd, program[i], rd.delimb))
                                 i = skip(i, program)
                                 continue
                     elif i < len(program) and program[i] == 'e':
@@ -868,12 +870,12 @@ def lexical_analysis(programs):
                             else:
                                 # Finish whole word if error
                                 results.append(Errors.delim(
-                                    i, tmp_wrd, program[i], rd.delim24))
+                                    i, line_num, tmp_wrd, program[i], rd.delim24))
                                 i = skip(i, program)
                                 continue
                 # Finish whole word if error
                 i, tmp_wrd = skipV1(i, program, tmp_wrd)
-                results.append(Errors.Id(i, tmp_wrd))
+                results.append(Errors.Id(i, line_num, tmp_wrd))
                 continue
 
             # VIOLA delim4
@@ -898,12 +900,12 @@ def lexical_analysis(programs):
                                 else:
                                     # Finish whole word if error
                                     results.append(Errors.delim(
-                                        i, tmp_wrd, program[i], rd.delim4))
+                                        i, line_num, tmp_wrd, program[i], rd.delim4))
                                     i = skip(i, program)
                                     continue
                 # Finish whole word if error
                 i, tmp_wrd = skipV1(i, program, tmp_wrd)
-                results.append(Errors.Id(i, tmp_wrd))
+                results.append(Errors.Id(i, line_num, tmp_wrd))
                 continue
 
             # WILLOW
@@ -931,12 +933,12 @@ def lexical_analysis(programs):
                                     else:
                                         # Finish whole word if error
                                         results.append(Errors.delim(
-                                            i, tmp_wrd, program[i], rd.delim3))
+                                            i, line_num, tmp_wrd, program[i], rd.delim3))
                                         i = skip(i, program)
                                         continue
                 # Finish whole word if error
                 i, tmp_wrd = skipV1(i, program, tmp_wrd)
-                results.append(Errors.Id(i, tmp_wrd))
+                results.append(Errors.Id(i, line_num, tmp_wrd))
                 continue
 
             # ---------------------- Reserved Symbol ---------------------- #
@@ -957,13 +959,13 @@ def lexical_analysis(programs):
                     else:
                         # Finish whole word if error
                         results.append(Errors.delim(
-                            i, tmp_wrd, program[i], rd.delim19))
+                            i, line_num, tmp_wrd, program[i], rd.delim19))
                         i = skip(i, program)
                         continue
                 else:
                     # Finish whole word if error
                     results.append(Errors.delim(
-                        i, tmp_wrd, program[i], rd.delim5))
+                        i, line_num, tmp_wrd, program[i], rd.delim5))
                     i = skip(i, program)
                     continue
 
@@ -984,7 +986,7 @@ def lexical_analysis(programs):
                     else:
                         # Finish whole word if error
                         results.append(Errors.delim(
-                            i, tmp_wrd, program[i], rd.delim19))
+                            i, line_num, tmp_wrd, program[i], rd.delim19))
                         i = skip(i, program)
                         continue
                 # --> delim2
@@ -1000,18 +1002,18 @@ def lexical_analysis(programs):
                         else:
                             # Finish whole word if error
                             results.append(Errors.delim(
-                                i, tmp_wrd, program[i], rd.delim2))
+                                i, line_num, tmp_wrd, program[i], rd.delim2))
                             i = skip(i, program)
                             continue
                 else:
                     # Finish whole word if error
                     results.append(Errors.delim(
-                        i, tmp_wrd, program[i], rd.delim19))
+                        i, line_num, tmp_wrd, program[i], rd.delim19))
                     i = skip(i, program)
                     continue
                 # Finish whole word if error
                 i, tmp_wrd = skipV1(i, program, tmp_wrd)
-                results.append(Errors.Id(i, tmp_wrd))
+                results.append(Errors.Id(i, line_num, tmp_wrd))
                 continue
 
             # * delim13, ** delim13, **= delim13, *= delim13
@@ -1032,7 +1034,7 @@ def lexical_analysis(programs):
                         i += 1
                         for x in range(50):
                             if program[i] == "\n":
-                                results.append(Errors.delim(i, tmp_wrd, program[i], ["\""]))
+                                results.append(Errors.delim(i, line_num, tmp_wrd, program[i], ["\""]))
                                 i = skip(i, program)
                                 break
                             if i < len(program) and program[i] in rd.id:
@@ -1041,7 +1043,7 @@ def lexical_analysis(programs):
                             if x == 49:
                                 if program[i].isalnum():
                                     tmp_wrd += program[i]
-                                    results.append(Errors.Id(i, tmp_wrd))
+                                    results.append(Errors.Id(i, line_num, tmp_wrd))
                                     i = skip(i, program)
                                     continue
                             if program[i] in rd.delim26:
@@ -1051,7 +1053,7 @@ def lexical_analysis(programs):
                     else:
                         # Finish whole word if error
                         results.append(Errors.delim(
-                            i, tmp_wrd, program[i], rd.delim26))
+                            i, line_num, tmp_wrd, program[i], rd.delim26))
                         i = skip(i, program)
                         continue
                 # ** delim13
@@ -1071,7 +1073,7 @@ def lexical_analysis(programs):
                         else:
                             # Finish whole word if error
                             results.append(Errors.delim(
-                                i, tmp_wrd, program[i], rd.delim13))
+                                i, line_num, tmp_wrd, program[i], rd.delim13))
                             i = skip(i, program)
                             continue
                     # **# IDENTIFIER
@@ -1085,7 +1087,7 @@ def lexical_analysis(programs):
                             i += 1
                             for x in range(50):
                                 if program[i] == "\n":
-                                    results.append(Errors.delim(i, tmp_wrd, program[i], ["\""]))
+                                    results.append(Errors.delim(i, line_num, tmp_wrd, program[i], ["\""]))
                                     i = skip(i, program)
                                     break
                                 if i < len(program) and program[i] in rd.id:
@@ -1094,7 +1096,7 @@ def lexical_analysis(programs):
                                 if x == 49:
                                     if program[i].isalnum():
                                         tmp_wrd += program[i]
-                                        results.append(Errors.Id(i, tmp_wrd))
+                                        results.append(Errors.Id(i, line_num, tmp_wrd))
                                         i = skip(i, program)
                                         continue
                                 if program[i] in rd.delim26:
@@ -1104,7 +1106,7 @@ def lexical_analysis(programs):
                         else:
                             # Finish whole word if error
                             results.append(Errors.delim(
-                                i, tmp_wrd, program[i], rd.delim26))
+                                i, line_num, tmp_wrd, program[i], rd.delim26))
                             i = skip(i, program)
                             continue
                 # *= delim13
@@ -1117,18 +1119,18 @@ def lexical_analysis(programs):
                     else:
                         # Finish whole word if error
                         results.append(Errors.delim(
-                            i, tmp_wrd, program[i], rd.delim13))
+                            i, line_num, tmp_wrd, program[i], rd.delim13))
                         i = skip(i, program)
                         continue
                 else:
                     # Finish whole word if error
                     results.append(Errors.delim(
-                        i, tmp_wrd, program[i], rd.delim13))
+                        i, line_num, tmp_wrd, program[i], rd.delim13))
                     i = skip(i, program)
                     continue
                 # Finish whole word if error
                 i, tmp_wrd = skipV1(i, program, tmp_wrd)
-                results.append(Errors.Id(i, tmp_wrd))
+                results.append(Errors.Id(i, line_num, tmp_wrd))
                 continue
 
             # /, //, //=, /= delim13
@@ -1155,7 +1157,7 @@ def lexical_analysis(programs):
                         else:
                             # Finish whole word if error
                             results.append(Errors.delim(
-                                i, tmp_wrd, program[i], rd.delim13))
+                                i, line_num, tmp_wrd, program[i], rd.delim13))
                             i = skip(i, program)
                             continue
                 # /= delim13
@@ -1168,18 +1170,18 @@ def lexical_analysis(programs):
                     else:
                         # Finish whole word if error
                         results.append(Errors.delim(
-                            i, tmp_wrd, program[i], rd.delim13))
+                            i, line_num, tmp_wrd, program[i], rd.delim13))
                         i = skip(i, program)
                         continue
                 else:
                     # Finish whole word if error
                     results.append(Errors.delim(
-                        i, tmp_wrd, program[i], rd.delim13))
+                        i, line_num, tmp_wrd, program[i], rd.delim13))
                     i = skip(i, program)
                     continue
                 # Finish whole word if error
                 i, tmp_wrd = skipV1(i, program, tmp_wrd)
-                results.append(Errors.Id(i, tmp_wrd))
+                results.append(Errors.Id(i, line_num, tmp_wrd))
                 continue
 
             # %, %= delim13
@@ -1199,18 +1201,18 @@ def lexical_analysis(programs):
                     else:
                         # Finish whole word if error
                         results.append(Errors.delim(
-                            i, tmp_wrd, program[i], rd.delim13))
+                            i, line_num, tmp_wrd, program[i], rd.delim13))
                         i = skip(i, program)
                         continue
                 else:
                     # Finish whole word if error
                     results.append(Errors.delim(
-                        i, tmp_wrd, program[i], rd.delim13))
+                        i, line_num, tmp_wrd, program[i], rd.delim13))
                     i = skip(i, program)
                     continue
                 # Finish whole word if error
                 i, tmp_wrd = skipV1(i, program, tmp_wrd)
-                results.append(Errors.Id(i, tmp_wrd))
+                results.append(Errors.Id(i, line_num, tmp_wrd))
                 continue
 
             # !=
@@ -1226,13 +1228,13 @@ def lexical_analysis(programs):
                     else:
                         # Finish whole word if error
                         results.append(Errors.delim(
-                            i, tmp_wrd, program[i], rd.delim5))
+                            i, line_num, tmp_wrd, program[i], rd.delim5))
                         i = skip(i, program)
                         continue
 
                 # Finish whole word if error
                 i, tmp_wrd = skipV1(i, program, tmp_wrd)
-                results.append(Errors.Id(i, tmp_wrd))
+                results.append(Errors.Id(i, line_num, tmp_wrd))
                 continue
 
             # >
@@ -1253,18 +1255,18 @@ def lexical_analysis(programs):
                     else:
                         # Finish whole word if error
                         results.append(Errors.delim(
-                            i, tmp_wrd, program[i], rd.delim13))
+                            i, line_num, tmp_wrd, program[i], rd.delim13))
                         i = skip(i, program)
                         continue
                 else:
                     # Finish whole word if error
                     results.append(Errors.delim(
-                        i, tmp_wrd, program[i], rd.delim22))
+                        i, line_num, tmp_wrd, program[i], rd.delim22))
                     i = skip(i, program)
                     continue
                 # Finish whole word if error
                 i, tmp_wrd = skipV1(i, program, tmp_wrd)
-                results.append(Errors.Id(i, tmp_wrd))
+                results.append(Errors.Id(i, line_num, tmp_wrd))
                 continue
 
             # <
@@ -1285,7 +1287,7 @@ def lexical_analysis(programs):
                     else:
                         # Finish whole word if error
                         results.append(Errors.delim(
-                            i, tmp_wrd, program[i], rd.delim22))
+                            i, line_num, tmp_wrd, program[i], rd.delim22))
                         i = skip(i, program)
                         continue
 
@@ -1304,13 +1306,13 @@ def lexical_analysis(programs):
                         else:
                             # Finish whole word if error
                             results.append(Errors.delim(
-                                i, tmp_wrd, program[i], rd.delim14))
+                                i, line_num, tmp_wrd, program[i], rd.delim14))
                             i = skip(i, program)
                             continue
 
                 # Finish whole word if error
                 i, tmp_wrd = skipV1(i, program, tmp_wrd)
-                results.append(Errors.Id(i, tmp_wrd))
+                results.append(Errors.Id(i, line_num, tmp_wrd))
                 continue
 
             # (
@@ -1323,7 +1325,7 @@ def lexical_analysis(programs):
                 else:
                     # Finish whole word if error
                     results.append(Errors.delim(
-                        i, tmp_wrd, program[i], rd.delim6))
+                        i, line_num, tmp_wrd, program[i], rd.delim6))
                     i = skip(i, program)
                     continue
 
@@ -1337,7 +1339,7 @@ def lexical_analysis(programs):
                 else:
                     # Finish whole word if error
                     results.append(Errors.delim(
-                        i, tmp_wrd, program[i], rd.delim6))
+                        i, line_num, tmp_wrd, program[i], rd.delim6))
                     i = skip(i, program)
                     continue
 
@@ -1351,7 +1353,7 @@ def lexical_analysis(programs):
                 else:
                     # Finish whole word if error
                     results.append(Errors.delim(
-                        i, tmp_wrd, program[i], rd.delim23))
+                        i, line_num, tmp_wrd, program[i], rd.delim23))
                     i = skip(i, program)
                     continue
 
@@ -1365,7 +1367,7 @@ def lexical_analysis(programs):
                 else:
                     # Finish whole word if error
                     results.append(Errors.delim(
-                        i, tmp_wrd, program[i], rd.delim12))
+                        i, line_num, tmp_wrd, program[i], rd.delim12))
                     i = skip(i, program)
                     continue
 
@@ -1379,7 +1381,7 @@ def lexical_analysis(programs):
                 else:
                     # Finish whole word if error
                     results.append(Errors.delim(
-                        i, tmp_wrd, program[i], rd.delim18))
+                        i, line_num, tmp_wrd, program[i], rd.delim18))
                     i = skip(i, program)
                     continue
 
@@ -1393,7 +1395,7 @@ def lexical_analysis(programs):
                 else:
                     # Finish whole word if error
                     results.append(Errors.delim(
-                        i, tmp_wrd, program[i], rd.delim17))
+                        i, line_num, tmp_wrd, program[i], rd.delim17))
                     i = skip(i, program)
                     continue
 
@@ -1407,7 +1409,7 @@ def lexical_analysis(programs):
                 else:
                     # Finish whole word if error
                     results.append(Errors.delim(
-                        i, tmp_wrd, program[i], rd.delim7))
+                        i, line_num, tmp_wrd, program[i], rd.delim7))
                     i = skip(i, program)
                     continue
 
@@ -1421,7 +1423,7 @@ def lexical_analysis(programs):
                 else:
                     # Finish whole word if error
                     results.append(Errors.delim(
-                        i, tmp_wrd, program[i], rd.delim15))
+                        i, line_num, tmp_wrd, program[i], rd.delim15))
                     i = skip(i, program)
                     continue
 
@@ -1435,7 +1437,7 @@ def lexical_analysis(programs):
                 else:
                     # Finish whole word if error
                     results.append(Errors.delim(
-                        i, tmp_wrd, program[i], rd.delim28))
+                        i, line_num, tmp_wrd, program[i], rd.delim28))
                     i = skip(i, program)
                     continue
 
@@ -1449,7 +1451,7 @@ def lexical_analysis(programs):
                 else:
                     # Finish whole word if error
                     results.append(Errors.delim(
-                        i, tmp_wrd, program[i], rd.delim16))
+                        i, line_num, tmp_wrd, program[i], rd.delim16))
                     i = skip(i, program)
                     continue
 
@@ -1464,7 +1466,7 @@ def lexical_analysis(programs):
                     i += 1
                     for x in range(50):
                         if program[i] == "\n":
-                            results.append(Errors.delim(i, tmp_wrd, program[i], ["\""]))
+                            results.append(Errors.delim(i, line_num, tmp_wrd, program[i], ["\""]))
                             i = skip(i, program)
                             break
                         if i < len(program) and program[i] in rd.id:
@@ -1473,7 +1475,7 @@ def lexical_analysis(programs):
                         if x == 49:
                             if program[i].isalnum():
                                 tmp_wrd += program[i]
-                                results.append(Errors.Id(i, tmp_wrd))
+                                results.append(Errors.Id(i, line_num, tmp_wrd))
                                 i = skip(i, program)
                                 continue
                         if program[i] in rd.delimi:
@@ -1483,7 +1485,7 @@ def lexical_analysis(programs):
                 else:
                     # Finish whole word if error
                     results.append(Errors.delim(
-                        i, tmp_wrd, program[i], rd.delim20))
+                        i, line_num, tmp_wrd, program[i], rd.delim20))
                     i = skip(i, program)
                     continue
 
@@ -1502,7 +1504,7 @@ def lexical_analysis(programs):
                 else:
                     # Finish whole word if error
                     results.append(Errors.delim(
-                        i, tmp_wrd, program[i], rd.delim20))
+                        i, line_num, tmp_wrd, program[i], rd.delim20))
                     i = skip(i, program)
                     continue
 
@@ -1519,7 +1521,7 @@ def lexical_analysis(programs):
                     else:
                         # Finish whole word if error
                         results.append(Errors.delim(
-                            i, tmp_wrd, program[i], rd.delim8))
+                            i, line_num, tmp_wrd, program[i], rd.delim8))
                         i = skip(i, program)
                         continue
                 elif i < len(program) and program[i] == '!':
@@ -1531,7 +1533,7 @@ def lexical_analysis(programs):
                     else:
                         # Finish whole word if error
                         results.append(Errors.delim(
-                            i, tmp_wrd, program[i], rd.delim8))
+                            i, line_num, tmp_wrd, program[i], rd.delim8))
                         i = skip(i, program)
                         continue
                 elif i < len(program) and program[i] == '&':
@@ -1543,7 +1545,7 @@ def lexical_analysis(programs):
                     else:
                         # Finish whole word if error
                         results.append(Errors.delim(
-                            i, tmp_wrd, program[i], rd.delim8))
+                            i, line_num, tmp_wrd, program[i], rd.delim8))
                         i = skip(i, program)
                         continue
                 elif i < len(program) and program[i] == '/':
@@ -1555,7 +1557,7 @@ def lexical_analysis(programs):
                     else:
                         # Finish whole word if error
                         results.append(Errors.delim(
-                            i, tmp_wrd, program[i], rd.delim8))
+                            i, line_num, tmp_wrd, program[i], rd.delim8))
                         i = skip(i, program)
                         continue
                 elif i < len(program) and program[i] in rd.delim8:
@@ -1564,13 +1566,13 @@ def lexical_analysis(programs):
                 else:
                     # Finish whole word if error
                     results.append(Errors.delim(
-                        i, tmp_wrd, program[i], rd.delim8))
+                        i, line_num, tmp_wrd, program[i], rd.delim8))
                     i = skip(i, program)
                     continue
 
                 # Finish whole word if error
                 i, tmp_wrd = skipV1(i, program, tmp_wrd)
-                results.append(Errors.Id(i, tmp_wrd))
+                results.append(Errors.Id(i, line_num, tmp_wrd))
                 continue
 
             # ---------------------- Literals ---------------------- #
@@ -1586,7 +1588,7 @@ def lexical_analysis(programs):
                     if x == 5:
                         if program[i].isdigit():
                             tmp_wrd += program[i]
-                            results.append(Errors.Int(i, tmp_wrd))
+                            results.append(Errors.Int(i, line_num, tmp_wrd))
                             i = skip(i, program)
                             continue
                         elif program[i] in rd.delimtf:
@@ -1608,7 +1610,7 @@ def lexical_analysis(programs):
                         if x == 5:
                             if program[i].isdigit():
                                 tmp_wrd += program[i]
-                                results.append(Errors.Float(i, tmp_wrd))
+                                results.append(Errors.Float(i, line_num, tmp_wrd))
                                 i = skip(i, program)
                                 continue
                             elif program[i] in rd.delimtf:
@@ -1616,7 +1618,7 @@ def lexical_analysis(programs):
                                 continue
 
                 if program[i] not in rd.delimtf:
-                    results.append(Errors.delim(i, tmp_wrd, program[i], rd.delimtf))
+                    results.append(Errors.delim(i, line_num, tmp_wrd, program[i], rd.delimtf))
                     i = skip(i, program)
                     continue
                 continue
@@ -1628,7 +1630,7 @@ def lexical_analysis(programs):
                 if i < len(program) and program[i] in rd.ascii:
                     while True:
                         if program[i] == "\n":
-                            results.append(Errors.delim(i, tmp_wrd, program[i], ["\""]))
+                            results.append(Errors.delim(i, line_num, tmp_wrd, program[i], ["\""]))
                             i = skip(i, program)
                             break
 
@@ -1667,7 +1669,7 @@ def lexical_analysis(programs):
                             else:
                                 # Finish whole word if error
                                 results.append(Errors.delim(
-                                    i, tmp_wrd, program[i], rd.delimtf))
+                                    i, line_num, tmp_wrd, program[i], rd.delimtf))
                                 i = skip(i, program)
                                 break
                     continue
@@ -1677,7 +1679,7 @@ def lexical_analysis(programs):
                 i += 1
                 if i < len(program) and program[i].isascii():
                     if program[i] == "\n":
-                        results.append(Errors.delim(i, tmp_wrd, program[i], ["\""]))
+                        results.append(Errors.delim(i, line_num, tmp_wrd, program[i], ["\""]))
                         i = skip(i, program)
                         continue
                     if i < len(program) and program[i].isascii():
@@ -1692,16 +1694,16 @@ def lexical_analysis(programs):
                         else:
                             # Finish whole word if error
                             results.append(Errors.delim(
-                                i, tmp_wrd, program[i], rd.delimtf))
+                                i, line_num, tmp_wrd, program[i], rd.delimtf))
                             i = skip(i, program)
                             continue
                     else:
-                        results.append(Errors.delim(i, tmp_wrd, program[i], ["'"]))
+                        results.append(Errors.delim(i, line_num, tmp_wrd, program[i], ["'"]))
                         i = skip(i, program)
                         continue
 
                 if program[i] not in rd.delimtf:
-                    results.append(Errors.delim(i, tmp_wrd, program[i], rd.delimtf))
+                    results.append(Errors.delim(i, line_num, tmp_wrd, program[i], rd.delimtf))
                     i = skip(i, program)
                     continue
                 continue
@@ -1715,13 +1717,19 @@ def lexical_analysis(programs):
                 i += 1
                 continue
 
+            if program[i] == "\n":
+                results.append(("<newline>", rs))
+                i += 1
+                line_num += 1
+                continue
+
             # The letter is none existent
-            single_symbols = [" ", "\n", "\t", ";", ",", "(", ")", "#"]
+            single_symbols = [" ", "\t", ";", ",", "(", ")", "#"]
             while program[i] != ' ' and program[i] != '\n':
                 if program[i] in single_symbols:
                     break
                 tmp_wrd += program[i]
                 i += 1
-            results.append(Errors.Id(i, tmp_wrd))
+            results.append(Errors.Id(i, line_num, tmp_wrd))
 
     return results
