@@ -28,9 +28,9 @@ def skipV1(i, program, tmp_wrd):
 
 class Errors():
     @staticmethod
-    def delim(i, tmp_wrd, delim, delims):
+    def delim(i, line_num, tmp_wrd, delim, delims):
         return (
-                str(i + 1) + ": " + \
+                "line " + str(line_num) + ":" + str(i + 1) + ": " + \
                 "\"" + tmp_wrd + esc(delim) + \
                 "\": Invalid Delimeter \"" + esc(delim) + \
                 "\". Expecting Delimeter after \"" + \
@@ -39,27 +39,27 @@ class Errors():
                 )
 
     @staticmethod
-    def Id(i, tmp_wrd):
+    def Id(i, line_num, tmp_wrd):
         return (
-                str(i + 1) + ": " + \
+                "line " + str(line_num) + ":" + str(i + 1) + ": " + \
                 "\"" + tmp_wrd + \
                 "\": Invalid Identier. Expecting \"#\" symbol before " + \
                 tmp_wrd, "UNKNOWN IDENTIFIER"
                 )
 
     @staticmethod
-    def Int(i, tmp_wrd):
+    def Int(i, line_num, tmp_wrd):
         return (
-            str(i + 1) + ": " + \
+            "line " + str(line_num) + ":" + str(i + 1) + ": " + \
             "\"" + tmp_wrd + \
             "\": Invalid range. "+ \
             "-999999 or 999999", "INVALID RANGE"
             )
 
     @staticmethod
-    def Float(i, tmp_wrd):
+    def Float(i, line_num, tmp_wrd):
         return (
-            str(i + 1) + ": " + \
+            "line " + str(line_num) + ":" + str(i + 1) + ": " + \
             "\"" + tmp_wrd + \
             "\": Invalid range. " + \
             "-999999.999999 or 999999.999999", "INVALID RANGE"
