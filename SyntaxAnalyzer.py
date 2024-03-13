@@ -1,14 +1,13 @@
 # Syntax Analyzer Logic
-from grammar import cfg, first_set, follow_set, predict_set
-from syntaxHelper import insert_variable
+from grammar import first_set
+from syntaxHelper import insert_variable, statement
 
 errors = []
+ERR = "E: Syntax Analyzer: "
 
 
 # For checking the syntax of the program
 def syntax_analysis(programs, output):
-    results = []
-    err = "E: Syntax Analyzer: "
 
     programs.append(("EPSILON", "EPSILON"))
     print(programs)
@@ -26,6 +25,8 @@ def syntax_analysis(programs, output):
     lexeme, token = zip(*programs)
 
     print(programs)
+    print(lexeme)
+    print(token)
 
     i = 0
 
@@ -34,7 +35,7 @@ def syntax_analysis(programs, output):
         i += 1
         print("1: seed")
     else:
-        errors.append(err + "seed not found")
+        errors.append(ERR + "seed not found")
         return errors
 
     # ---------- # <global> # ---------- #
@@ -63,15 +64,62 @@ def syntax_analysis(programs, output):
                 i += 1
                 print("2: ;")
             else:
-                output.insert("end", err + "; not found\n")
-                return [(lexeme[i], "SYNTAX ERROR")]
+                errors.append(ERR + "; not found")
+                return errors
 
     # ---------- # garden # ---------- #
     if lexeme[i] == "garden":
-        print("1: garden()");
+        print("1: garden")
         i += 1
+
+        # (
+        if lexeme[i] == "(":
+            print("1: (")
+            i += 1
+        else:
+            errors.append(ERR + "( not found")
+            return errors
+
+        # )
+        if lexeme[i] == ")":
+            print("1: )")
+            i += 1
+        else:
+            errors.append(ERR + ") not found")
+            return errors
+
+        # (
+        if lexeme[i] == "(":
+            print("1: (")
+            i += 1
+        else:
+            errors.append(ERR + "( not found")
+            return errors
+
+        # <statement>
+        if lexeme[i] in first_set["<statement>"]:
+            print("1: statement")
+            i = statement(lexeme, token, i)
+        else:
+            errors.append(ERR + "statement not found")
+            return errors
+
+        # )
+        if lexeme[i] == ")":
+            print("1: )")
+            i += 1
+        else:
+            errors.append(ERR + ") not found")
+            return errors
+        # ;
+        if lexeme[i] == ";":
+            i += 1
+            print("1: ;")
+        else:
+            errors.append(ERR + "; not found")
+            return errors
     else:
-        output.insert("end", err + "garden not found\n")
+        output.insert("end", ERR + "garden not found\n")
         return [(lexeme[i], "SYNTAX ERROR")]
 
     # ---------- # <function> # ---------- #
@@ -79,15 +127,15 @@ def syntax_analysis(programs, output):
         print("function found")
 
     # ---------- # plant # ---------- #
-    if lexeme[-2] == "1: plant":
+    if lexeme[-2] == "plant":
         i += 1
         print("plant found")
     else:
-        output.insert("end", err + "plant not found\n")
+        output.insert("end", ERR + "plant not found\n")
         return [(lexeme[i], "SYNTAX ERROR")]
 
     if lexeme[i] != "EPSILON":
-        output.insert("end", err + "Excess Code \n")
+        output.insert("end", ERR + "Excess Code \n")
 
 
 # For displaying the Parse Tree

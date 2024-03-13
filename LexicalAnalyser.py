@@ -1718,7 +1718,6 @@ def lexical_analysis(programs):
                 continue
 
             if program[i] == "\n":
-                results.append(("<newline>", rs))
                 i += 1
                 line_num += 1
                 continue
