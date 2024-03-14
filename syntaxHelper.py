@@ -1236,8 +1236,8 @@ def sqnc(lexeme, token, i):
 
 
 def all_type_value(lexeme, token, i):
-    if lexeme[i] in first_set["<all-type-value>"]:
-        if lexeme[i] in first_set["<common-data>"]:
+    if lexeme[i] in first_set["<all-type-value>"] or token[i] in first_set["<all-type-value>"]:
+        if lexeme[i] in first_set["<common-data>"] or token[i] in first_set["<common-data>"]:
             print("172: common-data")
             i = common_data(lexeme, token, i)
 
@@ -1533,14 +1533,14 @@ def insert_kwargs(lexeme, token, i):
 
 
 def argument(lexeme, token, i):
-    if lexeme[i] in first_set["<argument>"]:
+    if lexeme[i] in first_set["<argument>"] or token[i] in first_set["<argument>"]:
 
         # <insert-argument>
-        if lexeme[i] in first_set["<insert-argument>"]:
+        if lexeme[i] in first_set["<insert-argument>"] or token[i] in first_set["<insert-argument>"]:
             print("286: <insert-argument>")
 
             # <all-type-value>
-            if lexeme[i] in first_set["<all-type-value>"]:
+            if lexeme[i] in first_set["<all-type-value>"] or token[i] in first_set["<all-type-value>"]:
                 print("286: <all-type-value>")
                 i = all_type_value(lexeme, token, i)
 
@@ -1611,7 +1611,7 @@ def insert_func(lexeme, token, i):
             return i
 
         # <argument>
-        if lexeme[i] in first_set["<argument>"]:
+        if lexeme[i] in first_set["<argument>"] or token[i] in first_set["<argument>"]:
             print("90: argument")
             i = argument(lexeme, token, i)
 
@@ -1631,7 +1631,7 @@ def insert_func(lexeme, token, i):
             # identifier
             if lexeme[i] == "#":
                 print("90: #identifier")
-                i += 1
+                i += 2
             else:
                 errors.append(ERR + "#identifier not found")
                 return i
@@ -1838,6 +1838,56 @@ def filter_statement(lexeme, token, i):
                     return i
                 continue
 
+            # identifier
+            elif lexeme[i] == "#":
+
+                while True:
+
+                    if lexeme[i] == "#":
+                        print("identifier")
+                        i += 2
+                    else:
+                        break
+
+                    # insert_func
+                    if lexeme[i] in first_set["<insert-func>"]:
+                        print("insert-func")
+                        i = insert_func(lexeme, token, i)
+
+                    # indexing
+                    if lexeme[i] in first_set["<indexing>"]:
+                        print("indexing")
+                        i = indexing(lexeme, token, i)
+
+                    # ,
+                    if lexeme[i] == ",":
+                        print(",")
+                        i += 1
+                    else:
+                        break
+
+                # <assignment-op>
+                if lexeme[i] == "=":
+                    print("=")
+                    i += 1
+                else:
+                    errors.append(ERR + "= not found")
+                    return i
+
+                # <all-type-value>
+                if lexeme[i] in first_set["<all-type-value>"] or token[i] in first_set["<all-type-value>"]:
+                    print("all-type-value")
+                    i = all_type_value(lexeme, token, i)
+
+                # ;
+                if lexeme[i] == ";":
+                    print(";")
+                    i += 1
+                else:
+                    errors.append(ERR + "; not found")
+                    return i
+                continue
+
             # <i/o-statement>
             elif lexeme[i] in first_set["<i/o-statement>"]:
                 print("<i/o-statement>")
@@ -1847,9 +1897,11 @@ def filter_statement(lexeme, token, i):
                     print("<insert-inpetal>")
 
                     if lexeme[i] in first_set["<common-type>"]:
+                        print("common-type")
                         i += 1
 
                         if lexeme[i] == "#":
+                            print("#identifier")
                             i += 2
                         else:
                             errors.append(ERR + "#identifier not found")
@@ -1872,10 +1924,12 @@ def filter_statement(lexeme, token, i):
                             errors.append(ERR + "= not found")
                             return i
                     elif lexeme[i] in first_set["<sqnc-type>"]:
+                        print("sqnc-type")
                         i += 1
 
                         # identifier
                         if lexeme[i] == "#":
+                            print("#identifier")
                             i += 2
                         else:
                             errors.append(ERR + "#identifier not found")
@@ -1899,6 +1953,7 @@ def filter_statement(lexeme, token, i):
                             return i
 
                     elif lexeme[i] == "#":
+                        print("#identifier")
                         i += 2
 
                         # insert_func
@@ -1913,12 +1968,14 @@ def filter_statement(lexeme, token, i):
 
                         # =
                         if lexeme[i] == "=":
+                            print("=")
                             i += 1
                         else:
                             errors.append(ERR + "= not found")
                             return i
 
                     if lexeme[i] == "inpetal":
+                        print("#inpetal")
                         i += 1
 
                         # (
@@ -1942,25 +1999,38 @@ def filter_statement(lexeme, token, i):
                             errors.append(ERR + ") not found")
                             return i
                 elif lexeme[i] == "mint":
+                    print("mint")
                     i += 1
 
                     # (
                     if lexeme[i] == "(":
+                        print("(")
                         i += 1
                     else:
                         errors.append(ERR + "( not found")
                         return i
 
                     # <all-type-value>
-                    if lexeme[i] in first_set["<all-type-value>"]:
+                    if lexeme[i] in first_set["<all-type-value>"] or token[i] in first_set["<all-type-value>"]:
+                        print("<all-type-value>")
                         i = all_type_value(lexeme, token, i)
 
                     # )
                     if lexeme[i] == ")":
+                        print(")")
                         i += 1
                     else:
                         errors.append(ERR + ") not found")
                         return i
+
+                    # ;
+                    if lexeme[i] == ";":
+                        print(";")
+                        i += 1
+                    else:
+                        errors.append(ERR + "; not found")
+                        return i
+
                 continue
 
             # leaf
@@ -2091,49 +2161,6 @@ def filter_statement(lexeme, token, i):
                     else:
                         errors.append(ERR + "; not found")
                         return i
-                continue
-
-            # identifier
-            elif lexeme[i] == "#":
-
-                while True:
-
-                    if lexeme[i] == "#":
-                        i += 2
-                    else:
-                        break
-
-                    # insert_func
-                    if lexeme[i] in first_set["<insert-func>"]:
-                        i = insert_func(lexeme, token, i)
-
-                    # indexing
-                    if lexeme[i] in first_set["<indexing>"]:
-                        i = indexing(lexeme, token, i)
-
-                    # ,
-                    if lexeme[i] == ",":
-                        i += 1
-                    else:
-                        break
-
-                # <assignment-op>
-                if lexeme[i] == "=":
-                    i += 1
-                else:
-                    errors.append(ERR + "= not found")
-                    return i
-
-                # <all-type-value>
-                if lexeme[i] in first_set["<all-type-value>"]:
-                    i = all_type_value(lexeme, token, i)
-
-                # ;
-                if lexeme[i] == ";":
-                    i += 1
-                else:
-                    errors.append(ERR + "; not found")
-                    return i
                 continue
 
             # <iterative>
@@ -2380,10 +2407,12 @@ def filter_statement(lexeme, token, i):
                     return i
                 continue
             elif lexeme[i] == "break":
+                print("break")
                 i += 1
 
                 # ;
                 if lexeme[i] == ";":
+                    print(";")
                     i += 1
                 else:
                     errors.append(ERR + "; not found")
@@ -2398,6 +2427,7 @@ def filter_statement(lexeme, token, i):
 def use_tree(lexeme, token, i):
     if lexeme[i] in first_set["<use-tree>"]:
         if lexeme[i] == "tree":
+            print("217: tree")
             i += 1
         else:
             errors.append(ERR + "tree not found")
@@ -2405,6 +2435,7 @@ def use_tree(lexeme, token, i):
 
         # (
         if lexeme[i] == "(":
+            print("217: (")
             i += 1
         else:
             errors.append(ERR + "( not found")
@@ -2412,19 +2443,23 @@ def use_tree(lexeme, token, i):
 
         # identifier
         if lexeme[i] == "#":
+            print("217: #identifier")
             i += 2
         else:
             errors.append(ERR + "#identifier not found")
             return i
 
         # )
-        if lexeme[i] == ")": i += 1
+        if lexeme[i] == ")":
+            print("217: )")
+            i += 1
         else:
             errors.append(ERR + ") not found")
             return i
 
         # (
         if lexeme[i] == "(":
+            print("217: (")
             i += 1
         else:
             errors.append(ERR + "( not found")
@@ -2432,6 +2467,7 @@ def use_tree(lexeme, token, i):
 
         # branch
         if lexeme[i] == "branch":
+            print("217: branch")
             i += 1
         else:
             errors.append(ERR + "branch not found")
@@ -2439,52 +2475,68 @@ def use_tree(lexeme, token, i):
 
         while True:
             # <check-branch>
-            if lexeme[i] in first_set["<check-branch>"]:
+            if lexeme[i] in first_set["<check-branch>"] or token[i] in first_set["<check-branch>"]:
+                print("217: <check-branch>")
                 # <all-type-value>
-                if lexeme[i] in first_set["<all-type-value>"]:
+                if lexeme[i] in first_set["<all-type-value>"] or token[i] in first_set["<all-type-value>"]:
+                    print("219: <all-type-value>")
                     i = all_type_value(lexeme, token, i)
 
                     # :
                     if lexeme[i] == ":":
+                        print("221: :")
                         i += 1
 
                         # <filter-statement>
                         if lexeme[i] in first_set["<filter-statement>"]:
+                            print("221: filter_statement")
                             i = filter_statement(lexeme, token, i)
                         else:
                             errors.append(ERR + "<filter-statement> not found")
                             return i
+
                     elif lexeme[i] == "leaf":
+                        print("222: leaf")
                         i += 1
 
                         # <bloom>
                         if lexeme[i] in first_set["<bloom>"]:
+                            print("222: bloom")
                             i = bloom(lexeme, token, i)
 
                         # (
                         if lexeme[i] == "(":
+                            print("222: (")
                             i += 1
                         else:
                             errors.append(ERR + "( not found")
                             return i
 
+                        # filter_statement
+                        if lexeme[i] in first_set["<filter-statement>"]:
+                            i = filter_statement(lexeme, token, i)
+
                         # )
+                            print("222: )")
                         if lexeme[i] == ")":
                             i += 1
                         else:
                             errors.append(ERR + ") not found")
                             return i
 
-                        # branch
-                        if lexeme[i] == "branch":
-                            i += 1
-                        else:
-                            break
+                    # branch
+                    if lexeme[i] == "branch":
+                        print("branch")
+                        i += 1
+                    else:
+                        break
 
                 if lexeme[i] == "_":
+                    print("_")
                     i += 1
 
                     if lexeme[i] == ":":
+                        print(":")
                         i += 1
                     else:
                         errors.append(ERR + ": not found")
@@ -2492,11 +2544,11 @@ def use_tree(lexeme, token, i):
 
                     # <filter-statement>
                     if lexeme[i] in first_set["<filter-statement>"]:
-                        i = statement(lexeme, token, i)
+                        print("filter-statement")
+                        i = filter_statement(lexeme, token, i)
                     else:
                         errors.append(ERR + "<filter-statement> not found")
                         return i
-
             else:
                 errors.append(ERR + "1: <check-branch> not found")
                 return i
@@ -2505,22 +2557,23 @@ def use_tree(lexeme, token, i):
             if lexeme[i] == ";":
                 i += 1
             else:
-                errors.append(ERR + "; not found")
-                return i
+                break
 
-            # )
-            if lexeme[i] == ")":
-                i += 1
-            else:
-                errors.append(ERR + ") not found")
-                return i
+        print(lexeme[i])
+        # )
+        if lexeme[i] == ")":
+            i += 1
+        else:
+            errors.append(ERR + ") not found")
+            return i
 
-            # ;
-            if lexeme[i] == ";":
-                i += 1
-            else:
-                errors.append(ERR + "; not found")
-                return i
+        # ;
+        if lexeme[i] == ";":
+            i += 1
+        else:
+            errors.append(ERR + "; not found")
+            return i
+
 
     return i
 
@@ -2928,41 +2981,8 @@ def D2_parameter(lexeme, token, i):
 
 def parameter(lexeme, token, i):
     if lexeme[i] in first_set["<parameter>"]:
-        # <undefined-param>
-        if lexeme[i] in first_set["<undefined-param>"]:
-            print("<undefined-param>")
-
-            # <common-type>
-            if lexeme[i] in first_set["<common-type>"]:
-                print("<common-type>")
-                i += 1
-
-                # #identifier
-                if lexeme[i] == "*#":
-                    i += 2
-                else:
-                    errors.append(ERR + "*#identifier not found")
-                    return i
-
-                # <add-kwargs>
-                if lexeme[i] in first_set["<add-kwargs>"]:
-                    print("<add-kwargs>")
-
-                    # ,
-                    if lexeme[i] == ",":
-                        i += 1
-                    else:
-                        errors.append(ERR + ", not found")
-                        return i
-
-                    # **#identifier
-                    if lexeme[i] == "**#":
-                        i += 4
-                    else:
-                        errors.append(ERR + "**#identifier not found")
-                        return i
         # <common-variable>
-        elif lexeme[i] in first_set["<common-variable>"]:
+        if lexeme[i] in first_set["<common-variable>"]:
             print("<common-variable>")
 
             # tint value
@@ -3070,6 +3090,39 @@ def parameter(lexeme, token, i):
                 i = parameter(lexeme, token, i)
             else:
                 return i
+        # <undefined-param>
+        elif lexeme[i] in first_set["<undefined-param>"]:
+            print("<undefined-param>")
+
+            # <common-type>
+            if lexeme[i] in first_set["<common-type>"]:
+                print("<common-type>")
+                i += 1
+
+                # #identifier
+                if lexeme[i] == "*#":
+                    i += 2
+                else:
+                    errors.append(ERR + "*#identifier not found")
+                    return i
+
+                # <add-kwargs>
+                if lexeme[i] in first_set["<add-kwargs>"]:
+                    print("<add-kwargs>")
+
+                    # ,
+                    if lexeme[i] == ",":
+                        i += 1
+                    else:
+                        errors.append(ERR + ", not found")
+                        return i
+
+                    # **#identifier
+                    if lexeme[i] == "**#":
+                        i += 4
+                    else:
+                        errors.append(ERR + "**#identifier not found")
+                        return i
 
         # sqnc-type
         elif lexeme[i] in first_set["<sqnc-type>"]:
@@ -3139,6 +3192,7 @@ def function(lexeme, token, i):
 
             # #identifier
             if lexeme[i] == "#":
+                print("# identifier")
                 i += 2
             else:
                 errors.append(ERR + "#identifier not found")
@@ -3146,6 +3200,7 @@ def function(lexeme, token, i):
 
             # (
             if lexeme[i] == "(":
+                print("(")
                 i += 1
             else:
                 errors.append(ERR + "( not found")
@@ -3158,6 +3213,7 @@ def function(lexeme, token, i):
 
             # )
             if lexeme[i] == ")":
+                print(")")
                 i += 1
             else:
                 errors.append(ERR + ") not found")
@@ -3165,6 +3221,7 @@ def function(lexeme, token, i):
 
             # (
             if lexeme[i] == "(":
+                print("(")
                 i += 1
             else:
                 errors.append(ERR + "( not found")
@@ -3176,6 +3233,7 @@ def function(lexeme, token, i):
 
             # regrow
             if lexeme[i] == "regrow":
+                print("regrow")
                 i += 1
 
                 # all_type_value
@@ -3217,7 +3275,15 @@ def function(lexeme, token, i):
                 return i
         # <viola>
         elif lexeme[i] == "viola":
+            print("viola")
             i += 1
+
+            # #identifier
+            if lexeme[i] == "#":
+                i += 2
+            else:
+                errors.append(ERR + "#identifier not found")
+                return i
 
             # (
             if lexeme[i] == "(":
