@@ -1,6 +1,6 @@
 # Syntax Analyzer Logic
 from grammar import first_set
-from syntaxHelper import insert_variable, statement
+from syntaxHelper import insert_variable, statement, function
 
 errors = []
 ERR = "E: Syntax Analyzer: "
@@ -100,9 +100,6 @@ def syntax_analysis(programs, output):
         if lexeme[i] in first_set["<statement>"]:
             print("1: statement")
             i = statement(lexeme, token, i)
-        else:
-            errors.append(ERR + "statement not found")
-            return errors
 
         # )
         if lexeme[i] == ")":
@@ -124,10 +121,10 @@ def syntax_analysis(programs, output):
 
     # ---------- # <function> # ---------- #
     if lexeme[i] in first_set["<function>"]:
-        print("function found")
+        i = function(lexeme, token, i)
 
     # ---------- # plant # ---------- #
-    if lexeme[-2] == "plant":
+    if lexeme[i] == "plant":
         i += 1
         print("plant found")
     else:

@@ -1143,7 +1143,6 @@ def sequence(lexeme, token, i):
     return i
 
 
-
 def indexing(lexeme, token, i):
     if lexeme[i] in first_set["<indexing>"]:
         # [
@@ -1636,6 +1635,7 @@ def insert_func(lexeme, token, i):
             else:
                 errors.append(ERR + "#identifier not found")
                 return i
+    return i
 
 
 def insert_variable(lexeme, token, i):
@@ -2541,5 +2541,727 @@ def statement(lexeme, token, i):
         if lexeme[i] in first_set["<statement>"]:
             print("<statement>")
             i = statement(lexeme, token, i)
+
+    return i
+
+
+def D3_parameter(lexeme, token, i):
+    if lexeme[i] in first_set["<parameter>"]:
+        # <undefined-param>
+        if lexeme[i] in first_set["<undefined-param>"]:
+            print("<undefined-param>")
+
+            # <common-type>
+            if lexeme[i] in first_set["<common-type>"]:
+                print("<common-type>")
+                i += 1
+
+                # #identifier
+                if lexeme[i] == "*#":
+                    i += 3
+                else:
+                    errors.append(ERR + "*#identifier not found")
+                    return i
+
+                # <add-kwargs>
+                if lexeme[i] in first_set["<add-kwargs>"]:
+                    print("<add-kwargs>")
+
+                    # ,
+                    if lexeme[i] == ",":
+                        i += 1
+                    else:
+                        errors.append(ERR + ", not found")
+                        return i
+
+                    # **#identifier
+                    if lexeme[i] == "**#":
+                        i += 4
+                    else:
+                        errors.append(ERR + "**#identifier not found")
+                        return i
+        # <common-variable>
+        elif lexeme[i] in first_set["<common-variable>"]:
+            print("<common-variable>")
+
+            # tint value
+            if lexeme[i] == "tint":
+                i += 1
+
+                if lexeme[i] == "#":
+                    i += 2
+                else:
+                    errors.append(ERR + "#identifier not found")
+                    return i
+
+                if lexeme[i] == "=":
+                    print("26: =")
+                    i += 1
+
+                    i = tint(lexeme, token, i)
+
+            # flora value
+            elif lexeme[i] == "flora":
+                print("17: flora")
+                i += 1
+
+                if lexeme[i] == "#":
+                    print("17: #identifier")
+                    i += 2
+                else:
+                    errors.append(ERR + "#identifier not found")
+                    return i
+
+                if lexeme[i] == "=":
+                    print("34: =")
+                    i += 1
+
+                    i = flora(lexeme, token, i)
+
+            # chard value
+            elif lexeme[i] == "chard":
+                print("18: chard")
+                i += 1
+
+                if lexeme[i] == "#":
+                    print("18: #identifier")
+                    i += 2
+                else:
+                    errors.append(ERR + "#identifier not found")
+                    return i
+
+                if lexeme[i] == "=":
+                    print("54: =")
+                    i += 1
+
+                    i = chard(lexeme, token, i)
+
+            # string value
+            elif lexeme[i] == "string":
+                i += 1
+
+                if lexeme[i] == "#":
+                    i += 2
+                else:
+                    errors.append(ERR + "#identifier not found")
+                    return i
+
+                if lexeme[i] == "=":
+                    i += 1
+
+                    i = string(lexeme, token, i)
+
+                    i = concatenate(lexeme, token, i)
+
+            # bloom value
+            elif lexeme[i] == "bloom":
+
+                if lexeme[i] == "#":
+                    i += 2
+                else:
+                    errors.append(ERR + "#identifier not found")
+                    return i
+
+                if lexeme[i] == "=":
+                    i += 1
+
+                    i = bloom(lexeme, token, i)
+
+            elif lexeme[i] in first_set["<sqnc-type>"]:
+                i += 1
+
+                if lexeme[i] == "#":
+                    i += 2
+                else:
+                    errors.append(ERR + "#identifier not found")
+                    return i
+
+                if lexeme[i] == "=":
+                    i += 1
+
+                    if lexeme[i] in first_set["<sqnc>"]:
+                        i = sqnc(lexeme, token, i)
+
+                    if lexeme[i] in first_set["<concatenate>"]:
+                        i = concatenate(lexeme, token, i)
+            if lexeme[i] == ",":
+                i += 1
+                i = D3_parameter(lexeme, token, i)
+            else:
+                return i
+
+        # sqnc-type
+        elif lexeme[i] in first_set["<sqnc-type>"]:
+            i += 1
+
+            if lexeme[i] == "#":
+                i += 2
+            else:
+                errors.append(ERR + "#identifier not found")
+                return i
+
+            # <sqnc-value>
+            if lexeme[i] in first_set["<sqnc-value>"]:
+                # =
+                if lexeme[i] == "=":
+                    i += 1
+                else:
+                    errors.append(ERR + "= not found")
+                    return i
+
+                # concatenate
+                if lexeme[i] in first_set["<concatenate>"]:
+                    i = concatenate(lexeme, token, i)
+
+            if lexeme[i] == ",":
+                i += 1
+                i = D3_parameter(lexeme, token, i)
+            else:
+                return i
+    return i
+
+
+def D2_parameter(lexeme, token, i):
+    if lexeme[i] in first_set["<parameter>"]:
+        # <undefined-param>
+        if lexeme[i] in first_set["<undefined-param>"]:
+            print("<undefined-param>")
+
+            # <common-type>
+            if lexeme[i] in first_set["<common-type>"]:
+                print("<common-type>")
+                i += 1
+
+                # #identifier
+                if lexeme[i] == "*#":
+                    i += 3
+                else:
+                    errors.append(ERR + "*#identifier not found")
+                    return i
+
+                # <add-kwargs>
+                if lexeme[i] in first_set["<add-kwargs>"]:
+                    print("<add-kwargs>")
+
+                    # ,
+                    if lexeme[i] == ",":
+                        i += 1
+                    else:
+                        errors.append(ERR + ", not found")
+                        return i
+
+                    # **#identifier
+                    if lexeme[i] == "**#":
+                        i += 2
+                    else:
+                        errors.append(ERR + "**#identifier not found")
+                        return i
+        # <common-variable>
+        elif lexeme[i] in first_set["<common-variable>"]:
+            print("<common-variable>")
+
+            # tint value
+            if lexeme[i] == "tint":
+                i += 1
+
+                if lexeme[i] == "#":
+                    i += 2
+                else:
+                    errors.append(ERR + "#identifier not found")
+                    return i
+
+                if lexeme[i] == "=":
+                    print("26: =")
+                    i += 1
+
+                    i = tint(lexeme, token, i)
+
+            # flora value
+            elif lexeme[i] == "flora":
+                print("17: flora")
+                i += 1
+
+                if lexeme[i] == "#":
+                    print("17: #identifier")
+                    i += 2
+                else:
+                    errors.append(ERR + "#identifier not found")
+                    return i
+
+                if lexeme[i] == "=":
+                    print("34: =")
+                    i += 1
+
+                    i = flora(lexeme, token, i)
+
+            # chard value
+            elif lexeme[i] == "chard":
+                print("18: chard")
+                i += 1
+
+                if lexeme[i] == "#":
+                    print("18: #identifier")
+                    i += 2
+                else:
+                    errors.append(ERR + "#identifier not found")
+                    return i
+
+                if lexeme[i] == "=":
+                    print("54: =")
+                    i += 1
+
+                    i = chard(lexeme, token, i)
+
+            # string value
+            elif lexeme[i] == "string":
+                i += 1
+
+                if lexeme[i] == "#":
+                    i += 2
+                else:
+                    errors.append(ERR + "#identifier not found")
+                    return i
+
+                if lexeme[i] == "=":
+                    i += 1
+
+                    i = string(lexeme, token, i)
+
+                    i = concatenate(lexeme, token, i)
+
+            # bloom value
+            elif lexeme[i] == "bloom":
+
+                if lexeme[i] == "#":
+                    i += 2
+                else:
+                    errors.append(ERR + "#identifier not found")
+                    return i
+
+                if lexeme[i] == "=":
+                    i += 1
+
+                    i = bloom(lexeme, token, i)
+
+            elif lexeme[i] in first_set["<sqnc-type>"]:
+                i += 1
+
+                if lexeme[i] == "#":
+                    i += 2
+                else:
+                    errors.append(ERR + "#identifier not found")
+                    return i
+
+                if lexeme[i] == "=":
+                    i += 1
+
+                    if lexeme[i] in first_set["<sqnc>"]:
+                        i = sqnc(lexeme, token, i)
+
+                    if lexeme[i] in first_set["<concatenate>"]:
+                        i = concatenate(lexeme, token, i)
+            if lexeme[i] == ",":
+                i += 1
+                i = D2_parameter(lexeme, token, i)
+            else:
+                return i
+
+        # sqnc-type
+        elif lexeme[i] in first_set["<sqnc-type>"]:
+            i += 1
+
+            if lexeme[i] == "#":
+                i += 2
+            else:
+                errors.append(ERR + "#identifier not found")
+                return i
+
+            # <sqnc-value>
+            if lexeme[i] in first_set["<sqnc-value>"]:
+                # =
+                if lexeme[i] == "=":
+                    i += 1
+                else:
+                    errors.append(ERR + "= not found")
+                    return i
+
+                # concatenate
+                if lexeme[i] in first_set["<concatenate>"]:
+                    i = concatenate(lexeme, token, i)
+
+            if lexeme[i] == ",":
+                i += 1
+                i = D2_parameter(lexeme, token, i)
+            else:
+                return i
+
+        # identifier
+        elif lexeme[i] == "#":
+            i += 2
+
+            # (
+            if lexeme[i] == "(":
+                i += 1
+            else:
+                errors.append(ERR + "( not found")
+                return i
+
+            # D3_parameter
+            if lexeme[i] in first_set["<3D-parameter>"]:
+                i = D3_parameter(lexeme, token, i)
+
+            # )
+            if lexeme[i] == ")":
+                i += 1
+            else:
+                errors.append(ERR + ") not found")
+                return i
+
+            if lexeme[i] == ",":
+                i += 1
+                i = D2_parameter(lexeme, token, i)
+            else:
+                return i
+
+    return i
+
+
+def parameter(lexeme, token, i):
+    if lexeme[i] in first_set["<parameter>"]:
+        # <undefined-param>
+        if lexeme[i] in first_set["<undefined-param>"]:
+            print("<undefined-param>")
+
+            # <common-type>
+            if lexeme[i] in first_set["<common-type>"]:
+                print("<common-type>")
+                i += 1
+
+                # #identifier
+                if lexeme[i] == "*#":
+                    i += 2
+                else:
+                    errors.append(ERR + "*#identifier not found")
+                    return i
+
+                # <add-kwargs>
+                if lexeme[i] in first_set["<add-kwargs>"]:
+                    print("<add-kwargs>")
+
+                    # ,
+                    if lexeme[i] == ",":
+                        i += 1
+                    else:
+                        errors.append(ERR + ", not found")
+                        return i
+
+                    # **#identifier
+                    if lexeme[i] == "**#":
+                        i += 4
+                    else:
+                        errors.append(ERR + "**#identifier not found")
+                        return i
+        # <common-variable>
+        elif lexeme[i] in first_set["<common-variable>"]:
+            print("<common-variable>")
+
+            # tint value
+            if lexeme[i] == "tint":
+                i += 1
+
+                if lexeme[i] == "#":
+                    i += 2
+                else:
+                    errors.append(ERR + "#identifier not found")
+                    return i
+
+                if lexeme[i] == "=":
+                    print("26: =")
+                    i += 1
+
+                    i = tint(lexeme, token, i)
+
+            # flora value
+            elif lexeme[i] == "flora":
+                print("17: flora")
+                i += 1
+
+                if lexeme[i] == "#":
+                    print("17: #identifier")
+                    i += 2
+                else:
+                    errors.append(ERR + "#identifier not found")
+                    return i
+
+                if lexeme[i] == "=":
+                    print("34: =")
+                    i += 1
+
+                    i = flora(lexeme, token, i)
+
+            # chard value
+            elif lexeme[i] == "chard":
+                print("18: chard")
+                i += 1
+
+                if lexeme[i] == "#":
+                    print("18: #identifier")
+                    i += 2
+                else:
+                    errors.append(ERR + "#identifier not found")
+                    return i
+
+                if lexeme[i] == "=":
+                    print("54: =")
+                    i += 1
+
+                    i = chard(lexeme, token, i)
+
+            # string value
+            elif lexeme[i] == "string":
+                i += 1
+
+                if lexeme[i] == "#":
+                    i += 2
+                else:
+                    errors.append(ERR + "#identifier not found")
+                    return i
+
+                if lexeme[i] == "=":
+                    i += 1
+
+                    i = string(lexeme, token, i)
+
+                    i = concatenate(lexeme, token, i)
+
+            # bloom value
+            elif lexeme[i] == "bloom":
+
+                if lexeme[i] == "#":
+                    i += 2
+                else:
+                    errors.append(ERR + "#identifier not found")
+                    return i
+
+                if lexeme[i] == "=":
+                    i += 1
+
+                    i = bloom(lexeme, token, i)
+
+            elif lexeme[i] in first_set["<sqnc-type>"]:
+                i += 1
+
+                if lexeme[i] == "#":
+                    i += 2
+                else:
+                    errors.append(ERR + "#identifier not found")
+                    return i
+
+                if lexeme[i] == "=":
+                    i += 1
+
+                    if lexeme[i] in first_set["<sqnc>"]:
+                        i = sqnc(lexeme, token, i)
+
+                    if lexeme[i] in first_set["<concatenate>"]:
+                        i = concatenate(lexeme, token, i)
+            if lexeme[i] == ",":
+                i += 1
+                i = parameter(lexeme, token, i)
+            else:
+                return i
+
+        # sqnc-type
+        elif lexeme[i] in first_set["<sqnc-type>"]:
+            i += 1
+
+            if lexeme[i] == "#":
+                i += 2
+            else:
+                errors.append(ERR + "#identifier not found")
+                return i
+
+            # <sqnc-value>
+            if lexeme[i] in first_set["<sqnc-value>"]:
+                # =
+                if lexeme[i] == "=":
+                    i += 1
+                else:
+                    errors.append(ERR + "= not found")
+                    return i
+
+                # concatenate
+                if lexeme[i] in first_set["<concatenate>"]:
+                    i = concatenate(lexeme, token, i)
+
+            if lexeme[i] == ",":
+                i += 1
+                i = parameter(lexeme, token, i)
+            else:
+                return i
+
+        # identifier
+        elif lexeme[i] == "#":
+            i += 2
+
+            # (
+            if lexeme[i] == "(":
+                i += 1
+            else:
+                errors.append(ERR + "( not found")
+                return i
+
+            # D2_parameter
+            if lexeme[i] in first_set["<2D-parameter>"]:
+                i = D2_parameter(lexeme, token, i)
+
+            # )
+            if lexeme[i] == ")":
+                i += 1
+            else:
+                errors.append(ERR + ") not found")
+                return i
+
+            if lexeme[i] == ",":
+                i += 1
+                i = parameter(lexeme, token, i)
+            else:
+                return i
+    return i
+
+
+def function(lexeme, token, i):
+    if lexeme[i] in first_set["<function>"]:
+        # <common-type>
+        if lexeme[i] in first_set["<common-type>"]:
+            print("common-type")
+            i += 1
+
+            # #identifier
+            if lexeme[i] == "#":
+                i += 2
+            else:
+                errors.append(ERR + "#identifier not found")
+                return i
+
+            # (
+            if lexeme[i] == "(":
+                i += 1
+            else:
+                errors.append(ERR + "( not found")
+                return i
+
+            # parameter
+            if lexeme[i] in first_set["<parameter>"]:
+                print("parameter")
+                i = parameter(lexeme, token, i)
+
+            # )
+            if lexeme[i] == ")":
+                i += 1
+            else:
+                errors.append(ERR + ") not found")
+                return i
+
+            # (
+            if lexeme[i] == "(":
+                i += 1
+            else:
+                errors.append(ERR + "( not found")
+                return i
+
+            if lexeme[i] in first_set["<statement>"]:
+                print("statement")
+                i = statement(lexeme, token, i)
+
+            # regrow
+            if lexeme[i] == "regrow":
+                i += 1
+
+                # all_type_value
+                while True:
+                    if lexeme[i] in first_set["<all-type-value>"]:
+                        i = all_type_value(lexeme, token, i)
+
+                    # ,
+                    if lexeme[i] == ",":
+                        i += 1
+                    else:
+                        break
+                # at
+                if lexeme[i] == "at":
+                    i += 1
+
+                    if lexeme[i] in first_set["<all-type-value>"]:
+                        i = all_type_value(lexeme, token, i)
+
+                # ;
+                if lexeme[i] == ";":
+                    i += 1
+                else:
+                    errors.append(ERR + "; not found")
+                    return i
+
+            # )
+            if lexeme[i] == ")":
+                i += 1
+            else:
+                errors.append(ERR + ") not found")
+                return i
+
+            # ;
+            if lexeme[i] == ";":
+                i += 1
+            else:
+                errors.append(ERR + "; not found")
+                return i
+        # <viola>
+        elif lexeme[i] == "viola":
+            i += 1
+
+            # (
+            if lexeme[i] == "(":
+                i += 1
+            else:
+                errors.append(ERR + "( not found")
+                return i
+
+            # <undefined-parameter>
+            if lexeme[i] in first_set["<parameter>"]:
+                i = parameter(lexeme, token, i)
+
+            # )
+            if lexeme[i] == ")":
+                i += 1
+            else:
+                errors.append(ERR + ") not found")
+                return i
+
+            # (
+            if lexeme[i] == "(":
+                i += 1
+            else:
+                errors.append(ERR + "( not found")
+                return i
+
+            # <statement>
+            if lexeme[i] in first_set["<statement>"]:
+                i = statement(lexeme, token, i)
+
+            # )
+            if lexeme[i] == ")":
+                i += 1
+            else:
+                errors.append(ERR + ") not found")
+                return i
+
+            # ;
+            if lexeme[i] == ";":
+                i += 1
+            else:
+                errors.append(ERR + "; not found")
+                return i
+
+        i = function(lexeme, token, i)
 
     return i

@@ -56,7 +56,7 @@ first_set = {
     ],
     "<sqnc-type>": ["florist", "tulip", "dirt", "stem"],
     "<tint-value>": ["="],
-    "<tint>": ["tint literal", "#", "lent", "tint", "flora literal", "flora", "("],
+    "<tint>": ["tint literal", "#", "lent", "tint", "("],
     "<tint-literals>": ["tint literal", "#", "lent", "tint"],
     "<flora-value>": ["="],
     "<flora>": ["flora literal", "flora", "tint literal", "#", "lent", "tint", "("],

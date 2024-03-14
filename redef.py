@@ -36,7 +36,7 @@ delim8 = let + num + ht + space + ["\"", "["]
 delim9 = space + newline
 delim10 = [";", ' ',  "\n", ","]
 delim11 = [";", "+", " ", ",", ")", "}", "]"]
-delim12 = space + ["=", ";", ")", "}"]
+delim12 = space + ["=", ";", ")", "}", ","]
 delim13 = dig + space + ["("]
 delim14 = ascii
 delim15 = space + dig + let + newline + ["\"", ")", "]"]
