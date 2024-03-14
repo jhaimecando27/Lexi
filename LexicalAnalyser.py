@@ -943,6 +943,20 @@ def lexical_analysis(programs):
 
             # ---------------------- Reserved Symbol ---------------------- #
 
+            # _ delim21
+            elif i < len(program) and program[i] == '_':
+                i += 1
+                tmp_wrd = "+"
+                if i < len(program) and program[i] in rd.delim21:
+                    results.append(("+", rs))
+                    continue
+                else:
+                    # Finish whole word if error
+                    results.append(Errors.delim(
+                        i, line_num, tmp_wrd, program[i], rd.delim21))
+                    i = skip(i, program)
+                    continue
+
             # + delim5, += delim19
             elif i < len(program) and program[i] == '+':
                 i += 1
