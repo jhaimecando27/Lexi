@@ -97,7 +97,7 @@ def syntax_analysis(programs, output):
             return errors
 
         # <statement>
-        if lexeme[i] in first_set["<statement>"]:
+        while lexeme[i] in first_set["<statement>"]:
             print("1: statement")
             i = statement(lexeme, token, i)
 

@@ -946,9 +946,9 @@ def lexical_analysis(programs):
             # _ delim21
             elif i < len(program) and program[i] == '_':
                 i += 1
-                tmp_wrd = "+"
+                tmp_wrd = "_"
                 if i < len(program) and program[i] in rd.delim21:
-                    results.append(("+", rs))
+                    results.append(("_", rs))
                     continue
                 else:
                     # Finish whole word if error
@@ -1432,7 +1432,7 @@ def lexical_analysis(programs):
                 i += 1
                 tmp_wrd = ":"
                 if i < len(program) and program[i] in rd.delim15:
-                    results.append((": ", rs))
+                    results.append((":", rs))
                     continue
                 else:
                     # Finish whole word if error
